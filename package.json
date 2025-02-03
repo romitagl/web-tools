@@ -2,6 +2,7 @@
   "name": "web-tools",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://romitagl.github.io/web-tools/",
   "type": "module",
   "engines": {
     "node": ">=23.0.0"
