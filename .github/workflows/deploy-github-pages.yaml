@@ -19,14 +19,6 @@ jobs:
           # update this to match the Node version specified in Makefile
           node-version: '23'
 
-      - name: Cache node modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            node-modules-${{ runner.os }}-
-
       - name: Install Dependencies
         run: make install
 
@@ -36,4 +28,4 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build # The folder the action should deploy.
+          folder: dist # The folder the action should deploy.
