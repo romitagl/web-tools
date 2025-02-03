@@ -1,20 +1,19 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  // https://romitagl.github.io/web-tools/
+  base: '/web-tools/', // Ensure this is set correctly
   build: {
     outDir: 'dist',
-    base: '/web-tools/', // Set the base URL for GitHub Pages
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
-        }
-      }
-    }
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+      },
+    },
   },
   server: {
     port: 3000,
@@ -23,4 +22,4 @@ export default defineConfig({
   optimizeDeps: {
     force: true
   }
-})
+});
