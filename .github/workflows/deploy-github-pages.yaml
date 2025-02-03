@@ -3,8 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
-#   pull_request:
-#     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build-and-deploy:
@@ -16,7 +16,16 @@ jobs:
       - name: Use Node.js 
         uses: actions/setup-node@v3
         with:
+          # update this to match the Node version specified in Makefile
           node-version: '23'
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            node-modules-${{ runner.os }}-
 
       - name: Install Dependencies
         run: make install

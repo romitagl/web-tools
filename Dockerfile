@@ -10,9 +10,8 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install --legacy-peer-deps --verbose -g npm@latest
-# https://docs.npmjs.com/cli/v8/commands/npm-ci
-# RUN npm ci
+RUN npm install -g npm@latest
+RUN npm ci --legacy-peer-deps
 
 # Copy source code
 COPY . .

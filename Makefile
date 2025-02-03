@@ -16,7 +16,8 @@ help:
 # Local development targets
 .PHONY: install
 install:
-	npm install --legacy-peer-deps --verbose -g npm@latest
+	npm install -g npm@latest
+	npm ci --legacy-peer-deps
 
 .PHONY: run
 start:
