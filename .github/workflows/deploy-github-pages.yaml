@@ -15,6 +15,10 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
+        with:  
+          ref: main
+          # Fetch all history for all tags and branches
+          fetch-depth: 0
 
       - name: Use Node.js 
         uses: actions/setup-node@v3
