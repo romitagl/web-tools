@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'dist',
+    base: '/web-tools/', // Set the base URL for GitHub Pages
     rollupOptions: {
       output: {
         manualChunks(id) {
