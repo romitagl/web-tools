@@ -1,5 +1,3 @@
-# Makefile for PDF Merger Webapp
-
 # Variables
 PROJECT_NAME = web-tools
 NODE_VERSION=23
@@ -9,10 +7,8 @@ NODE_VERSION=23
 help:
 	@echo "Available targets:"
 	@echo "  install      - Install dependencies"
-	@echo "  start      - Start development server"
+	@echo "  run      - Start development server"
 	@echo "  build      - Build production application"
-	@echo "  test       - Run tests"
-	@echo "  lint       - Run linter"
 	@echo "  clean      - Remove build artifacts and dependencies"
 	@echo "  docker-build - Build Docker image"
 	@echo "  docker-run   - Run development server with hot-reload"
@@ -20,23 +16,15 @@ help:
 # Local development targets
 .PHONY: install
 install:
-	npm install
+	npm install --legacy-peer-deps --verbose -g npm@latest
 
-.PHONY: start
+.PHONY: run
 start:
-	npm start
+	npm run dev
 
 .PHONY: build
 build:
-	npm run build
-
-.PHONY: test
-test:
-	npm test
-
-.PHONY: lint
-lint:
-	npm run lint
+	npm run build --verbose
 
 # Cleanup
 .PHONY: clean
@@ -48,15 +36,17 @@ clean:
 # Docker install & build
 .PHONY: docker-build
 docker-build:
-	docker build  --build-arg NODE_VERSION=$(NODE_VERSION) --target builder -t $(PROJECT_NAME) -f ./Dockerfile .
+	docker build --no-cache --build-arg NODE_VERSION=$(NODE_VERSION) --target builder -t $(PROJECT_NAME) -f ./Dockerfile .
 
 # Run development server with hot-reload
 .PHONY: docker-run
-docker-run: docker-build
-	# npm run dev
-	docker run -it --rm -p 3000:3000 -v $(PWD):/app $(PROJECT_NAME) npm start
+docker-run:
+	docker run -it --rm -p 3000:3000 -v $(PWD):/app -w /app $(PROJECT_NAME) npm run dev -- --host --open=false
 
-# Initialize Vite+React template
-.PHONY: docker-create-app
-docker-create-app:
-	docker run -it --rm -v $(PWD):/app node:$(NODE_VERSION) npm create vite@latest . -- --template react-ts
+# Run node command in Docker container
+# make docker-run-node-cmd CMD="npm install vite"
+.PHONY: docker-run-node-cmd
+docker-run-node-cmd:
+	# init app
+	# make docker-run-node-cmd CMD="npm create vite@latest web-tools -- --template react"
+	docker run -it --rm -v $(PWD):/app -w /app node:$(NODE_VERSION) $(CMD)

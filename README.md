@@ -8,16 +8,9 @@ A client-side web application for managing PDF files directly in the browser.
 
 ## Features
 
-- Drag and drop PDF file upload
 - Client-side PDF merging
 - No backend required
 - Privacy-focused (no file uploads to external servers)
-
-## Prerequisites
-
-- Node.js (v18+)
-- Docker (optional)
-- Make (optional)
 
 ## Local Development Setup
 
@@ -53,10 +46,4 @@ make docker-build
 
 ```bash
 make docker-run
-```
-
-### Very project initialization
-
-```bash
-make docker-create-app
 ```

@@ -1,5 +1,6 @@
 # Build the application
-ARG NODE_VERSION
+# update also .github/workflows/deploy-github-pages.yaml
+ARG NODE_VERSION=23
 FROM node:${NODE_VERSION}  AS builder
 
 # Set working directory
@@ -9,7 +10,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --legacy-peer-deps --verbose -g npm@latest
 # https://docs.npmjs.com/cli/v8/commands/npm-ci
 # RUN npm ci
 
@@ -17,7 +18,7 @@ RUN npm install
 COPY . .
 
 # Build the application
-RUN npm run build
+RUN npm run build --verbose
 
 # -- SERVE --
 
