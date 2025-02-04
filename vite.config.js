@@ -1,17 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import viteSitemap from 'vite-plugin-sitemap'; // Use default import
 
 export default defineConfig({
   plugins: [
-    react(),
-    viteSitemap({
-      hostname: 'https://romitagl.github.io/web-tools/',
-      routes: [
-        { url: '/', changefreq: 'daily', priority: 1 },
-        // Add additional routes here
-      ],
-    }),
+    react()
   ],
   base: '/web-tools/',
   build: {
