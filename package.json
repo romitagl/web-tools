@@ -9,8 +9,8 @@
   },
   "packageManager": "npm@10.2.3",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build --config vite.config.js",
+    "dev": "node src/sitemap.js && vite dev --host --open=false",
+    "build": "vite build --config vite.config.js && node src/sitemap.js",
     "preview": "vite preview",
     "lint": "eslint src --ext js,jsx"
   },
@@ -18,7 +18,8 @@
     "lucide-react": "^0.474.0",
     "pdf-lib": "^1.17.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "sitemap": "^8.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

@@ -42,7 +42,7 @@ docker-build:
 # Run development server with hot-reload
 .PHONY: docker-run
 docker-run:
-	docker run -it --rm -p 3000:3000 -v $(PWD):/app -w /app $(PROJECT_NAME) npm run dev -- --host --open=false
+	docker run -it --rm -p 3000:3000 -v $(PWD):/app -w /app $(PROJECT_NAME) npm run dev
 
 # Run node command in Docker container
 # make docker-run-node-cmd CMD="npm install vite"
