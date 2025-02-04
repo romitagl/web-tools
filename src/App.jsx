@@ -96,7 +96,7 @@ function App() {
     <>
       <head>
         <title>Merge PDFs & Images | Free & Private</title>
-        <meta name="description" content="Merge PDF and image files into a single document securely and privately in your browser. No uploads, 100% free!" />
+        <meta name="description" content="Merge PDF and image files into a single document securely and privately in your browser. 100% free!" />
         <meta name="keywords" content="PDF merge, image to PDF, online PDF tool, free PDF merger, secure PDF processing" />
       </head>
       <div>
@@ -108,7 +108,7 @@ function App() {
         </a>
       </div>
       <h1>Merge PDFs & Images Instantly - 100% Private, 100% Free!</h1>
-      <h2>Runs safely and securely in your browser. No uploads required.</h2>
+      <h2>Runs safely and securely in your browser.</h2>
       <section>
         <p>Merge PDFs and Images into a Single Document with ease.
         Documents will be merged in order by sorting the input file names.</p>
