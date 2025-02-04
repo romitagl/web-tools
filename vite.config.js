@@ -8,7 +8,7 @@ export default defineConfig({
     viteSitemap({
       hostname: 'https://romitagl.github.io/web-tools/',
       routes: [
-        { url: '/web-tools', changefreq: 'daily', priority: 1 },
+        { url: '/', changefreq: 'daily', priority: 1 },
         // Add additional routes here
       ],
     }),

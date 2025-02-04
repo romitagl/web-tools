@@ -1,4 +1,3 @@
-// src/sitemap.js
 import { SitemapStream, streamToPromise } from 'sitemap';
 import { createGzip } from 'zlib';
 import fs from 'fs';
@@ -6,7 +5,7 @@ import fs from 'fs';
 const hostname = 'https://romitagl.github.io/web-tools/';
 
 const urls = [
-  { url: '/web-tools', changefreq: 'daily', priority: 1 },
+  { url: '/', changefreq: 'daily', priority: 1 }, // Correct: No base path here
   // { url: '/about', changefreq: 'monthly', priority: 0.8 },
   // { url: '/contact', changefreq: 'monthly', priority: 0.8 },
   // Add additional routes here
