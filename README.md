@@ -1,10 +1,6 @@
 
 # 🌟 Web Tools 🌟
 
-🚀 **Runs safely and securely in your browser** 🚀
-
----
-
 ## 📌 Overview
 
 Welcome to **Web Tools**, your go-to client-side web application for managing PDF files and images directly in your browser. With a strong focus on privacy and security, this tool ensures that your documents never leave your device. Merge PDFs and images effortlessly, all while keeping your data 100% private.
@@ -17,6 +13,8 @@ Welcome to **Web Tools**, your go-to client-side web application for managing PD
 - **No file uploads**: Your files stay on your device, ensuring maximum privacy.
 - **Secure & Private**: No external servers, no data leaks.
 - **Easy to Use**: Merge PDFs and images in just a few clicks.
+
+🚀 **Runs safely and securely in your browser** 🚀
 
 ---
 
