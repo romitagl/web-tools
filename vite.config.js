@@ -23,4 +23,7 @@ export default defineConfig({
   optimizeDeps: {
     force: true,
   },
+  css: {
+    devSourcemap: false, // Disable source maps
+  }  
 });
