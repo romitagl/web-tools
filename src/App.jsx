@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
-import { FileText, Image } from 'lucide-react';
+import { FileText, Image, Loader } from 'lucide-react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
@@ -8,6 +8,7 @@ import './App.css';
 function App() {
   const [pdfFiles, setPdfFiles] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
+  const [isMerging, setIsMerging] = useState(false);
 
   const handlePdfChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
@@ -20,6 +21,7 @@ function App() {
   };
 
   const mergePDFs = async () => {
+    setIsMerging(true);
     const pdfDoc = await PDFDocument.create();
     
     // Sort files by name
@@ -33,9 +35,11 @@ function App() {
     }
 
     downloadPDF(await pdfDoc.save(), 'merged-pdfs.pdf');
+    setIsMerging(false);
   };
 
   const mergeImages = async () => {
+    setIsMerging(true);
     const pdfDoc = await PDFDocument.create();
     
     // Sort files by name
@@ -76,6 +80,7 @@ function App() {
     }
   
     downloadPDF(await pdfDoc.save(), 'merged-images.pdf');
+    setIsMerging(false);
   };
   
 
@@ -93,72 +98,97 @@ function App() {
   };
 
   return (
-    <>
-      <head>
-        <title>Merge PDFs & Images | Free & Private</title>
-        <meta name="description" content="Merge PDF and image files into a single document securely and privately in your browser. 100% free!" />
-        <meta name="keywords" content="PDF merge, image to PDF, online PDF tool, free PDF merger, secure PDF processing" />
-      </head>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app dark">
+      <div className="container">
+        <div className="header">
+          <div className="logo-container">
+            <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
+              <img src={viteLogo} className="logo" alt="Vite logo" />
+            </a>
+            <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
+              <img src={reactLogo} className="logo react" alt="React logo" />
+            </a>
+          </div>
+          <h1>Merge PDFs & Images Instantly</h1>
+          <h2>100% Private, 100% Free!</h2>
+          <p>Runs safely and securely in your browser.</p>
+        </div>
+        <section className="description">
+          <p>
+            Merge PDFs and Images into a Single Document with ease. Documents will be merged in order by sorting the input file names.
+          </p>
+        </section>
+        <hr />
+        <section className="merge-section">
+          <h2 style={{ color: 'lightblue', fontWeight: 'bold' }}>
+            <FileText size={24} /> Merge PDFs
+          </h2>
+          <input
+            type="file"
+            multiple
+            accept=".pdf"
+            onChange={handlePdfChange}
+            className="file-input"
+          />
+          <button
+            onClick={mergePDFs}
+            disabled={pdfFiles.length === 0 || isMerging}
+            className="merge-button"
+          >
+            {isMerging ? <Loader className="spinner" /> : 'Merge PDFs'}
+          </button>
+          {pdfFiles.length > 0 && (
+            <div className="file-list">
+              <p>Selected PDFs: {pdfFiles.length}</p>
+              <ul>
+                {pdfFiles.map((file, index) => (
+                  <li key={index}>{file.name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+        <hr />
+        <section className="merge-section">
+          <h2 style={{ color: 'lightblue', fontWeight: 'bold' }}>
+            <Image size={24} /> Merge Images
+          </h2>
+          <input
+            type="file"
+            multiple
+            accept=".jpg,.jpeg,.png"
+            onChange={handleImageChange}
+            className="file-input"
+          />
+          <button
+            onClick={mergeImages}
+            disabled={imageFiles.length === 0 || isMerging}
+            className="merge-button"
+          >
+            {isMerging ? <Loader className="spinner" /> : 'Merge Images'}
+          </button>
+          {imageFiles.length > 0 && (
+            <div className="file-list">
+              <p>Selected Images: {imageFiles.length}</p>
+              <ul>
+                {imageFiles.map((file, index) => (
+                  <li key={index}>{file.name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+        <hr />
+        <footer>
+          <p>
+            If you like this tool, please star the repository on{' '}
+            <a href="https://github.com/romitagl/web-tools">GitHub</a>&nbsp;
+            and consider sponsoring me on GitHub.
+          </p>
+          <iframe src="https://github.com/sponsors/romitagl/button" title="Sponsor" width="116" height="35" />
+        </footer>
       </div>
-      <h1>Merge PDFs & Images Instantly - 100% Private, 100% Free!</h1>
-      <h2>Runs safely and securely in your browser.</h2>
-      <section>
-        <p>Merge PDFs and Images into a Single Document with ease.
-        Documents will be merged in order by sorting the input file names.</p>
-      </section>
-      <hr />
-      <section>
-        <h2 style={{ color: 'lightblue', fontWeight: 'bold' }}><FileText size={24} /> Merge PDFs</h2>
-        <input type="file" multiple accept=".pdf" onChange={handlePdfChange} />
-        <button onClick={mergePDFs} disabled={pdfFiles.length === 0}>
-          Merge PDFs
-        </button>
-        {pdfFiles.length > 0 && (
-          <div>
-            <p>Selected PDFs: {pdfFiles.length}</p>
-            <ul>
-              {pdfFiles.map((file, index) => (
-                <li key={index}>{file.name}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </section>
-      <hr />
-      <section>
-        <h2 style={{ color: 'lightblue', fontWeight: 'bold' }}><Image size={24} /> Merge Images</h2>
-        <input type="file" multiple accept=".jpg,.jpeg,.png" onChange={handleImageChange} />
-        <button onClick={mergeImages} disabled={imageFiles.length === 0}>
-          Merge Images
-        </button>
-        {imageFiles.length > 0 && (
-          <div>
-            <p>Selected Images: {imageFiles.length}</p>
-            <ul>
-              {imageFiles.map((file, index) => (
-                <li key={index}>{file.name}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </section>
-      <hr />
-      <footer>
-        <p className="read-the-docs">
-          If you like this tool, please star the repository on{' '}
-          <a href="https://github.com/romitagl/web-tools">GitHub</a>&nbsp;
-          and consider sponsoring me on GitHub.
-        </p>
-        <iframe src="https://github.com/sponsors/romitagl/button" title="Sponsor" width="116" height="35" />
-      </footer>
-    </>
+    </div>
   );
 }
 
