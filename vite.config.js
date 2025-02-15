@@ -5,7 +5,10 @@ export default defineConfig({
   plugins: [
     react()
   ],
-  base: '/web-tools/',
+  // https://romitagl.github.io/web-tools/
+  // base: '/web-tools/',
+  // https://web-tools.romitagl.com/
+  base: '/',
   build: {
     outDir: 'dist',
     rollupOptions: {
