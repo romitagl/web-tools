@@ -23,7 +23,7 @@ function App() {
   const mergePDFs = async () => {
     setIsMerging(true);
     const pdfDoc = await PDFDocument.create();
-    
+
     // Sort files by name
     const sortedFiles = pdfFiles.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -41,14 +41,14 @@ function App() {
   const mergeImages = async () => {
     setIsMerging(true);
     const pdfDoc = await PDFDocument.create();
-    
+
     // Sort files by name
     const sortedFiles = imageFiles.sort((a, b) => a.name.localeCompare(b.name));
-  
+
     for (const file of sortedFiles) {
       const imgBytes = await file.arrayBuffer();
       let image;
-  
+
       // Check for supported image types
       if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
         try {
@@ -68,7 +68,7 @@ function App() {
         alert('Unsupported file type: ' + file.type);
         return;
       }
-  
+
       // Create a new page for each image
       const page = pdfDoc.addPage([image.width, image.height]);
       page.drawImage(image, {
@@ -78,16 +78,66 @@ function App() {
         height: image.height,
       });
     }
-  
+
     downloadPDF(await pdfDoc.save(), 'merged-images.pdf');
     setIsMerging(false);
   };
-  
+
+  const mergePDFsAndImages = async () => {
+    setIsMerging(true);
+    const pdfDoc = await PDFDocument.create();
+
+    // Combine and sort files by name
+    const allFiles = [...pdfFiles, ...imageFiles].sort((a, b) => a.name.localeCompare(b.name));
+
+    for (const file of allFiles) {
+      if (file.type === 'application/pdf') {
+        const fileBytes = await file.arrayBuffer();
+        const tempDoc = await PDFDocument.load(fileBytes);
+        const copiedPages = await pdfDoc.copyPages(tempDoc, tempDoc.getPageIndices());
+        copiedPages.forEach((page) => pdfDoc.addPage(page));
+      } else if (file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/png') {
+        const imgBytes = await file.arrayBuffer();
+        let image;
+
+        if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
+          try {
+            image = await pdfDoc.embedJpg(imgBytes);
+          } catch (error) {
+            alert('Error processing JPEG file: ' + file.name + '. ' + error.message);
+            continue;
+          }
+        } else if (file.type === 'image/png') {
+          try {
+            image = await pdfDoc.embedPng(imgBytes);
+          } catch (error) {
+            alert('Error processing PNG file: ' + file.name + '. ' + error.message);
+            continue;
+          }
+        }
+
+        // Create a new page for each image
+        const page = pdfDoc.addPage([image.width, image.height]);
+        page.drawImage(image, {
+          x: 0,
+          y: 0,
+          width: image.width,
+          height: image.height,
+        });
+      } else {
+        alert('Unsupported file type: ' + file.type);
+        return;
+      }
+    }
+
+    downloadPDF(await pdfDoc.save(), 'merged-pdfs-and-images.pdf');
+    setIsMerging(false);
+  };
 
   const downloadPDF = (pdfBytes, filename) => {
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
-    
+
     // Create a link to download the merged PDF
     const link = document.createElement('a');
     link.href = url;
@@ -173,6 +223,46 @@ function App() {
               <ul>
                 {imageFiles.map((file, index) => (
                   <li key={index}>{file.name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+        <hr />
+        <section className="merge-section">
+          <h2 style={{ color: 'lightblue', fontWeight: 'bold' }}>
+            <FileText size={24} /> <Image size={24} /> Merge PDFs & Images
+          </h2>
+          <input
+            type="file"
+            multiple
+            accept=".pdf"
+            onChange={handlePdfChange}
+            className="file-input"
+          />
+          <input
+            type="file"
+            multiple
+            accept=".jpg,.jpeg,.png"
+            onChange={handleImageChange}
+            className="file-input"
+          />
+          <button
+            onClick={mergePDFsAndImages}
+            disabled={(pdfFiles.length === 0 && imageFiles.length === 0) || isMerging}
+            className="merge-button"
+          >
+            {isMerging ? <Loader className="spinner" /> : 'Merge PDFs & Images'}
+          </button>
+          {(pdfFiles.length > 0 || imageFiles.length > 0) && (
+            <div className="file-list">
+              <p>Selected Files: {pdfFiles.length + imageFiles.length}</p>
+              <ul>
+                {pdfFiles.map((file, index) => (
+                  <li key={index}>{file.name}</li>
+                ))}
+                {imageFiles.map((file, index) => (
+                  <li key={index + pdfFiles.length}>{file.name}</li>
                 ))}
               </ul>
             </div>
