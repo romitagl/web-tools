@@ -1,3 +1,4 @@
+/* Base styles from original */
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -11,9 +12,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -39,4 +42,640 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* App styling */
+.app {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dark {
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Header and footer styling */
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.home-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.description {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  color: #888;
+}
+
+/* Horizontal rule (fixing the overlap issue) */
+hr {
+  margin: 2.5rem 0;
+  border: none;
+  border-top: 1px solid #444;
+  position: relative;
+  z-index: 1;
+  clear: both;
+}
+
+/* Home page tools grid (fixed spacing and margins) */
+.tools-section {
+  margin: 3rem 0; /* Increased margin */
+  position: relative;
+  z-index: 0;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px; /* Increased gap to prevent overlapping */
+  margin: 2rem 0; /* Added vertical margin */
+}
+
+@media (min-width: 640px) and (max-width: 959px) {
+  .tools-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .tools-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.tool-card {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-bottom: 10px; /* Added to prevent overlap */
+  position: relative; /* Added for z-index to work */
+  z-index: 0; /* Ensure cards sit below HR */
+}
+
+.tool-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  z-index: 2; /* Ensure hover state appears above other elements */
+}
+
+.tool-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.tool-link {
+  display: inline-block;
+  margin-top: auto;
+  background-color: #646cff;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 4px;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.3s;
+  margin-top: 15px;
+}
+
+.tool-link:hover {
+  background-color: #747bff;
+}
+
+/* PDF Merger tool styles (preserved from original) */
+.merge-section {
+  margin: 2rem 0;
+}
+
+.merge-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.file-input {
+  display: block;
+  margin: 1rem 0;
+  width: 100%;
+  padding: 0.5rem;
+  color: white;
+  background-color: #333;
+  border-radius: 4px;
+  border: 1px solid #555;
+}
+
+.merge-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #646cff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.merge-button:hover:not(:disabled) {
+  background-color: #747bff;
+}
+
+.merge-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.file-list {
+  background-color: #333;
+  padding: 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+.file-list ul {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-left: 1.5rem;
+  text-align: left;
+}
+
+.file-list li {
+  margin-bottom: 0.5rem;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Image Optimizer specific styles */
+.quality-slider-container {
+  margin: 20px 0;
+  width: 100%;
+}
+
+.quality-slider {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.quality-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8em;
+  color: #888;
+}
+
+.optimized-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.optimized-image-card {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 15px;
+  border: 1px solid #333;
+}
+
+.image-preview {
+  margin-bottom: 10px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.image-info {
+  text-align: left;
+}
+
+.image-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+  word-break: break-all;
+}
+
+.optimization-stats {
+  font-size: 0.9em;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+
+.reduction {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.download-button {
+  background-color: #646cff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.download-button:hover {
+  background-color: #747bff;
+}
+
+/* Add these styles to your existing App.css file */
+
+/* Back to tools link */
+.home-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #646cff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.home-link:hover {
+  color: #747bff;
+}
+
+.back-icon {
+  margin-right: 4px;
+}
+
+.app-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* Info box */
+.info-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgba(100, 108, 255, 0.1);
+  border-radius: 8px;
+  padding: 15px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.info-box svg {
+  flex-shrink: 0;
+  color: #646cff;
+}
+
+.info-box p {
+  margin: 0;
+}
+
+/* Tab navigation */
+.tab-container {
+  display: flex;
+  border-bottom: 1px solid #333;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  padding-bottom: 1px;
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab-button:hover {
+  color: white;
+  background-color: rgba(100, 108, 255, 0.1);
+}
+
+.tab-button.active {
+  color: #646cff;
+  border-bottom: 2px solid #646cff;
+}
+
+.tab-content {
+  margin-top: 20px;
+}
+
+/* Drop zone */
+.drop-zone {
+  border: 2px dashed #444;
+  border-radius: 8px;
+  padding: 30px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 20px;
+}
+
+.drop-zone:hover {
+  border-color: #646cff;
+  background-color: rgba(100, 108, 255, 0.05);
+}
+
+.drop-zone.active {
+  border-color: #646cff;
+  background-color: rgba(100, 108, 255, 0.1);
+}
+
+.drop-zone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.upload-icon {
+  color: #646cff;
+  opacity: 0.8;
+}
+
+.drop-zones-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* File input */
+.file-input-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #646cff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.file-input-label:hover {
+  background-color: #747bff;
+}
+
+.file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.input-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* File list */
+.file-list-container {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid #333;
+}
+
+.file-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.file-list-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #eee;
+}
+
+.clear-button {
+  background: transparent;
+  color: #ff6b6b;
+  border: 1px solid #ff6b6b;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.clear-button:hover {
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+.file-list {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  background-color: #242424;
+}
+
+.file-category {
+  background-color: #333;
+  padding: 8px 15px;
+  font-weight: 500;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.file-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-bottom: 1px solid #333;
+  transition: background-color 0.2s;
+}
+
+.file-item:hover {
+  background-color: #2a2a2a;
+}
+
+.file-item:last-child {
+  border-bottom: none;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  text-align: left;
+}
+
+.file-icon {
+  flex-shrink: 0;
+  color: #646cff;
+}
+
+.file-name {
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 300px;
+}
+
+.file-size {
+  color: #888;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.remove-file {
+  background: transparent;
+  color: #999;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.remove-file:hover {
+  color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+/* Merge info */
+.merge-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  color: #ccc;
+  font-size: 0.9rem;
+  background-color: rgba(255, 207, 51, 0.1);
+  padding: 10px 15px;
+  border-radius: 4px;
+}
+
+.merge-info svg {
+  color: #ffcf33;
+  flex-shrink: 0;
+}
+
+/* Success message */
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 15px;
+  color: #4CAF50;
+  font-weight: 500;
+  background-color: rgba(76, 175, 80, 0.1);
+  padding: 10px 15px;
+  border-radius: 4px;
+}
+
+.success-message svg {
+  color: #4CAF50;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .tab-container {
+    flex-direction: column;
+    border-bottom: none;
+    gap: 8px;
+  }
+  
+  .tab-button {
+    border: 1px solid #333;
+    border-radius: 4px;
+    justify-content: center;
+  }
+  
+  .tab-button.active {
+    border-color: #646cff;
+    background-color: rgba(100, 108, 255, 0.1);
+  }
+  
+  .file-name {
+    max-width: 150px;
+  }
 }
