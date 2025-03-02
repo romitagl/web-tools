@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Web Development Tools | Redirecting...</title>
-    <script>
-        // Store the segment of the URL after the domain
-        const path = window.location.pathname;
-        const search = window.location.search;
-        
-        // Redirect to the index.html with the path as a query parameter
-        // Then, your app can extract this path and route accordingly
-        window.location.href = '/index.html?redirect=' + 
-            encodeURIComponent(path + search);
-    </script>
+  <meta charset="utf-8">
+  <title>Redirecting...</title>
+  <script>
+    // Save the URL path that caused the 404
+    sessionStorage.setItem('redirectPath', window.location.pathname + window.location.search);
+    
+    // Redirect to the home page
+    window.location.href = '/';
+  </script>
 </head>
 <body>
-    <p>Redirecting...</p>
+  <p>Redirecting...</p>
 </body>
 </html>
