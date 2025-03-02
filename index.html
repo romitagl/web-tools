@@ -2,6 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      (function() {
+        // Check if we have a saved redirect path
+        const redirectPath = sessionStorage.getItem('redirectPath');
+        if (redirectPath) {
+          // Clear the redirect path from sessionStorage
+          sessionStorage.removeItem('redirectPath');
+          
+          // Push the saved path to the history
+          window.history.pushState(null, null, redirectPath);
+        }
+      })();
+    </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CP2GH8VHCN"></script>
     <script>
