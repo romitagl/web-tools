@@ -43,10 +43,10 @@ function Home() {
             <div className="tool-icon">
               <Image size={40} color="lightblue" />
             </div>
-            <h2>Image Optimizer</h2>
-            <p>Compress and optimize images for the web without sacrificing quality. Reduce load times and improve site performance.</p>
-            <Link to="/image-optimizer" className="tool-link">
-              Try Image Optimizer
+            <h2>CIDR Calculator</h2>
+            <p>Fast and simple subnet calculator for network engineers and administrators. Calculate network addresses, broadcast addresses, and IP ranges effortlessly.</p>
+            <Link to="/cidr-calculator" className="tool-link">
+              Try CIDR Calculator
             </Link>
           </div>
           
