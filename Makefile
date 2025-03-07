@@ -6,12 +6,13 @@ NODE_VERSION=23
 .PHONY: help
 help:
 	@echo "Available targets:"
-	@echo "  install      - Install dependencies"
-	@echo "  run      - Start development server"
-	@echo "  build      - Build production application"
-	@echo "  clean      - Remove build artifacts and dependencies"
-	@echo "  docker-build - Build Docker image"
-	@echo "  docker-run   - Run development server with hot-reload"
+	@echo " install - Install dependencies"
+	@echo " run - Start development server"
+	@echo " build - Build production application"
+	@echo " clean - Remove build artifacts and dependencies"
+	@echo " docker-build - Build Docker image"
+	@echo " docker-run - Run development server with hot-reload"
+	@echo " docker-export - Build in Docker and export build artifacts"
 
 # Local development targets
 .PHONY: install
@@ -38,6 +39,14 @@ clean:
 .PHONY: docker-build
 docker-build:
 	docker build --no-cache --build-arg NODE_VERSION=$(NODE_VERSION) --target builder -t $(PROJECT_NAME) -f ./Dockerfile .
+
+# Docker export build artifacts
+.PHONY: docker-export
+docker-export: docker-build
+	docker create --name $(PROJECT_NAME)-export $(PROJECT_NAME)
+	mkdir -p dist
+	docker cp $(PROJECT_NAME)-export:/app/dist ./dist
+	docker rm $(PROJECT_NAME)-export
 
 # Run development server with hot-reload
 .PHONY: docker-run

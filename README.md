@@ -65,8 +65,12 @@ make build
 If you prefer using Docker, you can build and run the Docker image with the following commands:
 
 ```bash
+# Build Docker image
 make docker-build
+# Run development server with hot-reload
 make docker-run
+# Build in Docker and export build artifacts
+make docker-export
 ```
 
 ---

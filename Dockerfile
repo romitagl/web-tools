@@ -19,6 +19,10 @@ COPY . .
 # Build the application
 RUN npm run build --verbose
 
+# Export stage - creates a minimal image with just the build artifacts
+FROM scratch AS export-stage
+COPY --from=builder /app/dist /dist
+
 # -- SERVE --
 
 # # Serve with Nginx
