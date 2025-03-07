@@ -65,17 +65,7 @@ function Home() {
         <hr />
         
         <div className="tools-grid">
-          <div className="tool-card">
-            <div className="tool-icon">
-              <Palette size={40} color="lightblue" />
-            </div>
-            <h2>Color Converter</h2>
-            <p>Convert between color formats with ease. Transform HEX to RGB/RGBA, HSL, and more for seamless color management.</p>
-            <Link to="/color-converter" className="tool-link">
-              Convert Colors Now
-            </Link>
-          </div>
-          
+
           <div className="tool-card">
             <div className="tool-icon">
               <FileCode size={40} color="lightblue" />
