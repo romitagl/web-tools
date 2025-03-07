@@ -1,6 +1,6 @@
 # Variables
 PROJECT_NAME = web-tools
-NODE_VERSION=23
+NODE_VERSION=20
 
 # Default target
 .PHONY: help
@@ -33,12 +33,13 @@ build:
 clean:
 	rm -rf node_modules
 	rm -rf build
+	rm -rf dist
 	docker rmi $(PROJECT_NAME) || true
 
-# Docker install & build
+# Docker install & build with environment variable to skip native modules
 .PHONY: docker-build
 docker-build:
-	docker build --no-cache --build-arg NODE_VERSION=$(NODE_VERSION) --target builder -t $(PROJECT_NAME) -f ./Dockerfile .
+	DOCKER_BUILDKIT=1 docker build --build-arg NODE_VERSION=$(NODE_VERSION) --target builder -t $(PROJECT_NAME) -f ./Dockerfile .
 
 # Docker export build artifacts
 .PHONY: docker-export
@@ -48,15 +49,21 @@ docker-export: docker-build
 	docker cp $(PROJECT_NAME)-export:/app/dist ./dist
 	docker rm $(PROJECT_NAME)-export
 
-# Run development server with hot-reload
+# Run development server with hot-reload and environment variables
 .PHONY: docker-run
 docker-run:
-	docker run -it --rm -p 3000:3000 -v $(PWD):/app -w /app $(PROJECT_NAME) npm run dev
+	docker run -it --rm -p 3000:3000 \
+		-v $(PWD):/app \
+		-w /app \
+		-e ROLLUP_SKIP_NATIVE=1 \
+		$(PROJECT_NAME) npm run dev
 
 # Run node command in Docker container
 # make docker-run-node-cmd CMD="npm install vite"
 .PHONY: docker-run-node-cmd
 docker-run-node-cmd:
-	# init app
-	# make docker-run-node-cmd CMD="npm create vite@latest web-tools -- --template react"
-	docker run -it --rm -v $(PWD):/app -w /app node:$(NODE_VERSION) $(CMD)
+	docker run -it --rm \
+		-v $(PWD):/app \
+		-w /app \
+		-e ROLLUP_SKIP_NATIVE=1 \
+		node:$(NODE_VERSION) $(CMD)

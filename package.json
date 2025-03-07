@@ -5,7 +5,7 @@
   "homepage": "https://web-tools.romitagl.com/",
   "type": "module",
   "engines": {
-    "node": ">=23.0.0"
+    "node": ">=2.0.0"
   },
   "packageManager": "npm@11.2.0",
   "scripts": {

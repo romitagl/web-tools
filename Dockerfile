@@ -1,16 +1,17 @@
-# Build the application
-# update also .github/workflows/deploy-github-pages.yaml
-ARG NODE_VERSION=23
-FROM node:${NODE_VERSION}  AS builder
+ARG NODE_VERSION=20
 
-# Set working directory
+# Build stage
+FROM node:${NODE_VERSION} AS builder
 WORKDIR /app
+
+# Set environment variable to force Rollup to use JS implementation
+# This MUST be set before any npm commands
+ENV ROLLUP_SKIP_NATIVE=1
 
 # Copy package files
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install -g npm@latest
 RUN npm ci --legacy-peer-deps
 
 # Copy source code
@@ -22,20 +23,3 @@ RUN npm run build --verbose
 # Export stage - creates a minimal image with just the build artifacts
 FROM scratch AS export-stage
 COPY --from=builder /app/dist /dist
-
-# -- SERVE --
-
-# # Serve with Nginx
-# FROM nginx:alpine as nginx
-
-# # Copy build files to nginx directory
-# COPY --from=builder /app/build /usr/share/nginx/html
-
-# # Copy nginx configuration
-# COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-
-# # Expose port
-# EXPOSE 80
-
-# # Start nginx
-# CMD ["nginx", "-g", "daemon off;"]

@@ -21,6 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ROLLUP_SKIP_NATIVE: 1
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
