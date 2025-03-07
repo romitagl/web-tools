@@ -45,8 +45,7 @@ docker-build:
 .PHONY: docker-export
 docker-export: docker-build
 	docker create --name $(PROJECT_NAME)-export $(PROJECT_NAME)
-	mkdir -p dist
-	docker cp $(PROJECT_NAME)-export:/app/dist ./dist
+	docker cp $(PROJECT_NAME)-export:/app/dist ./
 	docker rm $(PROJECT_NAME)-export
 
 # Run development server with hot-reload and environment variables
