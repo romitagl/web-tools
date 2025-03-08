@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import { FileText, Image, Loader, Check, AlertCircle, Info, UploadCloud, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -10,6 +10,36 @@ function PdfMerger() {
   const [mergeSuccess, setMergeSuccess] = useState(false);
   const [activeTab, setActiveTab] = useState('pdfs'); // 'pdfs', 'images', 'both'
   const [dragActive, setDragActive] = useState(false);
+
+  // Add useEffect to handle URL hash for tab selection
+  useEffect(() => {
+    // Get hash without the # symbol
+    const hash = window.location.hash.substring(1);
+    
+    // Set active tab based on hash
+    if (hash === 'pdfs') {
+      setActiveTab('pdfs');
+    } else if (hash === 'images') {
+      setActiveTab('images');
+    } else if (hash === 'both') {
+      setActiveTab('both');
+    }
+    
+    // Optional: Update URL hash when tab changes (for browser history)
+    const handleTabChange = () => {
+      if (activeTab && activeTab !== 'pdfs') { // 'pdfs' could be the default with no hash
+        window.history.replaceState(null, null, `#${activeTab}`);
+      }
+    };
+    
+    handleTabChange();
+  }, [activeTab]); // Re-run when activeTab changes
+  
+  // Update the onClick handler to also update URL hash
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    window.history.replaceState(null, null, `#${tab}`);
+  };
 
   const handlePdfChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
@@ -295,25 +325,25 @@ function PdfMerger() {
           </p>
         </div>
       </section>
-      
+    
       <div className="tab-container">
         <button 
           className={`tab-button ${activeTab === 'pdfs' ? 'active' : ''}`}
-          onClick={() => setActiveTab('pdfs')}
+          onClick={() => handleTabClick('pdfs')}
         >
           <FileText size={18} />
           Merge PDFs
         </button>
         <button 
           className={`tab-button ${activeTab === 'images' ? 'active' : ''}`}
-          onClick={() => setActiveTab('images')}
+          onClick={() => handleTabClick('images')}
         >
           <Image size={18} />
           Merge Images
         </button>
         <button 
           className={`tab-button ${activeTab === 'both' ? 'active' : ''}`}
-          onClick={() => setActiveTab('both')}
+          onClick={() => handleTabClick('both')}
         >
           <FileText size={18} />
           <Image size={18} />

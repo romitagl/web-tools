@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
+import {
   QrCode, Scan, Link as LinkIcon, Wifi, User, Smartphone, ArrowLeft,
-  Copy, Download, Check, UploadCloud, RefreshCw, Settings, Info 
+  Copy, Download, Check, UploadCloud, RefreshCw, Settings, Info
 } from 'lucide-react';
 import QRCode from 'qrcode';
 import jsQR from 'jsqr';
@@ -32,19 +32,19 @@ function QrCodeTool() {
   const [errorMessage, setErrorMessage] = useState('');
   const [scanWithCamera, setScanWithCamera] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  
+
   // For Wi-Fi specific inputs
   const [wifiName, setWifiName] = useState('');
   const [wifiPassword, setWifiPassword] = useState('');
   const [wifiEncryption, setWifiEncryption] = useState('WPA');
   const [wifiHidden, setWifiHidden] = useState(false);
-  
+
   // For Contact specific inputs
   const [contactName, setContactName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhone, setContactPhone] = useState('');
   const [contactAddress, setContactAddress] = useState('');
-  
+
   // Refs
   const qrCanvasRef = useRef(null);
   const videoRef = useRef(null);
@@ -70,7 +70,7 @@ function QrCodeTool() {
 
   // Format QR value based on type
   const formatQrValue = () => {
-    switch(qrType) {
+    switch (qrType) {
       case 'wifi':
         // Format: WIFI:S:<SSID>;T:<WPA|WEP|>;P:<password>;H:<true|false>;;
         return `WIFI:S:${wifiName};T:${wifiEncryption};P:${wifiPassword};H:${wifiHidden ? 'true' : 'false'};;`;
@@ -88,11 +88,34 @@ function QrCodeTool() {
     }
   };
 
+  // Add a handleTabClick function to update the URL hash
+  const handleTabClick = (tab) => {
+    if (tab !== activeTab) {
+      if (isScanning) {
+        stopScanner();
+      }
+      setActiveTab(tab);
+      clearAll();
+      window.history.replaceState(null, null, `#${tab}`);
+    }
+  };
+
+  // Add this useEffect hook at the beginning of your component
+  useEffect(() => {
+    // Read hash from URL on component mount
+    const hash = window.location.hash.substring(1);
+
+    // Set active tab based on hash
+    if (hash === 'generate' || hash === 'scan') {
+      setActiveTab(hash);
+    }
+  }, []);
+
   // Generate QR code
   const generateQrCode = async () => {
     setErrorMessage('');
     setIsGenerating(true);
-    
+
     try {
       // Validate inputs based on type
       if (qrType === 'url' && !qrValue) {
@@ -107,7 +130,7 @@ function QrCodeTool() {
 
       // Get formatted value
       const value = formatQrValue();
-      
+
       // Generate QR code using qrcode.js library
       const options = {
         errorCorrectionLevel: 'H',
@@ -120,10 +143,10 @@ function QrCodeTool() {
         },
         width: qrSize
       };
-      
+
       // Generate QR code as data URL
       const dataUrl = await QRCode.toDataURL(value, options);
-      
+
       // Set the image data
       setQrImageData(dataUrl);
     } catch (error) {
@@ -140,21 +163,21 @@ function QrCodeTool() {
     setErrorMessage('');
     setIsScanning(true);
     setScanWithCamera(true);
-    
+
     try {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        const stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { 
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
             facingMode: 'environment',
             width: { ideal: 640 },
             height: { ideal: 480 }
-          } 
+          }
         });
-        
+
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           videoRef.current.play();
-          
+
           // Start scanning loop
           scanQRFromVideo();
         }
@@ -168,28 +191,28 @@ function QrCodeTool() {
       setErrorMessage(error.message || 'Error scanning QR code');
     }
   };
-  
+
   // Function to capture video frames and scan for QR codes
   const scanQRFromVideo = () => {
     if (!videoRef.current || !isScanning) return;
-    
+
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     const video = videoRef.current;
-    
+
     // Set canvas size to video size
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    
+
     // Draw current video frame to canvas
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    
+
     // Get image data from canvas
     const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-    
+
     // Scan for QR code in the image
     const code = jsQR(imageData.data, imageData.width, imageData.height);
-    
+
     if (code) {
       // QR code detected
       console.log('QR code detected:', code.data);
@@ -216,12 +239,12 @@ function QrCodeTool() {
   const handleFileUpload = (event) => {
     setScanResult('');
     setErrorMessage('');
-    
+
     const file = event.target.files[0];
     if (!file) return;
-    
+
     setSelectedFile(file);
-    
+
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
@@ -229,21 +252,21 @@ function QrCodeTool() {
         // Create canvas and context
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
-        
+
         // Set canvas dimensions to match image
         canvas.width = img.width;
         canvas.height = img.height;
-        
+
         // Draw image to canvas
         context.drawImage(img, 0, 0);
-        
+
         // Get image data for QR code scanning
         const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-        
+
         // Scan for QR code
         try {
           const code = jsQR(imageData.data, imageData.width, imageData.height);
-          
+
           if (code) {
             setScanResult(code.data);
           } else {
@@ -254,18 +277,18 @@ function QrCodeTool() {
           setErrorMessage('Error processing image. Please try another image.');
         }
       };
-      
+
       img.onerror = () => {
         setErrorMessage('Error loading image');
       };
-      
+
       img.src = e.target.result;
     };
-    
+
     reader.onerror = () => {
       setErrorMessage('Error reading file');
     };
-    
+
     reader.readAsDataURL(file);
   };
 
@@ -285,7 +308,7 @@ function QrCodeTool() {
   // Download QR code
   const downloadQrCode = () => {
     if (!qrImageData) return;
-    
+
     const link = document.createElement('a');
     link.href = qrImageData;
     link.download = `qrcode-${Date.now()}.png`;
@@ -328,7 +351,7 @@ function QrCodeTool() {
         <h2>100% Private, 100% Free!</h2>
         <p>Runs safely and securely in your browser.</p>
       </div>
-      
+
       <section className="description">
         <div className="info-banner">
           <div className="info-icon">
@@ -340,24 +363,24 @@ function QrCodeTool() {
           </div>
         </div>
       </section>
-      
+
       <div className="tab-container">
-        <button 
+        <button
           className={`tab-button ${activeTab === 'generate' ? 'active' : ''}`}
-          onClick={() => switchTab('generate')}
+          onClick={() => handleTabClick('generate')}
         >
           <QrCode size={18} />
           Generate QR Code
         </button>
-        <button 
+        <button
           className={`tab-button ${activeTab === 'scan' ? 'active' : ''}`}
-          onClick={() => switchTab('scan')}
+          onClick={() => handleTabClick('scan')}
         >
           <Scan size={18} />
           Scan QR Code
         </button>
       </div>
-      
+
       <div className="qr-container">
         {activeTab === 'generate' ? (
           // QR Code Generator
@@ -380,7 +403,7 @@ function QrCodeTool() {
                 ))}
               </div>
             </div>
-            
+
             <div className="form-section">
               {qrType === 'url' && (
                 <div className="input-group">
@@ -395,7 +418,7 @@ function QrCodeTool() {
                   />
                 </div>
               )}
-              
+
               {qrType === 'text' && (
                 <div className="input-group">
                   <label htmlFor="text-input">Text:</label>
@@ -409,7 +432,7 @@ function QrCodeTool() {
                   />
                 </div>
               )}
-              
+
               {qrType === 'wifi' && (
                 <>
                   <div className="input-group">
@@ -423,7 +446,7 @@ function QrCodeTool() {
                       className="text-input"
                     />
                   </div>
-                  
+
                   <div className="input-group">
                     <label htmlFor="wifi-password">Password:</label>
                     <input
@@ -435,7 +458,7 @@ function QrCodeTool() {
                       className="text-input"
                     />
                   </div>
-                  
+
                   <div className="input-row">
                     <div className="input-group half-width">
                       <label htmlFor="wifi-encryption">Encryption:</label>
@@ -450,7 +473,7 @@ function QrCodeTool() {
                         <option value="">None</option>
                       </select>
                     </div>
-                    
+
                     <div className="input-group half-width checkbox-group">
                       <label htmlFor="wifi-hidden" className="checkbox-label">
                         <input
@@ -466,7 +489,7 @@ function QrCodeTool() {
                   </div>
                 </>
               )}
-              
+
               {qrType === 'contact' && (
                 <>
                   <div className="input-group">
@@ -480,7 +503,7 @@ function QrCodeTool() {
                       className="text-input"
                     />
                   </div>
-                  
+
                   <div className="input-group">
                     <label htmlFor="contact-email">Email:</label>
                     <input
@@ -492,7 +515,7 @@ function QrCodeTool() {
                       className="text-input"
                     />
                   </div>
-                  
+
                   <div className="input-group">
                     <label htmlFor="contact-phone">Phone:</label>
                     <input
@@ -504,7 +527,7 @@ function QrCodeTool() {
                       className="text-input"
                     />
                   </div>
-                  
+
                   <div className="input-group">
                     <label htmlFor="contact-address">Address:</label>
                     <textarea
@@ -518,12 +541,12 @@ function QrCodeTool() {
                   </div>
                 </>
               )}
-              
+
               <div className="advanced-options-toggle" onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}>
                 <Settings size={16} />
                 <span>{showAdvancedOptions ? 'Hide Advanced Options' : 'Show Advanced Options'}</span>
               </div>
-              
+
               {showAdvancedOptions && (
                 <div className="advanced-options">
                   <div className="input-row">
@@ -540,7 +563,7 @@ function QrCodeTool() {
                         <span className="color-value">{qrColor}</span>
                       </div>
                     </div>
-                    
+
                     <div className="input-group half-width">
                       <label htmlFor="qr-bg-color">Background:</label>
                       <div className="color-input-container">
@@ -555,7 +578,7 @@ function QrCodeTool() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="input-group">
                     <label htmlFor="qr-size">Size: {qrSize}px</label>
                     <input
@@ -571,7 +594,7 @@ function QrCodeTool() {
                   </div>
                 </div>
               )}
-              
+
               <div className="button-group">
                 <button
                   onClick={generateQrCode}
@@ -590,26 +613,26 @@ function QrCodeTool() {
                     </>
                   )}
                 </button>
-                
+
                 <button onClick={clearAll} className="reset-button">
                   <RefreshCw size={18} />
                   <span>Reset</span>
                 </button>
               </div>
-              
+
               {errorMessage && (
                 <div className="error-message">
                   {errorMessage}
                 </div>
               )}
             </div>
-            
+
             {qrImageData && (
               <div className="qr-result">
                 <div className="qr-image-container">
                   <img src={qrImageData} alt="Generated QR Code" className="qr-image" />
                 </div>
-                
+
                 <div className="qr-actions">
                   <button onClick={downloadQrCode} className="qr-action-button">
                     <Download size={18} />
@@ -625,18 +648,18 @@ function QrCodeTool() {
             <div className="scan-options-container">
               <div className="camera-option">
                 <label>
-                  <input 
-                    type="checkbox" 
-                    checked={scanWithCamera} 
-                    onChange={() => setScanWithCamera(!scanWithCamera)} 
+                  <input
+                    type="checkbox"
+                    checked={scanWithCamera}
+                    onChange={() => setScanWithCamera(!scanWithCamera)}
                   />
                   Scan with Camera
                 </label>
               </div>
-              
+
               {scanWithCamera && (
-                <button 
-                  onClick={scanWithCamera ? (isScanning ? stopScanner : startScanner) : null} 
+                <button
+                  onClick={scanWithCamera ? (isScanning ? stopScanner : startScanner) : null}
                   className="generate-button"
                 >
                   {isScanning ? (
@@ -652,9 +675,9 @@ function QrCodeTool() {
                   )}
                 </button>
               )}
-              
+
               <div className="or-divider">OR</div>
-              
+
               <div className="file-upload-container">
                 <div className="custom-file-upload">
                   <label className="file-upload-button">
@@ -672,7 +695,7 @@ function QrCodeTool() {
                 </div>
               </div>
             </div>
-            
+
             {scanWithCamera && isScanning && (
               <div className="scanner-video-container">
                 <video ref={videoRef} className="scanner-video"></video>
@@ -681,14 +704,14 @@ function QrCodeTool() {
                 </div>
               </div>
             )}
-            
+
             {scanResult && (
               <div className="scan-result">
                 <h3>Scan Result:</h3>
                 <div className="scan-content">
                   {scanResult}
                 </div>
-                
+
                 <div className="scan-actions">
                   <button onClick={copyToClipboard} className="qr-action-button">
                     {copied ? (
@@ -703,7 +726,7 @@ function QrCodeTool() {
                       </>
                     )}
                   </button>
-                  
+
                   {scanResult.startsWith('http') && (
                     <a
                       href={scanResult}
@@ -718,7 +741,7 @@ function QrCodeTool() {
                 </div>
               </div>
             )}
-            
+
             {errorMessage && (
               <div className="error-message">
                 {errorMessage}
@@ -727,9 +750,9 @@ function QrCodeTool() {
           </div>
         )}
       </div>
-      
+
       <hr />
-      
+
       <footer>
         <p>
           If you like this tool, please star the repository on{' '}
