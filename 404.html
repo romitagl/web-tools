@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <title>Redirecting...</title>
   <script>
-    // Save the URL path that caused the 404
-    sessionStorage.setItem('redirectPath', window.location.pathname + window.location.search);
+    // Save the URL path that caused the 404, including hash
+    sessionStorage.setItem('redirectPath', window.location.pathname + window.location.search + window.location.hash);
     
     // Redirect to the home page
     window.location.href = '/';
