@@ -1,0 +1,21 @@
+/* Import base styles */
+@import 'base.css';
+@import 'layout.css';
+
+/* Import component styles */
+@import 'components/header.css';
+@import 'components/footer.css';
+@import 'components/buttons.css';
+@import 'components/cards.css';
+@import 'components/forms.css';
+@import 'components/tabs.css';
+
+/* Import page-specific styles */
+@import 'pages/home.css';
+
+/* Import tool-specific styles */
+@import 'tools/pdf-merger.css';
+@import 'tools/code-formatter.css';
+@import 'tools/cidr-calculator.css';
+@import 'tools/qr-code.css';
+@import 'tools/base64.css';

@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Calculator, Network, ServerCrash, Check, Info, ArrowLeft, RefreshCw, Copy, ChevronDown, ChevronUp, Layers, Grid, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import reactLogo from '../assets/react.svg';
-import viteLogo from '/vite.svg';
 
 function CidrCalculator() {
   // Tab state
@@ -423,12 +421,7 @@ Subnet ${index + 1}:
             <span>Back to Tools</span>
           </Link>
           <div className="app-logos">
-            <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
-              <img src={viteLogo} className="logo" alt="Vite logo" />
-            </a>
-            <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-              <img src={reactLogo} className="logo react" alt="React logo" />
-            </a>
+            <img src="/images/webtools-logo.svg" alt="WebTools Logo" width="150" />
           </div>
         </div>
         <h1>CIDR Subnet Calculator</h1>

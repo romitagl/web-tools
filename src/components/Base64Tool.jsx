@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FileCode, Info, ArrowLeft, Copy, Check, Download, RefreshCw, Upload, AlertCircle, ArrowUpDown } from 'lucide-react';
-import reactLogo from '../assets/react.svg';
-import viteLogo from '/vite.svg';
 
 function Base64Tool() {
   const [mode, setMode] = useState('encode'); // 'encode' or 'decode'
@@ -179,12 +177,7 @@ function Base64Tool() {
             <span>Back to Tools</span>
           </Link>
           <div className="app-logos">
-            <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
-              <img src={viteLogo} className="logo" alt="Vite logo" />
-            </a>
-            <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-              <img src={reactLogo} className="logo react" alt="React logo" />
-            </a>
+            <img src="/images/webtools-logo.svg" alt="WebTools Logo" width="150" />
           </div>
         </div>
         <h1>Base64 Encoder/Decoder</h1>

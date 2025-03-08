@@ -1,0 +1,584 @@
+/* src/css/tools/qr-code.css - Enhanced version */
+
+/* QR Code Tool main container */
+.qr-container {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  margin: var(--spacing-xl) 0;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Info banner at the top */
+.info-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  background-color: rgba(59, 66, 120, 0.4);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  color: var(--text-light);
+}
+
+.info-banner svg {
+  color: var(--accent-color);
+  flex-shrink: 0;
+}
+
+/* Tab navigation */
+.tab-container {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: var(--spacing-xl);
+  overflow-x: auto;
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tab-button:hover:not(:disabled) {
+  color: var(--text-light);
+  background-color: rgba(100, 108, 255, 0.1);
+}
+
+.tab-button.active {
+  color: var(--accent-color);
+  border-bottom: 2px solid var(--accent-color);
+}
+
+.tab-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* QR Code Type selection */
+.qr-code-type {
+  margin-bottom: var(--spacing-lg);
+}
+
+.qr-code-type h3 {
+  margin-bottom: var(--spacing-md);
+  color: var(--text-light);
+  font-size: 1.2rem;
+}
+
+.type-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.type-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--bg-dark);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  font-size: 0.95rem;
+}
+
+.type-button:hover {
+  background-color: rgba(100, 108, 255, 0.1);
+  border-color: var(--accent-color);
+}
+
+.type-button.active {
+  background-color: rgba(100, 108, 255, 0.15);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+/* Form elements */
+.form-section {
+  background-color: rgba(30, 30, 30, 0.3);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.input-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.text-input, 
+.textarea-input, 
+.select-input {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-light);
+  font-size: 1rem;
+  transition: all var(--transition-normal);
+}
+
+.text-input:focus, 
+.textarea-input:focus, 
+.select-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(74, 192, 255, 0.2);
+}
+
+.input-row {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.half-width {
+  flex: 1;
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  gap: var(--spacing-md);
+  margin: var(--spacing-lg) 0;
+}
+
+.generate-button,
+.qr-action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  background-color: var(--accent-color);
+  color: var(--card-bg);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  flex: 1;
+}
+
+.generate-button:hover:not(:disabled),
+.qr-action-button:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(74, 192, 255, 0.3);
+}
+
+.generate-button:disabled,
+.qr-action-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.reset-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.reset-button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--text-light);
+}
+
+/* Advanced options */
+.advanced-options-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-md) 0;
+  color: var(--accent-color);
+  cursor: pointer;
+  padding: var(--spacing-sm) 0;
+  font-size: 0.95rem;
+}
+
+.advanced-options-toggle:hover {
+  text-decoration: underline;
+}
+
+.advanced-options {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border: 1px solid var(--border-color);
+}
+
+/* QR Code result section */
+.qr-result {
+  margin-top: var(--spacing-xl);
+  text-align: center;
+}
+
+.qr-image-container {
+  padding: var(--spacing-lg);
+  background-color: white;
+  display: inline-block;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.qr-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+/* Scanner section */
+.scanner-container {
+  margin: var(--spacing-xl) 0;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 300px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background-color: #000;
+}
+
+.scan-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.scan-frame {
+  width: 70%;
+  height: 70%;
+  border: 2px solid var(--accent-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.3);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(74, 192, 255, 0.4), 0 0 0 5000px rgba(0, 0, 0, 0.3);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(74, 192, 255, 0), 0 0 0 5000px rgba(0, 0, 0, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 192, 255, 0), 0 0 0 5000px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .input-row {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .type-buttons {
+    flex-direction: column;
+  }
+  
+  .type-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .qr-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Add these to src/css/tools/qr-code.css */
+
+/* Scan QR Code tab specific styles */
+.scan-options-container {
+  background-color: rgba(30, 30, 30, 0.4);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Camera checkbox option */
+.camera-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.camera-option label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.camera-option input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* OR divider */
+.or-divider {
+  display: flex;
+  align-items: center;
+  margin: var(--spacing-md) 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.or-divider::before,
+.or-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--border-color);
+}
+
+.or-divider::before {
+  margin-right: var(--spacing-md);
+}
+
+.or-divider::after {
+  margin-left: var(--spacing-md);
+}
+
+/* File upload button */
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.file-upload-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background-color: var(--accent-color);
+  color: var(--card-bg);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all var(--transition-normal);
+  border: none;
+  font-size: 0.95rem;
+}
+
+.file-upload-button:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(74, 192, 255, 0.3);
+}
+
+.file-upload-button input[type="file"] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.file-upload-info {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: var(--spacing-xs);
+}
+
+/* Choose File button - browser default styled */
+input[type="file"]::file-selector-button {
+  margin-right: var(--spacing-sm);
+  border: none;
+  background: var(--accent-color);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  color: var(--card-bg);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all var(--transition-normal);
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: var(--accent-hover);
+}
+
+/* Custom file upload button */
+.custom-file-upload {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.file-name-display {
+  color: var(--text-muted);
+  font-style: italic;
+  margin-left: var(--spacing-sm);
+}
+
+/* Video container for scanner */
+.scanner-video-container {
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 4/3;
+  margin: var(--spacing-lg) auto;
+  background-color: #000;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border-color);
+}
+
+.scanner-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scanner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scanner-frame {
+  width: 70%;
+  height: 70%;
+  border: 2px solid var(--accent-color);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+  animation: scanner-pulse 2s infinite;
+}
+
+@keyframes scanner-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(74, 192, 255, 0.4), 0 0 0 1000px rgba(0, 0, 0, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(74, 192, 255, 0), 0 0 0 1000px rgba(0, 0, 0, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 192, 255, 0), 0 0 0 1000px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Scan result section */
+.scan-result {
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background-color: rgba(30, 30, 30, 0.4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.scan-result h3 {
+  color: var(--accent-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.scan-content {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-md);
+  font-family: monospace;
+  word-break: break-all;
+}
+
+.scan-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+/* Info banner with icon */
+.info-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: rgba(59, 66, 120, 0.4);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  border-left: 3px solid var(--accent-color);
+}
+
+.info-icon {
+  color: var(--accent-color);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.info-content {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}

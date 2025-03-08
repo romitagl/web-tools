@@ -13,6 +13,9 @@ help:
 	@echo " docker-build - Build Docker image"
 	@echo " docker-run - Run development server with hot-reload"
 	@echo " docker-export - Build in Docker and export build artifacts"
+	@echo " docker-npm-update - Update node dependencies in Docker container"
+	@echo " docker-run-node-cmd - Run node command in Docker container"
+	@echo " help - Display this help message"
 
 # Local development targets
 .PHONY: install
@@ -56,6 +59,24 @@ docker-run:
 		-w /app \
 		-e ROLLUP_SKIP_NATIVE=1 \
 		$(PROJECT_NAME) npm run dev
+
+# Update the node dependencies in Docker container
+.PHONY: docker-npm-update
+docker-npm-update:
+	# Installs the npm-check-updates tool globally inside the container.
+	# npm install -g npm-check-updates
+	# Updates the version ranges in package.json to the latest versions.
+	# ncu -u
+	# Updates dependencies to the latest versions within the updated version ranges.
+	# npm update
+	# Reinstalls dependencies based on the updated package.json.
+	# npm install
+	docker run -it --rm \
+		-v $(PWD):/app \
+		-w /app \
+		-e ROLLUP_SKIP_NATIVE=1 \
+		node:$(NODE_VERSION) \
+		sh -c "npm install -g npm@latest npm-check-updates && (npm outdated || true) && ncu -u && npm update && npm install"
 
 # Run node command in Docker container
 # make docker-run-node-cmd CMD="npm install vite"

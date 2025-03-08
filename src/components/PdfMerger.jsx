@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import { FileText, Image, Loader, Check, AlertCircle, Info, UploadCloud, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import reactLogo from '../assets/react.svg';
-import viteLogo from '/vite.svg';
 
 function PdfMerger() {
   const [pdfFiles, setPdfFiles] = useState([]);
@@ -281,12 +279,7 @@ function PdfMerger() {
             <span>Back to Tools</span>
           </Link>
           <div className="app-logos">
-            <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
-              <img src={viteLogo} className="logo" alt="Vite logo" />
-            </a>
-            <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-              <img src={reactLogo} className="logo react" alt="React logo" />
-            </a>
+            <img src="/images/webtools-logo.svg" alt="WebTools Logo" width="150" />
           </div>
         </div>
         <h1>Merge PDFs & Images Instantly</h1>

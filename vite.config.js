@@ -27,6 +27,11 @@ export default defineConfig({
     force: true,
   },
   css: {
-    devSourcemap: false, // Disable source maps
-  }
+    devSourcemap: true, // Disable source maps
+  },
+  resolve: {
+    alias: {
+      '@': '/src', // This allows imports using '@' to resolve to the src directory
+    }
+  },
 });

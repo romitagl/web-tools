@@ -1,0 +1,87 @@
+/* Base64 Tool Styles */
+
+.base64-container {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    margin: var(--spacing-xl) 0;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .base64-coming-soon {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+  }
+  
+  .base64-coming-soon h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    color: var(--accent-color);
+    font-weight: bold;
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .base64-coming-soon p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  /* Styles for when the tool is implemented */
+  .encode-decode-tabs {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .input-output-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  @media (min-width: 768px) {
+    .input-output-container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  .base64-textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: var(--spacing-md);
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-light);
+    font-family: monospace;
+    resize: vertical;
+  }
+  
+  .base64-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+  
+  .base64-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+  }
+  
+  .action-button {
+    flex: 1;
+  }
+  
+  .file-handling {
+    margin-top: var(--spacing-xl);
+    border-top: 1px solid var(--border-color);
+    padding-top: var(--spacing-lg);
+  }
+  
+  .file-handling h3 {
+    margin-bottom: var(--spacing-md);
+  }

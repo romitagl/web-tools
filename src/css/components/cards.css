@@ -1,0 +1,201 @@
+/* Card base styles */
+.card {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    z-index: 0;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    z-index: 2;
+  }
+  
+  /* Tool cards for homepage */
+  .tool-card {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-bottom: var(--spacing-sm);
+    position: relative;
+    z-index: 0;
+  }
+  
+  .tool-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    z-index: 2;
+  }
+  
+  .tool-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-xl);
+    margin: var(--spacing-xl) 0;
+  }
+  
+  @media (min-width: 640px) and (max-width: 959px) {
+    .tools-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 960px) {
+    .tools-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .tools-section {
+    margin: var(--spacing-xxl) 0;
+    position: relative;
+    z-index: 0;
+  }
+  
+  .tools-category-title {
+    text-align: center;
+    font-size: 1.6rem;
+    margin: var(--spacing-xl) 0;
+    color: white;
+    position: relative;
+    padding-bottom: var(--spacing-sm);
+  }
+  
+  .tools-category-title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent-color);
+  }
+  
+  /* File list card */
+  .file-list-container {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+  }
+  
+  .file-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .file-list-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-light);
+  }
+  
+  .file-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: var(--spacing-lg);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-dark);
+  }
+  
+  .file-category {
+    background-color: #333;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-weight: 500;
+    color: white;
+    font-size: 0.9rem;
+  }
+  
+  .file-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color var(--transition-fast);
+  }
+  
+  .file-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .file-item:last-child {
+    border-bottom: none;
+  }
+  
+  .file-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    overflow: hidden;
+    text-align: left;
+  }
+  
+  .file-icon {
+    flex-shrink: 0;
+    color: var(--primary-color);
+  }
+  
+  .file-name {
+    font-size: 0.95rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 300px;
+  }
+  
+  .file-size {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  
+  .remove-file {
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+  }
+  
+  .remove-file:hover {
+    color: var(--error-color);
+    background-color: rgba(255, 107, 107, 0.1);
+  }
+  
+  @media (max-width: 576px) {
+    .file-name {
+      max-width: 150px;
+    }
+  }

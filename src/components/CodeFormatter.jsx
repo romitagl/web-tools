@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Code, Info, ArrowLeft, Copy, Check, RefreshCw, FileText, Download, Upload } from 'lucide-react';
-import reactLogo from '../assets/react.svg';
-import viteLogo from '/vite.svg';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-markup';
@@ -309,12 +307,7 @@ function CodeFormatter() {
             <span>Back to Tools</span>
           </Link>
           <div className="app-logos">
-            <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer">
-              <img src={viteLogo} className="logo" alt="Vite logo" />
-            </a>
-            <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-              <img src={reactLogo} className="logo react" alt="React logo" />
-            </a>
+            <img src="/images/webtools-logo.svg" alt="WebTools Logo" width="150" />
           </div>
         </div>
         <h1>Code Formatter & Beautifier</h1>

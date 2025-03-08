@@ -1,18 +1,49 @@
-
 # 🌟 Web Tools 🌟
 
 ## 📌 Overview
 
-Welcome to **Web Tools**, your go-to client-side web application for managing PDF files and images directly in your browser. With a strong focus on privacy and security, this tool ensures that your documents never leave your device. Merge PDFs and images effortlessly, all while keeping your data 100% private.
+Welcome to **Web Tools**, your go-to client-side web application for a variety of digital tasks. With a strong focus on privacy and security, these tools process everything directly in your browser, ensuring your data never leaves your device. From merging PDFs to generating QR codes for hospitality businesses, our collection of tools helps simplify your digital workflows while maintaining 100% privacy.
 
 ---
 
 ## 🎯 Features
 
-- **Client-side PDF merging**: No need for a backend; everything happens in your browser.
-- **No file uploads**: Your files stay on your device, ensuring maximum privacy.
-- **Secure & Private**: No external servers, no data leaks.
-- **Easy to Use**: Merge PDFs and images in just a few clicks.
+### PDF & Image Tools
+
+- **Client-side PDF merging**: Combine multiple PDFs into a single document with no backend processing
+- **Image to PDF conversion**: Convert and include images in your PDF documents
+- **No file uploads**: Your files stay on your device, ensuring maximum privacy
+- **Simple drag & drop interface**: Easy file management and reordering
+
+### QR Code Generator & Scanner
+
+- **Multi-purpose QR codes**: Generate QR codes for URLs, text, Wi-Fi credentials, and contact information
+- **Built-in QR scanner**: Scan QR codes using your camera or from uploaded images
+- **Customization options**: Adjust colors, size, and other properties of your QR codes
+- **Perfect for hospitality**: Create QR codes for guest Wi-Fi access, contact info, and check-in instructions
+
+### Network Tools
+
+- **CIDR Subnet Calculator**: Calculate network addresses, broadcast addresses, and IP ranges
+- **Subnet creator**: Generate subnet allocations for network planning
+- **Visual IP range display**: Easily understand IP allocations
+
+### Developer Tools
+
+- **Code Formatter & Beautifier**: Format and beautify code in multiple languages
+- **Base64 Encoder/Decoder**: Convert text or binary data to and from Base64 encoding
+- **Syntax highlighting**: Properly formatted code with color highlighting
+
+---
+
+## 🔐 Privacy & Security
+
+All Web Tools operate with these core principles:
+
+- **100% Client-side Processing**: All computations happen in your browser
+- **No Data Transmission**: Your files and information never leave your device
+- **No Data Storage**: Nothing is saved on servers
+- **Open Source**: Transparent code that you can verify
 
 🚀 **Runs safely and securely in your browser** 🚀
 
@@ -22,6 +53,16 @@ Welcome to **Web Tools**, your go-to client-side web application for managing PD
 
 Check out the live deployment of the application here:  
 👉 [https://web-tools.romitagl.com/](https://web-tools.romitagl.com/)
+
+---
+
+## 📋 Tools Available
+
+- **PDF & Image Merger**: Combine multiple PDFs and images into a single document
+- **QR Code Generator & Scanner**: Create and scan QR codes for various purposes
+- **CIDR Subnet Calculator**: Network planning and IP address management
+- **Code Formatter**: Beautify and format code in multiple languages
+- **Base64 Encoder/Decoder**: Encode and decode text or binary data
 
 ---
 
@@ -71,6 +112,38 @@ make docker-build
 make docker-run
 # Build in Docker and export build artifacts
 make docker-export
+# Display help message
+make docker-help
+# Update node dependencies in Docker container
+make docker-npm-update
+# Run node command in Docker container. Example: make docker-run-node-cmd CMD="npm run build"
+make docker-run-node-cmd
+```
+
+---
+
+## 🧰 Technology Stack
+
+- **Frontend**: React, TailwindCSS, Vite
+- **PDF Processing**: pdf-lib
+- **QR Code**: qrcode.js, jsQR
+- **UI Components**: Lucide React icons
+- **Code Formatting**: Prism.js
+
+---
+
+## 🧩 Project Structure
+
+```
+web-tools/
+├── src/
+│   ├── components/     # UI components
+│   ├── css/            # Modular CSS files
+│   ├── assets/         # Static assets
+│   └── App.jsx         # Main application component
+├── public/             # Public assets
+├── vite.config.js      # Vite configuration
+└── package.json        # Dependencies
 ```
 
 ---
