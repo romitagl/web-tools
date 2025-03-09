@@ -1,3 +1,4 @@
+import Layout from './Layout'; // Import the Layout component
 import { useState, useEffect } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import { FileText, Image, Loader, Check, AlertCircle, Info, UploadCloud, ArrowLeft } from 'lucide-react';
@@ -15,7 +16,7 @@ function PdfMerger() {
   useEffect(() => {
     // Get hash without the # symbol
     const hash = window.location.hash.substring(1);
-    
+
     // Set active tab based on hash
     if (hash === 'pdfs') {
       setActiveTab('pdfs');
@@ -24,17 +25,17 @@ function PdfMerger() {
     } else if (hash === 'both') {
       setActiveTab('both');
     }
-    
+
     // Optional: Update URL hash when tab changes (for browser history)
     const handleTabChange = () => {
       if (activeTab && activeTab !== 'pdfs') { // 'pdfs' could be the default with no hash
         window.history.replaceState(null, null, `#${activeTab}`);
       }
     };
-    
+
     handleTabChange();
   }, [activeTab]); // Re-run when activeTab changes
-  
+
   // Update the onClick handler to also update URL hash
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -74,19 +75,19 @@ function PdfMerger() {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const fileList = Array.from(e.dataTransfer.files);
-      
+
       if (activeTab === 'pdfs') {
         const pdfList = fileList.filter(file => file.type === 'application/pdf');
         if (pdfList.length > 0) {
           setPdfFiles([...pdfFiles, ...pdfList]);
         }
       } else if (activeTab === 'images') {
-        const imageList = fileList.filter(file => 
-          file.type === 'image/jpeg' || 
-          file.type === 'image/jpg' || 
+        const imageList = fileList.filter(file =>
+          file.type === 'image/jpeg' ||
+          file.type === 'image/jpg' ||
           file.type === 'image/png'
         );
         if (imageList.length > 0) {
@@ -94,21 +95,21 @@ function PdfMerger() {
         }
       } else if (activeTab === 'both') {
         const pdfList = fileList.filter(file => file.type === 'application/pdf');
-        const imageList = fileList.filter(file => 
-          file.type === 'image/jpeg' || 
-          file.type === 'image/jpg' || 
+        const imageList = fileList.filter(file =>
+          file.type === 'image/jpeg' ||
+          file.type === 'image/jpg' ||
           file.type === 'image/png'
         );
-        
+
         if (pdfList.length > 0) {
           setPdfFiles([...pdfFiles, ...pdfList]);
         }
-        
+
         if (imageList.length > 0) {
           setImageFiles([...imageFiles, ...imageList]);
         }
       }
-      
+
       setMergeSuccess(false);
     }
   };
@@ -141,7 +142,7 @@ function PdfMerger() {
   const mergePDFs = async () => {
     setIsMerging(true);
     setMergeSuccess(false);
-    
+
     try {
       const pdfDoc = await PDFDocument.create();
 
@@ -168,7 +169,7 @@ function PdfMerger() {
   const mergeImages = async () => {
     setIsMerging(true);
     setMergeSuccess(false);
-    
+
     try {
       const pdfDoc = await PDFDocument.create();
 
@@ -222,7 +223,7 @@ function PdfMerger() {
   const mergePDFsAndImages = async () => {
     setIsMerging(true);
     setMergeSuccess(false);
-    
+
     try {
       const pdfDoc = await PDFDocument.create();
 
@@ -300,48 +301,38 @@ function PdfMerger() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
+  // Create description element for the Layout
+  const descriptionElement = (
+    <div className="info-box">
+      <Info size={20} />
+      <p>
+        Merge PDFs and Images into a single document with ease. Files will be merged in alphabetical order by filename.
+      </p>
+    </div>
+  );
+
   return (
-    <>
-      <div className="header">
-        <div className="logo-container">
-          <Link to="/" className="home-link">
-            <ArrowLeft size={20} className="back-icon" />
-            <span>Back to Tools</span>
-          </Link>
-          <div className="app-logos">
-            <img src="/images/webtools-logo.svg" alt="WebTools Logo" width="150" />
-          </div>
-        </div>
-        <h1>Merge PDFs & Images Instantly</h1>
-        <h2>100% Private, 100% Free!</h2>
-        <p>Runs safely and securely in your browser.</p>
-      </div>
-      
-      <section className="description">
-        <div className="info-box">
-          <Info size={20} />
-          <p>
-            Merge PDFs and Images into a single document with ease. Files will be merged in alphabetical order by filename.
-          </p>
-        </div>
-      </section>
-    
+    <Layout
+      title="Merge PDFs & Images Instantly"
+      description={descriptionElement}
+    >
+
       <div className="tab-container">
-        <button 
+        <button
           className={`tab-button ${activeTab === 'pdfs' ? 'active' : ''}`}
           onClick={() => handleTabClick('pdfs')}
         >
           <FileText size={18} />
           Merge PDFs
         </button>
-        <button 
+        <button
           className={`tab-button ${activeTab === 'images' ? 'active' : ''}`}
           onClick={() => handleTabClick('images')}
         >
           <Image size={18} />
           Merge Images
         </button>
-        <button 
+        <button
           className={`tab-button ${activeTab === 'both' ? 'active' : ''}`}
           onClick={() => handleTabClick('both')}
         >
@@ -350,11 +341,11 @@ function PdfMerger() {
           Merge Both
         </button>
       </div>
-      
+
       <div className="tab-content">
         {activeTab === 'pdfs' && (
           <section className="merge-section">
-            <div 
+            <div
               className={`drop-zone ${dragActive ? 'active' : ''}`}
               onDragEnter={handleDragEnter}
               onDragLeave={handleDragLeave}
@@ -376,14 +367,14 @@ function PdfMerger() {
                 </label>
               </div>
             </div>
-            
+
             {pdfFiles.length > 0 && (
               <div className="file-list-container">
                 <div className="file-list-header">
                   <h3>Selected PDFs: {pdfFiles.length}</h3>
                   <button onClick={clearAll} className="clear-button">Clear All</button>
                 </div>
-                
+
                 <div className="file-list">
                   <ul>
                     {pdfFiles.map((file, index) => (
@@ -393,8 +384,8 @@ function PdfMerger() {
                           <span className="file-name">{file.name}</span>
                           <span className="file-size">{formatFileSize(file.size)}</span>
                         </div>
-                        <button 
-                          className="remove-file" 
+                        <button
+                          className="remove-file"
                           onClick={() => removeFile('pdf', index)}
                           aria-label="Remove file"
                         >
@@ -404,7 +395,7 @@ function PdfMerger() {
                     ))}
                   </ul>
                 </div>
-                
+
                 <button
                   onClick={mergePDFs}
                   disabled={pdfFiles.length === 0 || isMerging}
@@ -412,7 +403,7 @@ function PdfMerger() {
                 >
                   {isMerging ? <Loader className="spinner" /> : 'Merge PDFs'}
                 </button>
-                
+
                 {mergeSuccess && (
                   <div className="success-message">
                     <Check size={18} />
@@ -426,7 +417,7 @@ function PdfMerger() {
 
         {activeTab === 'images' && (
           <section className="merge-section">
-            <div 
+            <div
               className={`drop-zone ${dragActive ? 'active' : ''}`}
               onDragEnter={handleDragEnter}
               onDragLeave={handleDragLeave}
@@ -448,14 +439,14 @@ function PdfMerger() {
                 </label>
               </div>
             </div>
-            
+
             {imageFiles.length > 0 && (
               <div className="file-list-container">
                 <div className="file-list-header">
                   <h3>Selected Images: {imageFiles.length}</h3>
                   <button onClick={clearAll} className="clear-button">Clear All</button>
                 </div>
-                
+
                 <div className="file-list">
                   <ul>
                     {imageFiles.map((file, index) => (
@@ -465,8 +456,8 @@ function PdfMerger() {
                           <span className="file-name">{file.name}</span>
                           <span className="file-size">{formatFileSize(file.size)}</span>
                         </div>
-                        <button 
-                          className="remove-file" 
+                        <button
+                          className="remove-file"
                           onClick={() => removeFile('image', index)}
                           aria-label="Remove file"
                         >
@@ -476,7 +467,7 @@ function PdfMerger() {
                     ))}
                   </ul>
                 </div>
-                
+
                 <button
                   onClick={mergeImages}
                   disabled={imageFiles.length === 0 || isMerging}
@@ -484,7 +475,7 @@ function PdfMerger() {
                 >
                   {isMerging ? <Loader className="spinner" /> : 'Merge Images'}
                 </button>
-                
+
                 {mergeSuccess && (
                   <div className="success-message">
                     <Check size={18} />
@@ -499,7 +490,7 @@ function PdfMerger() {
         {activeTab === 'both' && (
           <section className="merge-section">
             <div className="drop-zones-container">
-              <div 
+              <div
                 className={`drop-zone ${dragActive ? 'active' : ''}`}
                 onDragEnter={handleDragEnter}
                 onDragLeave={handleDragLeave}
@@ -521,7 +512,7 @@ function PdfMerger() {
                         className="file-input"
                       />
                     </label>
-                    
+
                     <label className="file-input-label">
                       <Image size={16} />
                       <span>Choose Images</span>
@@ -537,14 +528,14 @@ function PdfMerger() {
                 </div>
               </div>
             </div>
-            
+
             {(pdfFiles.length > 0 || imageFiles.length > 0) && (
               <div className="file-list-container">
                 <div className="file-list-header">
                   <h3>Selected Files: {pdfFiles.length + imageFiles.length}</h3>
                   <button onClick={clearAll} className="clear-button">Clear All</button>
                 </div>
-                
+
                 <div className="file-list">
                   {pdfFiles.length > 0 && (
                     <>
@@ -557,8 +548,8 @@ function PdfMerger() {
                               <span className="file-name">{file.name}</span>
                               <span className="file-size">{formatFileSize(file.size)}</span>
                             </div>
-                            <button 
-                              className="remove-file" 
+                            <button
+                              className="remove-file"
                               onClick={() => removeFile('pdf', index)}
                               aria-label="Remove file"
                             >
@@ -569,7 +560,7 @@ function PdfMerger() {
                       </ul>
                     </>
                   )}
-                  
+
                   {imageFiles.length > 0 && (
                     <>
                       <div className="file-category">Images ({imageFiles.length})</div>
@@ -581,8 +572,8 @@ function PdfMerger() {
                               <span className="file-name">{file.name}</span>
                               <span className="file-size">{formatFileSize(file.size)}</span>
                             </div>
-                            <button 
-                              className="remove-file" 
+                            <button
+                              className="remove-file"
                               onClick={() => removeFile('image', index)}
                               aria-label="Remove file"
                             >
@@ -594,12 +585,12 @@ function PdfMerger() {
                     </>
                   )}
                 </div>
-                
+
                 <div className="merge-info">
                   <AlertCircle size={16} />
                   <span>Files will be merged in alphabetical order by filename.</span>
                 </div>
-                
+
                 <button
                   onClick={mergePDFsAndImages}
                   disabled={(pdfFiles.length === 0 && imageFiles.length === 0) || isMerging}
@@ -607,7 +598,7 @@ function PdfMerger() {
                 >
                   {isMerging ? <Loader className="spinner" /> : 'Merge All Files'}
                 </button>
-                
+
                 {mergeSuccess && (
                   <div className="success-message">
                     <Check size={18} />
@@ -619,18 +610,7 @@ function PdfMerger() {
           </section>
         )}
       </div>
-      
-      <hr />
-      
-      <footer>
-        <p>
-          If you like this tool, please star the repository on{' '}
-          <a href="https://github.com/romitagl/web-tools">GitHub</a>&nbsp;
-          and consider sponsoring me on GitHub.
-        </p>
-        <iframe src="https://github.com/sponsors/romitagl/button" title="Sponsor" width="116" height="35" />
-      </footer>
-    </>
+    </Layout>
   );
 }
 

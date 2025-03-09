@@ -1,3 +1,4 @@
+import Layout from './Layout'; // Import the Layout component
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Code, Info, ArrowLeft, Copy, Check, RefreshCw, FileText, Download, Upload } from 'lucide-react';
@@ -49,7 +50,7 @@ function CodeFormatter() {
   // Basic formatting for different languages
   const simpleFormat = (input, lang) => {
     if (!input.trim()) return '';
-    
+
     try {
       switch (lang) {
         case 'html':
@@ -75,41 +76,41 @@ function CodeFormatter() {
   const formatHTML = (html) => {
     // First, normalize line endings and remove extra whitespace
     html = html.replace(/\r\n/g, '\n')
-               .replace(/^\s+|\s+$/g, '')
-               .replace(/\s+</g, '<')
-               .replace(/>\s+/g, '>');
-    
+      .replace(/^\s+|\s+$/g, '')
+      .replace(/\s+</g, '<')
+      .replace(/>\s+/g, '>');
+
     // Insert line breaks between tags to prepare for formatting
     html = html.replace(/>\s*</g, '>\n<');
-    
+
     // Handle special cases for preserving content in certain tags
     html = html.replace(/(<(script|style|pre)[^>]*>)(.*?)(<\/\2>)/gs, (match, startTag, tagName, content, endTag) => {
       // Preserve content in script/style/pre tags but add line breaks around them
       return `${startTag}\n${content}\n${endTag}`;
     });
-    
+
     // Split into lines for indentation
     const lines = html.split('\n');
     let formatted = '';
     let indent = 0;
     const indentSize = 2;
-    
+
     // Self-closing tags pattern
     const selfClosingTags = /^<(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr).*?\/?>$/i;
-    
+
     // Doctype and comments pattern
     const doctypeOrComment = /^<!.*?>$/;
-    
+
     for (let i = 0; i < lines.length; i++) {
       let line = lines[i].trim();
       if (!line) continue;
-      
+
       // Handle doctype and comments - no indent change
       if (doctypeOrComment.test(line)) {
         formatted += ' '.repeat(indent) + line + '\n';
         continue;
       }
-      
+
       // Check if this line is a closing tag
       if (line.startsWith('</')) {
         indent -= indentSize;
@@ -117,7 +118,7 @@ function CodeFormatter() {
         formatted += ' '.repeat(indent) + line + '\n';
         continue;
       }
-      
+
       // Check if this line is an opening tag (not self-closing)
       if (line.startsWith('<') && !line.includes('</') && !selfClosingTags.test(line)) {
         formatted += ' '.repeat(indent) + line + '\n';
@@ -126,11 +127,11 @@ function CodeFormatter() {
         }
         continue;
       }
-      
+
       // Self-closing or inline elements
       formatted += ' '.repeat(indent) + line + '\n';
     }
-    
+
     return formatted;
   };
 
@@ -150,37 +151,37 @@ function CodeFormatter() {
     let formatted = '';
     let indent = 0;
     const indentSize = 2;
-    
+
     // Replace multiple spaces with a single space
     js = js.replace(/\s+/g, ' ').trim();
-    
+
     // Add newlines after key punctuation
     js = js.replace(/([;{}])/g, '$1\n');
-    
+
     // Handle special cases for nested structures
     js = js.replace(/\) {/g, ') {\n');
-    
+
     const lines = js.split('\n');
-    
+
     for (let i = 0; i < lines.length; i++) {
       let line = lines[i].trim();
       if (!line) continue;
-      
+
       // Decrease indent for closing braces
       if (line.startsWith('}')) {
         indent -= indentSize;
         if (indent < 0) indent = 0;
       }
-      
+
       // Add indentation
       formatted += ' '.repeat(indent) + line + '\n';
-      
+
       // Increase indent for opening braces
       if (line.includes('{') && !line.includes('}')) {
         indent += indentSize;
       }
     }
-    
+
     return formatted;
   };
 
@@ -229,7 +230,7 @@ function CodeFormatter() {
   // Copy formatted code to clipboard
   const copyToClipboard = () => {
     if (!formattedCode) return;
-    
+
     navigator.clipboard.writeText(formattedCode)
       .then(() => {
         setCopied(true);
@@ -244,12 +245,12 @@ function CodeFormatter() {
   // Download formatted code
   const downloadCode = () => {
     if (!formattedCode) return;
-    
+
     const fileExtension = language === 'jsx' ? 'jsx' : language;
     const fileName = `formatted-code.${fileExtension}`;
     const blob = new Blob([formattedCode], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
-    
+
     const link = document.createElement('a');
     link.href = url;
     link.download = fileName;
@@ -263,7 +264,7 @@ function CodeFormatter() {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
-    
+
     // Try to detect language from file extension
     const fileExtension = file.name.split('.').pop().toLowerCase();
     const mappings = {
@@ -281,11 +282,11 @@ function CodeFormatter() {
       'py': 'python',
       'sql': 'sql'
     };
-    
+
     if (mappings[fileExtension]) {
       setLanguage(mappings[fileExtension]);
     }
-    
+
     const reader = new FileReader();
     reader.onload = (e) => {
       setCode(e.target.result);
@@ -298,40 +299,30 @@ function CodeFormatter() {
     reader.readAsText(file);
   };
 
+  // Create description element for the Layout
+  const descriptionElement = (
+    <div className="info-box">
+      <Info size={20} />
+      <p>
+        Instantly format and beautify your code with support for HTML, CSS, JavaScript, and more.
+        No server processing - all formatting happens locally in your browser.
+      </p>
+    </div>
+  );
+
   return (
-    <>
-      <div className="header">
-        <div className="logo-container">
-          <Link to="/" className="home-link">
-            <ArrowLeft size={20} className="back-icon" />
-            <span>Back to Tools</span>
-          </Link>
-          <div className="app-logos">
-            <img src="/images/webtools-logo.svg" alt="WebTools Logo" width="150" />
-          </div>
-        </div>
-        <h1>Code Formatter & Beautifier</h1>
-        <h2>100% Private, 100% Free!</h2>
-        <p>Runs safely and securely in your browser.</p>
-      </div>
-      
-      <section className="description">
-        <div className="info-box">
-          <Info size={20} />
-          <p>
-            Instantly format and beautify your code with support for HTML, CSS, JavaScript, and more.
-            No server processing - all formatting happens locally in your browser.
-          </p>
-        </div>
-      </section>
-      
+    <Layout
+      title="Code Formatter & Beautifier"
+      description={descriptionElement}
+    >
+
       <div className="formatter-container">
         <div className="formatter-header">
           <div className="language-selector">
             <label htmlFor="language-select">Language:</label>
-            <select 
-              id="language-select" 
-              value={language} 
+            <select
+              id="language-select"
+              value={language}
               onChange={(e) => setLanguage(e.target.value)}
               className="language-select"
             >
@@ -342,21 +333,21 @@ function CodeFormatter() {
               ))}
             </select>
           </div>
-          
+
           <div className="formatter-actions">
             <label className="file-upload-button">
               <Upload size={16} />
               <span>Upload File</span>
-              <input 
-                type="file" 
-                onChange={handleFileUpload} 
-                className="hidden-file-input" 
+              <input
+                type="file"
+                onChange={handleFileUpload}
+                className="hidden-file-input"
               />
             </label>
-            
-            <button 
-              onClick={clearCode} 
-              className="clear-button" 
+
+            <button
+              onClick={clearCode}
+              className="clear-button"
               disabled={!code && !formattedCode}
             >
               <RefreshCw size={16} />
@@ -364,16 +355,16 @@ function CodeFormatter() {
             </button>
           </div>
         </div>
-        
+
         <div className="formatter-tabs">
-          <button 
+          <button
             className={`tab-button ${selectedTab === 'input' ? 'active' : ''}`}
             onClick={() => setSelectedTab('input')}
           >
             <FileText size={16} />
             <span>Input</span>
           </button>
-          <button 
+          <button
             className={`tab-button ${selectedTab === 'output' ? 'active' : ''}`}
             onClick={() => setSelectedTab('output')}
             disabled={!formattedCode}
@@ -382,7 +373,7 @@ function CodeFormatter() {
             <span>Output</span>
           </button>
         </div>
-        
+
         <div className="formatter-editor">
           {selectedTab === 'input' ? (
             // Input Editor
@@ -408,9 +399,9 @@ function CodeFormatter() {
             // Output Editor with Syntax Highlighting
             <div className="code-output-container">
               <div className="output-actions">
-                <button 
-                  onClick={copyToClipboard} 
-                  className="copy-button" 
+                <button
+                  onClick={copyToClipboard}
+                  className="copy-button"
                   disabled={!formattedCode}
                 >
                   {copied ? (
@@ -425,9 +416,9 @@ function CodeFormatter() {
                     </>
                   )}
                 </button>
-                <button 
-                  onClick={downloadCode} 
-                  className="download-button" 
+                <button
+                  onClick={downloadCode}
+                  className="download-button"
                   disabled={!formattedCode}
                 >
                   <Download size={16} />
@@ -442,33 +433,14 @@ function CodeFormatter() {
             </div>
           )}
         </div>
-        
+
         {error && (
           <div className={`formatter-message ${error.startsWith('Note:') ? 'info' : 'error'}`}>
             {error}
           </div>
         )}
       </div>
-      
-      <hr />
-      
-      <footer>
-        <div className="sponsorship-section">
-          <p className="footer-support-text">
-            If you like this tool, please star the repository on
-            <a href="https://github.com/romitagl/web-tools" target="_blank"> GitHub </a>
-            and consider sponsoring me on GitHub.
-          </p>
-          <div className="sponsor-button-container">
-            <iframe src="https://github.com/sponsors/romitagl/button" title="Sponsor" width="116" height="35" />
-          </div>
-        </div>
-        
-        <div className="footer-bottom">
-          <p>&copy; 2025 romitagl.com. All rights reserved.</p>
-        </div>
-      </footer>
-    </>
+    </Layout>
   );
 }
 

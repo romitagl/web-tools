@@ -1,3 +1,4 @@
+import Layout from './Layout'; // Import the Layout component
 import { useState } from 'react';
 import { Calculator, Network, ServerCrash, Check, Info, ArrowLeft, RefreshCw, Copy, ChevronDown, ChevronUp, Layers, Grid, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -5,7 +6,7 @@ import { Link } from 'react-router-dom';
 function CidrCalculator() {
   // Tab state
   const [activeTab, setActiveTab] = useState('calculator'); // 'calculator' or 'subnet-creator'
-  
+
   // Calculator tab states
   const [ipAddress, setIpAddress] = useState('');
   const [cidrNotation, setCidrNotation] = useState('');
@@ -14,7 +15,7 @@ function CidrCalculator() {
   const [copied, setCopied] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [calculating, setCalculating] = useState(false);
-  
+
   // Subnet creator tab states
   const [baseNetwork, setBaseNetwork] = useState('');
   const [baseCidr, setBaseCidr] = useState('');
@@ -99,50 +100,50 @@ function CidrCalculator() {
     // Convert IP to binary
     const ipBinary = ipToBinary(ipAddress);
     const cidrPrefix = parseInt(cidrNotation, 10);
-    
+
     // Calculate subnet mask binary
     const subnetMaskBinary = '1'.repeat(cidrPrefix).padEnd(32, '0');
-    
+
     // Calculate network address binary
     const networkBinary = ipBinary.substring(0, cidrPrefix).padEnd(32, '0');
-    
+
     // Calculate broadcast address binary
     const broadcastBinary = ipBinary.substring(0, cidrPrefix).padEnd(32, '1');
-    
+
     // Convert binary addresses to decimal notation
     const subnetMask = binaryToIp(subnetMaskBinary);
     const networkAddress = binaryToIp(networkBinary);
     const broadcastAddress = binaryToIp(broadcastBinary);
-    
+
     // Calculate first and last usable IP addresses
     const totalIPs = Math.pow(2, 32 - cidrPrefix);
     let firstUsableIp = networkAddress;
     let lastUsableIp = broadcastAddress;
-    
+
     // If subnet has more than 2 IPs, adjust usable range
     if (totalIPs > 2) {
       // For network address, split and increment the last octet by 1
       const firstIpParts = networkAddress.split('.');
       firstIpParts[3] = parseInt(firstIpParts[3], 10) + 1;
       firstUsableIp = firstIpParts.join('.');
-      
+
       // For broadcast address, split and decrement the last octet by 1
       const lastIpParts = broadcastAddress.split('.');
       lastIpParts[3] = parseInt(lastIpParts[3], 10) - 1;
       lastUsableIp = lastIpParts.join('.');
     }
-    
+
     // Calculate total usable hosts
     let usableHosts = totalIPs - 2;
     if (usableHosts < 0) usableHosts = 0; // Handle special cases like /31 and /32
-    
+
     // Format IP range for easy reading
     const ipRange = `${firstUsableIp} - ${lastUsableIp}`;
-    
+
     // Wildcard mask
     const wildcardParts = subnetMask.split('.').map(octet => 255 - parseInt(octet, 10));
     const wildcardMask = wildcardParts.join('.');
-    
+
     // Create result object
     const calculationResult = {
       networkAddress,
@@ -158,7 +159,7 @@ function CidrCalculator() {
       binarySubnetMask: subnetMaskBinary.match(/.{1,8}/g).join('.'),
       binaryIp: ipBinary.match(/.{1,8}/g).join('.')
     };
-    
+
     // Simulate a little processing time
     setTimeout(() => {
       setResult(calculationResult);
@@ -194,14 +195,14 @@ function CidrCalculator() {
     }
 
     const baseCidrNum = parseInt(baseCidr, 10);
-    
+
     // Validate subnet mode inputs
     if (subnetMode === 'count' && (!subnetCount || isNaN(parseInt(subnetCount, 10)) || parseInt(subnetCount, 10) <= 0)) {
       setSubnetError('Please enter a valid number of subnets (must be greater than 0).');
       setCreatingSubnets(false);
       return;
     }
-    
+
     if (subnetMode === 'size' && (!subnetSize || isNaN(parseInt(subnetSize, 10)) || parseInt(subnetSize, 10) <= 0)) {
       setSubnetError('Please enter a valid subnet size (must be greater than 0).');
       setCreatingSubnets(false);
@@ -212,11 +213,11 @@ function CidrCalculator() {
       // Calculate the new CIDR prefix for subnets
       let newCidrPrefix;
       let actualSubnetCount;
-      
+
       if (subnetMode === 'count') {
         newCidrPrefix = calculateNewPrefix(baseCidrNum, 'count', subnetCount);
         actualSubnetCount = Math.pow(2, newCidrPrefix - baseCidrNum);
-        
+
         // Validate if the new prefix exceeds 30 (minimum practical subnet size in most cases)
         if (newCidrPrefix > 30) {
           setSubnetError(`Creating ${subnetCount} subnets would result in a CIDR prefix larger than /30, which is too small for practical use.`);
@@ -227,7 +228,7 @@ function CidrCalculator() {
         // Size mode
         newCidrPrefix = calculateNewPrefix(baseCidrNum, 'size', subnetSize);
         actualSubnetCount = Math.pow(2, newCidrPrefix - baseCidrNum);
-        
+
         // Validate if the new prefix can fit within the base network
         if (newCidrPrefix < baseCidrNum) {
           setSubnetError(`The requested subnet size is larger than the base network. Please use a smaller subnet size.`);
@@ -235,36 +236,36 @@ function CidrCalculator() {
           return;
         }
       }
-      
+
       // Get the base network in binary
       const baseNetworkBinary = ipToBinary(baseNetwork).substring(0, baseCidrNum).padEnd(32, '0');
       const baseNetworkDecimal = binaryToIp(baseNetworkBinary);
-      
+
       // Create the subnets
       const subnets = [];
       const blockSize = Math.pow(2, 32 - newCidrPrefix);
       const baseIpInt = ipToInt(baseNetworkDecimal);
-      
+
       for (let i = 0; i < actualSubnetCount; i++) {
         const subnetIpInt = baseIpInt + (i * blockSize);
         const subnetIp = intToIp(subnetIpInt);
         const subnetBroadcastInt = subnetIpInt + blockSize - 1;
         const subnetBroadcast = intToIp(subnetBroadcastInt);
-        
+
         // Calculate first and last usable IPs
         let firstUsable = subnetIp;
         let lastUsable = subnetBroadcast;
-        
+
         // Adjust usable IPs for normal subnets (not /31 or /32)
         if (newCidrPrefix < 31) {
           firstUsable = intToIp(subnetIpInt + 1);
           lastUsable = intToIp(subnetBroadcastInt - 1);
         }
-        
+
         const subnetMask = cidrToSubnetMask(newCidrPrefix);
         const totalIPs = Math.pow(2, 32 - newCidrPrefix);
         const usableHosts = newCidrPrefix >= 31 ? totalIPs : totalIPs - 2;
-        
+
         subnets.push({
           name: `Subnet ${i + 1}`,
           network: subnetIp,
@@ -278,7 +279,7 @@ function CidrCalculator() {
           ipRange: `${firstUsable} - ${lastUsable}`
         });
       }
-      
+
       // Create results object
       const results = {
         baseNetwork: baseNetworkDecimal,
@@ -289,13 +290,13 @@ function CidrCalculator() {
         requestedSubnetSize: subnetMode === 'size' ? parseInt(subnetSize, 10) : null,
         subnets
       };
-      
+
       // Simulate processing time
       setTimeout(() => {
         setSubnetResults(results);
         setCreatingSubnets(false);
       }, 600);
-      
+
     } catch (error) {
       console.error('Error creating subnets:', error);
       setSubnetError(`An error occurred: ${error.message || 'Unknown error'}`);
@@ -313,9 +314,9 @@ function CidrCalculator() {
   const ipToInt = (ip) => {
     const parts = ip.split('.');
     return (parseInt(parts[0], 10) << 24) |
-           (parseInt(parts[1], 10) << 16) |
-           (parseInt(parts[2], 10) << 8) |
-           parseInt(parts[3], 10);
+      (parseInt(parts[1], 10) << 16) |
+      (parseInt(parts[2], 10) << 8) |
+      parseInt(parts[3], 10);
   };
 
   // Helper to convert integer to IP
@@ -347,7 +348,7 @@ function CidrCalculator() {
 
   const copyToClipboard = (content) => {
     if (!content) return;
-    
+
     navigator.clipboard.writeText(content)
       .then(() => {
         setCopied(true);
@@ -360,7 +361,7 @@ function CidrCalculator() {
 
   const copyMainResults = () => {
     if (!result) return;
-    
+
     // Format result as plain text
     const textToCopy = `
 CIDR Calculation Results:
@@ -373,13 +374,13 @@ Total IPs: ${result.totalIPs.toLocaleString()}
 Usable Hosts: ${result.usableHosts.toLocaleString()}
 IP Range: ${result.ipRange}
     `.trim();
-    
+
     copyToClipboard(textToCopy);
   };
 
   const copySubnetResults = () => {
     if (!subnetResults) return;
-    
+
     // Format subnet results as plain text
     let textToCopy = `
 Base Network: ${subnetResults.baseNetwork}${subnetResults.baseCidr}
@@ -390,13 +391,13 @@ Number of Subnets: ${subnetResults.subnetCount}
     if (subnetResults.requestedSubnetCount) {
       textToCopy += `Requested Subnet Count: ${subnetResults.requestedSubnetCount}\n`;
     }
-    
+
     if (subnetResults.requestedSubnetSize) {
       textToCopy += `Requested Subnet Size: ${subnetResults.requestedSubnetSize} IPs\n`;
     }
-    
+
     textToCopy += '\nSubnet Details:\n';
-    
+
     subnetResults.subnets.forEach((subnet, index) => {
       textToCopy += `
 Subnet ${index + 1}:
@@ -408,45 +409,35 @@ Subnet ${index + 1}:
   IP Range: ${subnet.ipRange}
 `;
     });
-    
+
     copyToClipboard(textToCopy.trim());
   };
 
+  // Create description element for the Layout
+  const descriptionElement = (
+    <div className="info-box">
+      <Info size={20} />
+      <p>
+        Calculate subnet information or create subnet allocations similar to AWS VPC. All calculations are performed locally in your browser.
+      </p>
+    </div>
+  );
+
   return (
-    <>
-      <div className="header">
-        <div className="logo-container">
-          <Link to="/" className="home-link">
-            <ArrowLeft size={20} className="back-icon" />
-            <span>Back to Tools</span>
-          </Link>
-          <div className="app-logos">
-            <img src="/images/webtools-logo.svg" alt="WebTools Logo" width="150" />
-          </div>
-        </div>
-        <h1>CIDR Subnet Calculator</h1>
-        <h2>Fast Network Calculation!</h2>
-        <p>Calculate subnets instantly in your browser.</p>
-      </div>
-      
-      <section className="description">
-        <div className="info-box">
-          <Info size={20} />
-          <p>
-            Calculate subnet information or create subnet allocations similar to AWS VPC. All calculations are performed locally in your browser.
-          </p>
-        </div>
-      </section>
-      
+    <Layout
+      title="CIDR Subnet Calculator"
+      description={descriptionElement}
+    >
+
       <div className="tab-container">
-        <button 
+        <button
           className={`tab-button ${activeTab === 'calculator' ? 'active' : ''}`}
           onClick={() => setActiveTab('calculator')}
         >
           <Calculator size={18} />
           CIDR Calculator
         </button>
-        <button 
+        <button
           className={`tab-button ${activeTab === 'subnet-creator' ? 'active' : ''}`}
           onClick={() => setActiveTab('subnet-creator')}
         >
@@ -454,7 +445,7 @@ Subnet ${index + 1}:
           Subnet Creator
         </button>
       </div>
-      
+
       <div className="calculator-container">
         {activeTab === 'calculator' && (
           <>
@@ -473,7 +464,7 @@ Subnet ${index + 1}:
                   />
                 </div>
               </div>
-              
+
               <div className="input-group">
                 <label htmlFor="cidr-prefix">CIDR Prefix</label>
                 <div className="input-with-icon">
@@ -488,7 +479,7 @@ Subnet ${index + 1}:
                   />
                 </div>
               </div>
-              
+
               <div className="button-group">
                 <button
                   onClick={calculateSubnet}
@@ -507,20 +498,20 @@ Subnet ${index + 1}:
                     </>
                   )}
                 </button>
-                
+
                 <button onClick={resetCalculator} className="reset-button">
                   <RefreshCw size={18} />
                   <span>Reset</span>
                 </button>
               </div>
-              
+
               {error && (
                 <div className="error-message">
                   {error}
                 </div>
               )}
             </div>
-            
+
             {result && (
               <div className="result-section">
                 <div className="result-header">
@@ -539,70 +530,70 @@ Subnet ${index + 1}:
                     )}
                   </button>
                 </div>
-                
+
                 <div className="result-grid">
                   <div className="result-item">
                     <span className="result-label">Network Address:</span>
                     <span className="result-value">{result.networkAddress}</span>
                   </div>
-                  
+
                   <div className="result-item">
                     <span className="result-label">Broadcast Address:</span>
                     <span className="result-value">{result.broadcastAddress}</span>
                   </div>
-                  
+
                   <div className="result-item">
                     <span className="result-label">Subnet Mask:</span>
                     <span className="result-value">{result.subnetMask}</span>
                   </div>
-                  
+
                   <div className="result-item">
                     <span className="result-label">CIDR Notation:</span>
                     <span className="result-value">{result.cidrNotation}</span>
                   </div>
-                  
+
                   <div className="result-item">
                     <span className="result-label">Total IPs:</span>
                     <span className="result-value">{result.totalIPs.toLocaleString()}</span>
                   </div>
-                  
+
                   <div className="result-item">
                     <span className="result-label">Usable Hosts:</span>
                     <span className="result-value">{result.usableHosts.toLocaleString()}</span>
                   </div>
-                  
+
                   <div className="result-item full-width">
                     <span className="result-label">IP Range:</span>
                     <span className="result-value">{result.ipRange}</span>
                   </div>
-                  
+
                   <div className="advanced-toggle" onClick={() => setShowAdvanced(!showAdvanced)}>
                     {showAdvanced ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                     <span>Advanced Details</span>
                   </div>
-                  
+
                   {showAdvanced && (
                     <>
                       <div className="result-item">
                         <span className="result-label">Wildcard Mask:</span>
                         <span className="result-value">{result.wildcardMask}</span>
                       </div>
-                      
+
                       <div className="result-item">
                         <span className="result-label">First Usable IP:</span>
                         <span className="result-value">{result.firstUsableIp}</span>
                       </div>
-                      
+
                       <div className="result-item">
                         <span className="result-label">Last Usable IP:</span>
                         <span className="result-value">{result.lastUsableIp}</span>
                       </div>
-                      
+
                       <div className="result-item">
                         <span className="result-label">IP (Binary):</span>
                         <span className="result-value monospace">{result.binaryIp}</span>
                       </div>
-                      
+
                       <div className="result-item">
                         <span className="result-label">Subnet Mask (Binary):</span>
                         <span className="result-value monospace">{result.binarySubnetMask}</span>
@@ -614,7 +605,7 @@ Subnet ${index + 1}:
             )}
           </>
         )}
-        
+
         {activeTab === 'subnet-creator' && (
           <>
             <div className="input-section subnet-creator-section">
@@ -633,7 +624,7 @@ Subnet ${index + 1}:
                     />
                   </div>
                 </div>
-                
+
                 <div className="input-group">
                   <label htmlFor="base-cidr">Base CIDR Prefix</label>
                   <div className="input-with-icon">
@@ -649,7 +640,7 @@ Subnet ${index + 1}:
                   </div>
                 </div>
               </div>
-              
+
               <div className="subnet-mode-selector">
                 <label>Subnet Creation Mode</label>
                 <div className="radio-group">
@@ -673,7 +664,7 @@ Subnet ${index + 1}:
                   </label>
                 </div>
               </div>
-              
+
               {subnetMode === 'count' ? (
                 <div className="input-group">
                   <label htmlFor="subnet-count">Number of Subnets</label>
@@ -707,16 +698,16 @@ Subnet ${index + 1}:
                   </div>
                 </div>
               )}
-              
+
               <div className="subnet-info-note">
                 <AlertTriangle size={16} />
                 <span>
-                  {subnetMode === 'count' 
-                    ? 'Subnets will be created with equal sizes based on the number requested.' 
+                  {subnetMode === 'count'
+                    ? 'Subnets will be created with equal sizes based on the number requested.'
                     : 'Subnets will be created to accommodate at least the requested number of IPs.'}
                 </span>
               </div>
-              
+
               <div className="button-group">
                 <button
                   onClick={createSubnets}
@@ -735,20 +726,20 @@ Subnet ${index + 1}:
                     </>
                   )}
                 </button>
-                
+
                 <button onClick={resetCalculator} className="reset-button">
                   <RefreshCw size={18} />
                   <span>Reset</span>
                 </button>
               </div>
-              
+
               {subnetError && (
                 <div className="error-message">
                   {subnetError}
                 </div>
               )}
             </div>
-            
+
             {subnetResults && (
               <div className="result-section subnet-results-section">
                 <div className="result-header">
@@ -767,7 +758,7 @@ Subnet ${index + 1}:
                     )}
                   </button>
                 </div>
-                
+
                 <div className="subnet-summary">
                   <div className="summary-item">
                     <span className="summary-label">Base Network:</span>
@@ -794,7 +785,7 @@ Subnet ${index + 1}:
                     </div>
                   )}
                 </div>
-                
+
                 <div className="subnet-list">
                   <h4>Subnet Details</h4>
                   <div className="subnet-table-container">
@@ -821,7 +812,7 @@ Subnet ${index + 1}:
                       </tbody>
                     </table>
                   </div>
-                  
+
                   <div className="subnet-note">
                     <Info size={16} />
                     <span>
@@ -835,18 +826,7 @@ Subnet ${index + 1}:
           </>
         )}
       </div>
-      
-      <hr />
-      
-      <footer>
-        <p>
-          If you like this tool, please star the repository on{' '}
-          <a href="https://github.com/romitagl/web-tools">GitHub</a>&nbsp;
-          and consider sponsoring me on GitHub.
-        </p>
-        <iframe src="https://github.com/sponsors/romitagl/button" title="Sponsor" width="116" height="35" />
-      </footer>
-    </>
+      </Layout>
   );
 }
 

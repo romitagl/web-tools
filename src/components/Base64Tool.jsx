@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { FileCode, Info, ArrowLeft, Copy, Check, Download, RefreshCw, Upload, AlertCircle, ArrowUpDown } from 'lucide-react';
+import { 
+  FileCode, Info, Copy, Check, Download, RefreshCw, 
+  Upload, AlertCircle, ArrowUpDown
+} from 'lucide-react';
+import Layout from './Layout';
 
 function Base64Tool() {
   const [mode, setMode] = useState('encode'); // 'encode' or 'decode'
@@ -89,12 +92,6 @@ function Base64Tool() {
     // The useEffect will handle updating the output
   };
 
-  // Toggle between encode and decode modes
-  const toggleMode = () => {
-    setMode(mode === 'encode' ? 'decode' : 'encode');
-    setError('');
-  };
-
   // Copy output to clipboard
   const copyToClipboard = () => {
     if (!output) return;
@@ -168,32 +165,23 @@ function Base64Tool() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   };
 
-  return (
-    <>
-      <div className="header">
-        <div className="logo-container">
-          <Link to="/" className="home-link">
-            <ArrowLeft size={20} className="back-icon" />
-            <span>Back to Tools</span>
-          </Link>
-          <div className="app-logos">
-            <img src="/images/webtools-logo.svg" alt="WebTools Logo" width="150" />
-          </div>
-        </div>
-        <h1>Base64 Encoder/Decoder</h1>
-        <h2>100% Private, 100% Free!</h2>
-        <p>Runs safely and securely in your browser.</p>
+  // Description for Layout component
+  const descriptionElement = (
+    <div className="info-banner">
+      <div className="info-icon">
+        <Info size={20} />
       </div>
-      
-      <section className="description">
-        <div className="info-box">
-          <Info size={20} />
-          <p>
-            Encode text to Base64 or decode Base64 to text. All processing happens locally in your browser - no data is sent to any server.
-          </p>
-        </div>
-      </section>
-      
+      <div className="info-content">
+        Encode text to Base64 or decode Base64 to text. All processing happens locally in your browser - no data is sent to any server.
+      </div>
+    </div>
+  );
+
+  return (
+    <Layout 
+      title="Base64 Encoder/Decoder"
+      description={descriptionElement}
+    >
       <div className="base64-container">
         <div className="mode-toggle">
           <button 
@@ -270,7 +258,7 @@ function Base64Tool() {
             <div className="output-actions">
               <button 
                 onClick={copyToClipboard} 
-                className="action-button copy-button" 
+                className={`action-button copy-button ${copied ? 'copied' : ''}`}
                 disabled={!output}
               >
                 {copied ? (
@@ -343,18 +331,7 @@ function Base64Tool() {
           <strong>Note:</strong> Base64 encoding increases the data size by approximately 33% (a ratio of 4:3) compared to the original data.
         </div>
       </div>
-      
-      <hr />
-      
-      <footer>
-        <p>
-          If you like this tool, please star the repository on{' '}
-          <a href="https://github.com/romitagl/web-tools">GitHub</a>&nbsp;
-          and consider sponsoring me on GitHub.
-        </p>
-        <iframe src="https://github.com/sponsors/romitagl/button" title="Sponsor" width="116" height="35" />
-      </footer>
-    </>
+    </Layout>
   );
 }
 
