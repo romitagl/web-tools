@@ -9,6 +9,7 @@
 @import 'components/cards.css';
 @import 'components/forms.css';
 @import 'components/tabs.css';
+@import 'components/layout.css';
 
 /* Import page-specific styles */
 @import 'pages/home.css';

@@ -1,0 +1,134 @@
+/* Layout Component Styles */
+
+/* Modern header styling */
+.tool-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 0 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Back link styling */
+  .header-back-link {
+    align-self: flex-start;
+    margin-bottom: 1rem;
+  }
+  
+  .back-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+  
+  .back-link:hover {
+    color: var(--accent-color);
+  }
+  
+  .back-icon {
+    transition: transform 0.2s ease;
+  }
+  
+  .back-link:hover .back-icon {
+    transform: translateX(-3px);
+  }
+  
+  /* Logo container */
+  .logo-container {
+    margin-bottom: 1.5rem;
+  }
+  
+  .header-logo {
+    max-width: 180px;
+    height: auto;
+  }
+  
+  /* Title section */
+  .header-titles {
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  .header-titles h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+  }
+  
+  .header-titles h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+  }
+  
+  .header-titles p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+  
+  /* Description section */
+  .description {
+    margin-bottom: 2rem;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Footer section */
+  footer {
+    text-align: center;
+    padding: 2rem 0 1rem;
+    color: var(--text-muted);
+  }
+  
+  footer p {
+    margin-bottom: 1rem;
+  }
+  
+  footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  
+  footer a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .header-titles h1 {
+      font-size: 2rem;
+    }
+    
+    .header-titles h2 {
+      font-size: 1.2rem;
+    }
+    
+    .header-logo {
+      max-width: 150px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header-titles h1 {
+      font-size: 1.75rem;
+    }
+    
+    .header-titles h2 {
+      font-size: 1.1rem;
+    }
+    
+    .header-logo {
+      max-width: 130px;
+    }
+  }
