@@ -15,7 +15,7 @@
     "lint": "eslint src --ext js,jsx"
   },
   "dependencies": {
-    "jsqr": "^1.4.0",
+    "html5-qrcode": "^2.3.8",
     "lucide-react": "^0.479.0",
     "pdf-lib": "^1.17.1",
     "prismjs": "^1.29.0",

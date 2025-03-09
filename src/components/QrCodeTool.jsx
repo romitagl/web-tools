@@ -5,7 +5,8 @@ import {
   Copy, Download, Check, UploadCloud, RefreshCw, Settings, Info
 } from 'lucide-react';
 import QRCode from 'qrcode';
-import jsQR from 'jsqr';
+// We'll use Html5Qrcode instead of jsQR
+import { Html5Qrcode, Html5QrcodeScanner, Html5QrcodeScanType } from 'html5-qrcode';
 
 function QrCodeTool() {
   // QR code options
@@ -47,7 +48,8 @@ function QrCodeTool() {
 
   // Refs
   const qrCanvasRef = useRef(null);
-  const videoRef = useRef(null);
+  const scannerDivRef = useRef(null); // For Html5Qrcode scanner
+  const html5QrCodeRef = useRef(null); // To store the Html5Qrcode instance
   const fileInputRef = useRef(null);
 
   // Clear all inputs
@@ -100,12 +102,9 @@ function QrCodeTool() {
     }
   };
 
-  // Add this useEffect hook at the beginning of your component
+  // Read hash from URL on component mount
   useEffect(() => {
-    // Read hash from URL on component mount
     const hash = window.location.hash.substring(1);
-
-    // Set active tab based on hash
     if (hash === 'generate' || hash === 'scan') {
       setActiveTab(hash);
     }
@@ -157,7 +156,7 @@ function QrCodeTool() {
     }
   };
 
-  // Handle scanning
+  // Start camera scanner using Html5Qrcode
   const startScanner = async () => {
     setScanResult('');
     setErrorMessage('');
@@ -165,71 +164,87 @@ function QrCodeTool() {
     setScanWithCamera(true);
 
     try {
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: 'environment',
-            width: { ideal: 640 },
-            height: { ideal: 480 }
-          }
-        });
-
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.play();
-
-          // Start scanning loop
-          scanQRFromVideo();
-        }
-      } else {
-        throw new Error('Camera access is not supported by this browser');
+      if (!Html5Qrcode) {
+        throw new Error('QR code scanner library not loaded');
       }
+
+      // Ensure the scanner div exists before continuing
+      setTimeout(() => {
+        try {
+          // Don't use a direct HTML ID lookup - use the ref
+          if (!scannerDivRef.current) {
+            throw new Error('Scanner container not available');
+          }
+
+          // Create a new instance of Html5Qrcode
+          const html5QrCode = new Html5Qrcode(scannerDivRef.current.id);
+          html5QrCodeRef.current = html5QrCode;
+
+          // Config for QR code scanning
+          // Config for QR code scanning
+          const config = {
+            fps: 10,
+            qrbox: { width: 250, height: 250 },
+            aspectRatio: 1.0,
+            // Replace with correct format reference
+            formatsToSupport: [Html5QrcodeScanType.QR_CODE]
+          };
+
+          // Success callback when QR code is detected
+          const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+            console.log(`QR Code detected: ${decodedText}`, decodedResult);
+            setScanResult(decodedText);
+            stopScanner();
+          };
+
+          // Start scanning
+          html5QrCode.start(
+            { facingMode: "environment" },
+            config,
+            qrCodeSuccessCallback,
+            (errorMessage) => {
+              // This is a non-blocking error, we'll just log it and continue scanning
+              console.log("QR Code scanning error:", errorMessage);
+            }
+          ).catch(err => {
+            console.error("Error starting camera:", err);
+            setErrorMessage(`Error starting camera: ${err.message}`);
+            setIsScanning(false);
+          });
+
+          // Set a timeout to stop scanning after 15 seconds if no QR code is detected
+          setTimeout(() => {
+            if (isScanning && html5QrCodeRef.current) {
+              setErrorMessage("Scanning timed out after 15 seconds. Please try again or use the file upload option.");
+              stopScanner();
+            }
+          }, 15000);
+        } catch (error) {
+          console.error('Error starting QR code scanner:', error);
+          setIsScanning(false);
+          setScanWithCamera(false);
+          setErrorMessage(error.message || 'Error starting QR code scanner');
+        }
+      }, 500); // Small delay to ensure DOM is ready
     } catch (error) {
-      console.error('Error scanning QR code:', error);
+      console.error('Error accessing camera:', error);
       setIsScanning(false);
       setScanWithCamera(false);
-      setErrorMessage(error.message || 'Error scanning QR code');
+      setErrorMessage(error.message || 'Error accessing camera');
     }
   };
 
-  // Function to capture video frames and scan for QR codes
-  const scanQRFromVideo = () => {
-    if (!videoRef.current || !isScanning) return;
-
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    const video = videoRef.current;
-
-    // Set canvas size to video size
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    // Draw current video frame to canvas
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // Get image data from canvas
-    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-
-    // Scan for QR code in the image
-    const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-    if (code) {
-      // QR code detected
-      console.log('QR code detected:', code.data);
-      setScanResult(code.data);
-      stopScanner();
-    } else {
-      // Continue scanning
-      requestAnimationFrame(scanQRFromVideo);
-    }
-  };
-
-  // Stop scanner
+  // Stop the scanner
   const stopScanner = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach(track => track.stop());
-      videoRef.current.srcObject = null;
+    console.log("Stopping scanner");
+    if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
+      html5QrCodeRef.current.stop()
+        .then(() => {
+          console.log('QR Code scanning stopped');
+        })
+        .catch(err => {
+          console.error('Error stopping QR Code scanner:', err);
+        });
     }
     setIsScanning(false);
     setScanWithCamera(false);
@@ -245,50 +260,40 @@ function QrCodeTool() {
 
     setSelectedFile(file);
 
+    // Create a file reader to read the image
     const reader = new FileReader();
+
     reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        // Create canvas and context
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
+      // Once the file is loaded, create or get an html5QrCode instance
+      let html5QrCode;
 
-        // Set canvas dimensions to match image
-        canvas.width = img.width;
-        canvas.height = img.height;
+      if (html5QrCodeRef.current) {
+        html5QrCode = html5QrCodeRef.current;
+      } else {
+        // Create a new instance if one doesn't exist yet
+        html5QrCode = new Html5Qrcode("qr-reader-file");
+        html5QrCodeRef.current = html5QrCode;
+      }
 
-        // Draw image to canvas
-        context.drawImage(img, 0, 0);
-
-        // Get image data for QR code scanning
-        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-
-        // Scan for QR code
-        try {
-          const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-          if (code) {
-            setScanResult(code.data);
-          } else {
-            setErrorMessage('No QR code found in the image');
-          }
-        } catch (error) {
-          console.error('Error processing image:', error);
-          setErrorMessage('Error processing image. Please try another image.');
-        }
-      };
-
-      img.onerror = () => {
-        setErrorMessage('Error loading image');
-      };
-
-      img.src = e.target.result;
+      // We need to provide the file directly to the scanFile method
+      html5QrCode.scanFile(file, true)
+        .then(decodedText => {
+          // Success - we found a QR code
+          console.log("QR Code detected from file:", decodedText);
+          setScanResult(decodedText);
+        })
+        .catch(err => {
+          // Error - no QR code found
+          console.error("Error scanning file:", err);
+          setErrorMessage('No QR code found in the image or the image could not be processed');
+        });
     };
 
     reader.onerror = () => {
-      setErrorMessage('Error reading file');
+      setErrorMessage('Error reading the file');
     };
 
+    // Start reading the file
     reader.readAsDataURL(file);
   };
 
@@ -320,20 +325,11 @@ function QrCodeTool() {
   // Clean up on unmount
   useEffect(() => {
     return () => {
-      stopScanner();
+      if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
+        html5QrCodeRef.current.stop().catch(err => console.error(err));
+      }
     };
   }, []);
-
-  // Switch between generate and scan tabs
-  const switchTab = (tab) => {
-    if (tab !== activeTab) {
-      if (isScanning) {
-        stopScanner();
-      }
-      setActiveTab(tab);
-      clearAll();
-    }
-  };
 
   return (
     <>
@@ -696,14 +692,30 @@ function QrCodeTool() {
               </div>
             </div>
 
+            {/* HTML5 QR Code Scanner Container */}
             {scanWithCamera && isScanning && (
-              <div className="scanner-video-container">
-                <video ref={videoRef} className="scanner-video"></video>
-                <div className="scanner-overlay">
-                  <div className="scanner-frame"></div>
-                </div>
-              </div>
+              <div
+                id="qr-reader"
+                ref={(el) => {
+                  scannerDivRef.current = el;
+                  // Ensure the element has an ID
+                  if (el) el.id = "qr-reader";
+                }}
+                style={{ width: '100%', maxWidth: '500px', margin: '0 auto' }}
+              ></div>
             )}
+
+            {/* Hidden element for file scanning */}
+            <div
+              id="qr-reader-file"
+              ref={(el) => {
+                if (el) {
+                  // Ensure the element has the correct ID
+                  el.id = "qr-reader-file";
+                }
+              }}
+              style={{ display: 'none' }}
+            ></div>
 
             {scanResult && (
               <div className="scan-result">
