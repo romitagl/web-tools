@@ -1,3 +1,4 @@
+import Layout from './Layout'; // Import the new Layout component
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -331,34 +332,25 @@ function QrCodeTool() {
     };
   }, []);
 
-  return (
-    <>
-      <div className="header">
-        <div className="logo-container">
-          <Link to="/" className="home-link">
-            <ArrowLeft size={20} className="back-icon" />
-            <span>Back to Tools</span>
-          </Link>
-          <div className="app-logos">
-            <img src="/images/webtools-logo.svg" alt="WebTools Logo" width="150" />
-          </div>
-        </div>
-        <h1>QR Code Generator & Scanner</h1>
-        <h2>100% Private, 100% Free!</h2>
-        <p>Runs safely and securely in your browser.</p>
+  // Create the description element for the Layout
+  const descriptionElement = (
+    <div className="info-banner">
+      <div className="info-icon">
+        <Info size={20} />
       </div>
+      <div className="info-content">
+        Create and scan QR codes instantly. Generate QR codes for URLs, text, Wi-Fi credentials, and contact information.
+        All processing happens in your browser - no data is sent to servers.
+      </div>
+    </div>
+  );
 
-      <section className="description">
-        <div className="info-banner">
-          <div className="info-icon">
-            <Info size={20} />
-          </div>
-          <div className="info-content">
-            Create and scan QR codes instantly. Generate QR codes for URLs, text, Wi-Fi credentials, and contact information.
-            All processing happens in your browser - no data is sent to servers.
-          </div>
-        </div>
-      </section>
+  // Return the component using the Layout
+  return (
+    <Layout
+      title="QR Code Generator & Scanner"
+      description={descriptionElement}
+    >
 
       <div className="tab-container">
         <button
@@ -762,18 +754,7 @@ function QrCodeTool() {
           </div>
         )}
       </div>
-
-      <hr />
-
-      <footer>
-        <p>
-          If you like this tool, please star the repository on{' '}
-          <a href="https://github.com/romitagl/web-tools">GitHub</a>&nbsp;
-          and consider sponsoring me on GitHub.
-        </p>
-        <iframe src="https://github.com/sponsors/romitagl/button" title="Sponsor" width="116" height="35" />
-      </footer>
-    </>
+    </Layout>
   );
 }
 
