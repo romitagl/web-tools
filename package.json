@@ -18,7 +18,7 @@
     "html5-qrcode": "^2.3.8",
     "lucide-react": "^0.479.0",
     "pdf-lib": "^1.17.1",
-    "prismjs": "^1.29.0",
+    "prismjs": "^1.30.0",
     "qrcode": "^1.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
