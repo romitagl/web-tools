@@ -8,6 +8,12 @@ WORKDIR /app
 # This MUST be set before any npm commands
 ENV ROLLUP_SKIP_NATIVE=1
 
+# Create scripts directory and add static HTML generator
+RUN mkdir -p scripts
+
+# Copy generator script first
+COPY scripts/generate-html.js ./scripts/
+
 # Copy package files
 COPY package*.json ./
 

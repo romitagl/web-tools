@@ -11,12 +11,13 @@
   "scripts": {
     "dev": "vite dev --host --open=false",
     "build": "vite build --config vite.config.js",
+    "postbuild": "node scripts/generate-html.js",
     "preview": "vite preview",
     "lint": "eslint src --ext js,jsx"
   },
   "dependencies": {
     "html5-qrcode": "^2.3.8",
-    "lucide-react": "^0.479.0",
+    "lucide-react": "^0.482.0",
     "pdf-lib": "^1.17.1",
     "prismjs": "^1.30.0",
     "qrcode": "^1.5.4",
@@ -28,13 +29,13 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10.4.20",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9.22.0",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "postcss": "^8.5.3",
-    "tailwindcss": "^4.0.12",
-    "vite": "^6.2.1"
+    "tailwindcss": "^4.0.14",
+    "vite": "^6.2.2"
   }
 }

@@ -1,87 +1,119 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <script>
-      (function() {
-        // Check if we have a saved redirect path
-        const redirectPath = sessionStorage.getItem('redirectPath');
-        if (redirectPath) {
-          // Clear the redirect path from sessionStorage
-          sessionStorage.removeItem('redirectPath');
-          
-          // Push the saved path to the history
-          window.history.pushState(null, null, redirectPath);
+
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    (function () {
+      // Check if we have a saved redirect path
+      const redirectPath = sessionStorage.getItem('redirectPath');
+      if (redirectPath) {
+        // Clear the redirect path from sessionStorage
+        sessionStorage.removeItem('redirectPath');
+
+        // Push the saved path to the history
+        window.history.pushState(null, null, redirectPath);
+      }
+    })();
+  </script>
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://web-tools.romitagl.com/",
+        "name": "Web Tools by romitagl.com",
+        "description": "100% free, private web tools for merging PDFs, generating QR codes, subnet calculation, and more - all without uploading your data.",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://web-tools.romitagl.com/?search={search_term_string}",
+          "query-input": "required name=search_term_string"
         }
-      })();
-    </script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CP2GH8VHCN"></script>
-    <script>
+      }
+  </script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CP2GH8VHCN"></script>
+  <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
     gtag('config', 'G-CP2GH8VHCN');
-    </script>
+  </script>
 
-    <!-- Primary Meta Tags -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Free Web Tools: PDF Merger, QR Code Generator for Hospitality & More</title>
-    <meta name="description" content="100% Free & Private web tools - Merge PDFs, create QR codes for Airbnb, hotels & vacation rentals. All processing stays in your browser for complete privacy!" />
-    <meta name="keywords" content="PDF merger, QR code generator for Airbnb, hospitality QR codes, WiFi QR code, free PDF tools, private web tools, secure PDF merge, hotel guest QR codes" />
-    <meta name="author" content="romitagl.com" />
+  <!-- Primary Meta Tags -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free Web Tools: PDF Merger, QR Code Generator for Hospitality & More</title>
+  <meta name="description"
+    content="100% Free & Private web tools - Merge PDFs, create QR codes for Airbnb, hotels & vacation rentals. All processing stays in your browser for complete privacy!" />
+  <meta name="keywords"
+    content="PDF merger, QR code generator for Airbnb, hospitality QR codes, WiFi QR code, free PDF tools, private web tools, secure PDF merge, hotel guest QR codes" />
+  <meta name="author" content="romitagl.com" />
 
-    <!-- Open Graph / Facebook Meta Tags -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://web-tools.romitagl.com/" />
-    <meta property="og:title" content="Free Web Tools: PDF Merger & QR Code Generator for Hospitality" />
-    <meta property="og:description" content="Merge PDFs & create QR codes for Airbnb, hotels & vacation rentals. 100% free with no data uploads required!" />
-    <meta property="og:image" content="https://web-tools.romitagl.com/og-image.jpg" />
+  <!-- Add meta tag for robots -->
+  <meta name="robots" content="index, follow" />
 
-    <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://web-tools.romitagl.com/" />
-    <meta name="twitter:title" content="Free Web Tools: PDF Merger & QR Code Generator for Hospitality" />
-    <meta name="twitter:description" content="Merge PDFs & create QR codes for Airbnb, hotels & vacation rentals. 100% free with no data uploads required!" />
-    <meta name="twitter:image" content="https://web-tools.romitagl.com/og-image.jpg" />
+  <!-- Add meta tag for Google-specific directives (optional) -->
+  <meta name="googlebot" content="index, follow" />
 
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://web-tools.romitagl.com/" />
+  <!-- Ensure proper base tag is set -->
+  <base href="/" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/images/webtools-logo.svg" />
-    
-    <!-- AdSense Script -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4063137660162927" crossorigin="anonymous"></script>
+  <!-- Open Graph / Facebook Meta Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://web-tools.romitagl.com/" />
+  <meta property="og:title" content="Free Web Tools: PDF Merger & QR Code Generator for Hospitality" />
+  <meta property="og:description"
+    content="Merge PDFs & create QR codes for Airbnb, hotels & vacation rentals. 100% free with no data uploads required!" />
+  <meta property="og:image" content="https://web-tools.romitagl.com/og-image.jpg" />
 
-    <!-- Structured Data for SEO -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Web Tools by romitagl.com",
-      "url": "https://web-tools.romitagl.com/",
-      "description": "Free online tools for PDF merging and QR code generation, designed for hospitality businesses and everyday users.",
-      "applicationCategory": "UtilitiesApplication",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "EUR"
-      },
-      "featureList": [
-        "PDF and Image Merger",
-        "QR Code Generator for WiFi and Contact Information",
-        "CIDR Subnet Calculator",
-        "Code Formatter",
-        "Base64 Encoder/Decoder"
-      ],
-      "operatingSystem": "Any"
-    }
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://web-tools.romitagl.com/" />
+  <meta name="twitter:title" content="Free Web Tools: PDF Merger & QR Code Generator for Hospitality" />
+  <meta name="twitter:description"
+    content="Merge PDFs & create QR codes for Airbnb, hotels & vacation rentals. 100% free with no data uploads required!" />
+  <meta name="twitter:image" content="https://web-tools.romitagl.com/og-image.jpg" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://web-tools.romitagl.com/" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/images/webtools-logo.svg" />
+
+  <!-- AdSense Script -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4063137660162927"
+    crossorigin="anonymous"></script>
+
+  <!-- Consider adding dynamic meta tags for each route -->
+  <!-- This requires server-side rendering or build-time generation -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Web Tools by romitagl.com",
+    "url": "https://web-tools.romitagl.com/",
+    "description": "Free online tools for PDF merging and QR code generation, designed for hospitality businesses and everyday users.",
+    "applicationCategory": "UtilitiesApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    "featureList": [
+      "PDF and Image Merger",
+      "QR Code Generator for WiFi and Contact Information",
+      "CIDR Subnet Calculator",
+      "Code Formatter",
+      "Base64 Encoder/Decoder"
+    ],
+    "operatingSystem": "Any"
+  }
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
