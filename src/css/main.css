@@ -10,6 +10,7 @@
 @import 'components/forms.css';
 @import 'components/tabs.css';
 @import 'components/layout.css';
+@import 'components/experimental.css';
 
 /* Import page-specific styles */
 @import 'pages/home.css';
@@ -20,3 +21,4 @@
 @import 'tools/cidr-calculator.css';
 @import 'tools/qr-code.css';
 @import 'tools/base64.css';
+@import 'tools/website-scraper.css';

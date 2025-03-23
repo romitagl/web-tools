@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FileText, Network, Code, FileCode, QrCode, Wifi, Smartphone } from 'lucide-react';
+import { FileText, Network, Code, FileCode, QrCode, Wifi, Smartphone, Globe } from 'lucide-react';
 
 function Home() {
   return (
@@ -75,7 +75,23 @@ function Home() {
           </div>
         </div>
       </section>
+
+      <hr />
       
+      <section className="testimonials">
+        <h3>What Our Users Say</h3>
+        <div className="testimonial-carousel">
+          <div className="testimonial">
+            <p>"As an Airbnb host, the QR code generator has been a game-changer! Guests love being able to scan for WiFi access instead of typing long passwords."</p>
+            <div className="testimonial-author">- Sarah K., Vacation Rental Owner</div>
+          </div>
+          <div className="testimonial">
+            <p>"The PDF merger saved me hours of work when compiling documents for my business. No need to install any software or pay for expensive tools!"</p>
+            <div className="testimonial-author">- James T., Small Business Owner</div>
+          </div>
+        </div>
+      </section>
+
       <section className="trust-banner">
         <h3>Why Users Trust Our Tools</h3>
         <div className="trust-points">
@@ -97,7 +113,9 @@ function Home() {
           </div>
         </div>
       </section>
-      
+
+      <hr />
+
       <section id="tools" className="tools-section">
         <h3 className="tools-category-title">All Available Tools</h3>
         <div className="tools-grid">
@@ -157,22 +175,31 @@ function Home() {
           </div>
         </div>
       </section>
-      
-      <section className="testimonials">
-        <h3>What Our Users Say</h3>
-        <div className="testimonial-carousel">
-          <div className="testimonial">
-            <p>"As an Airbnb host, the QR code generator has been a game-changer! Guests love being able to scan for WiFi access instead of typing long passwords."</p>
-            <div className="testimonial-author">- Sarah K., Vacation Rental Owner</div>
-          </div>
-          <div className="testimonial">
-            <p>"The PDF merger saved me hours of work when compiling documents for my business. No need to install any software or pay for expensive tools!"</p>
-            <div className="testimonial-author">- James T., Small Business Owner</div>
+
+      <section className="experimental-tools-section">
+        <div className="experimental-banner">
+          <h3 className="experimental-title">Experimental Tools</h3>
+          <div className="experimental-badge">Beta</div>
+        </div>
+        <p className="experimental-description">
+          These tools are still under development and may have limitations or unexpected behavior.
+          We're actively working to improve them based on user feedback.
+        </p>
+        
+        <div className="tools-grid">
+          <div className="tool-card experimental">
+            <div className="tool-icon">
+              <Globe size={40} color="lightblue" />
+            </div>
+            <div className="experimental-tag">Experimental</div>
+            <h2>Website Scraper</h2>
+            <p>Archive websites locally by saving HTML, CSS, JavaScript, and images into a downloadable ZIP file. Currently in beta testing.</p>
+            <Link to="/website-scraper" className="tool-link">
+              Scrape Website
+            </Link>
           </div>
         </div>
       </section>
-      
-      <hr />
       
       <footer>
         <div className="footer-content">

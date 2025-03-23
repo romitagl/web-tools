@@ -5,6 +5,7 @@ import QrCodeTool from './components/QrCodeTool';
 import CidrCalculator from './components/CidrCalculator';
 import CodeFormatter from './components/CodeFormatter';
 import Base64Tool from './components/Base64Tool';
+import WebsiteScraper from './components/WebsiteScraper';
 import './css/main.css'; // Updated CSS import
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/cidr-calculator" element={<CidrCalculator />} />
             <Route path="/code-formatter" element={<CodeFormatter />} />
             <Route path="/base64-encoder-decoder" element={<Base64Tool />} />
+            <Route path="/website-scraper" element={<WebsiteScraper />} />
           </Routes>
         </div>
       </div>
