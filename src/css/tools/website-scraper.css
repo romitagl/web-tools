@@ -515,18 +515,42 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .scraper-container {
+    padding: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+    border-radius: var(--radius-md);
+  }
+  
+  .info-banner {
+    padding: var(--spacing-sm);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+  
+  .info-content {
+    font-size: 0.85rem;
+  }
+  
   .button-group {
     flex-direction: column;
+    gap: var(--spacing-sm);
   }
   
   .action-button.primary,
   .action-button.secondary,
   .action-button.stop {
     flex: auto;
+    padding: var(--spacing-sm);
+    font-size: 0.9rem;
   }
   
   .stats-container {
     grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .progress-section {
+    padding: var(--spacing-md);
   }
   
   .progress-stats {
@@ -534,7 +558,31 @@
     gap: var(--spacing-xs);
   }
   
+  .progress-section h3 {
+    font-size: 1.1rem;
+  }
+  
   .proxy-checkboxes {
     flex-direction: column;
+  }
+  
+  .log-content {
+    max-height: 150px;
+  }
+  
+  .log-entry {
+    font-size: 0.75rem;
+  }
+  
+  .download-button {
+    width: 100%;
+  }
+  
+  .advanced-options {
+    padding: var(--spacing-md);
+  }
+  
+  .input-group label {
+    font-size: 0.9rem;
   }
 }

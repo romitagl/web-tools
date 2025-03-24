@@ -18,7 +18,7 @@ function Home() {
           </div>
         </div>
       </div>
-      
+
       <section className="hero-banner">
         <div className="hero-content">
           <h2 className="hero-title">Powerful Tools for Everyone</h2>
@@ -28,7 +28,7 @@ function Home() {
           </p>
         </div>
       </section>
-      
+
       <section className="featured-tools">
         <h3 className="featured-title">Most Popular Tools</h3>
         <div className="featured-grid">
@@ -38,7 +38,7 @@ function Home() {
             </div>
             <h2>QR Code Generator</h2>
             <p>
-              <strong>Perfect for Businesses, Airbnb hosts, restaurants & vacation rentals!</strong> Create scannable 
+              <strong>Perfect for Businesses, Airbnb hosts, restaurants & vacation rentals!</strong> Create scannable
               WiFi credentials, URLs, contact details, and check-in instructions for your guests.
               No more typing long passwords or writing instructions.
             </p>
@@ -59,7 +59,7 @@ function Home() {
             </div>
             <h2>PDF & Image Merger</h2>
             <p>
-              <strong>Combine multiple PDFs and images instantly!</strong> Perfect for creating 
+              <strong>Combine multiple PDFs and images instantly!</strong> Perfect for creating
               documentation, property listings, digital portfolios, or merging scanned documents.
               No file size limits, no uploads, and no data collection.
             </p>
@@ -77,7 +77,7 @@ function Home() {
       </section>
 
       <hr />
-      
+
       <section className="testimonials">
         <h3>What Our Users Say</h3>
         <div className="testimonial-carousel">
@@ -185,7 +185,7 @@ function Home() {
           These tools are still under development and may have limitations or unexpected behavior.
           We're actively working to improve them based on user feedback.
         </p>
-        
+
         <div className="tools-grid">
           <div className="tool-card experimental">
             <div className="tool-icon">
@@ -200,20 +200,20 @@ function Home() {
           </div>
         </div>
       </section>
-      
+
       <footer>
         <div className="footer-content">
           <div className="footer-section">
             <h4>About These Tools</h4>
             <p>
-              All tools are developed with privacy and security in mind. Your data never leaves your 
+              All tools are developed with privacy and security in mind. Your data never leaves your
               browser - everything is processed locally on your device.
             </p>
           </div>
           <div className="footer-section">
             <h4>Support Development</h4>
             <p>
-              If you find these tools useful, please consider supporting their development by starring the 
+              If you find these tools useful, please consider supporting their development by starring the
               repository on <a href="https://github.com/romitagl/web-tools">GitHub</a> or sponsoring the project.
             </p>
             <iframe src="https://github.com/sponsors/romitagl/button" title="Sponsor" width="116" height="35" />
