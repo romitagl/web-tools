@@ -8,8 +8,10 @@
   padding: var(--spacing-lg);
   border: 1px solid rgba(74, 192, 255, 0.3);
   overflow: hidden;
+  width: auto;
+  box-sizing: border-box;
 }
-
+  
 .experimental-banner {
   display: flex;
   align-items: center;
@@ -17,7 +19,7 @@
   margin-bottom: var(--spacing-lg);
   position: relative;
 }
-
+  
 .experimental-title {
   font-size: 1.8rem;
   color: white;
@@ -25,7 +27,7 @@
   text-align: center;
   margin-right: var(--spacing-sm);
 }
-
+  
 .experimental-badge {
   background-color: var(--accent-color);
   color: var(--bg-dark);
@@ -37,7 +39,7 @@
   letter-spacing: 0.5px;
   display: inline-block;
 }
-
+  
 .experimental-description {
   text-align: center;
   color: var(--text-muted);
@@ -46,7 +48,7 @@
   font-size: 0.95rem;
   line-height: 1.5;
 }
-
+  
 .tool-card.experimental {
   position: relative;
   background: linear-gradient(to bottom right, 
@@ -57,14 +59,17 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(74, 192, 255, 0.4);
   margin-bottom: var(--spacing-md);
+  padding: var(--spacing-lg);
+  width: 100%;
+  box-sizing: border-box;
 }
-
+  
 .tool-card.experimental:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(74, 192, 255, 0.2);
   border-color: rgba(74, 192, 255, 0.6);
 }
-
+  
 .experimental-tag {
   position: absolute;
   top: 10px;
@@ -80,43 +85,63 @@
   border: 1px solid rgba(74, 192, 255, 0.4);
   z-index: 1;
 }
-
+  
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  #root, .container {
+    padding-left: 15px;
+    padding-right: 15px;
+    overflow-x: hidden;
+  }
+  
   .experimental-tools-section {
-      padding: var(--spacing-md);
+    margin-left: 0;
+    margin-right: 0;
+    padding: 15px;
+    border-radius: 10px;
+    width: 100%;
   }
   
-  .experimental-title {
-      font-size: 1.4rem;
-  }
-  
-  .experimental-description {
-      font-size: 0.9rem;
-      margin-bottom: var(--spacing-lg);
-      padding: 0 var(--spacing-xs);
-  }
-  
-  .experimental-badge {
-      font-size: 0.7rem;
-      padding: 1px 6px;
-      border-radius: 8px;
+  .tools-grid {
+    display: block; /* Switch from grid to block on mobile */
+    width: 100%;
+    padding: 0;
+    margin: 15px 0;
   }
   
   .tool-card.experimental {
-      padding: var(--spacing-md);
+    width: 100%;
+    padding: 15px;
+    margin: 0 0 15px 0;
+    border-radius: 8px;
   }
-  
+    
+  .experimental-title {
+    font-size: 1.4rem;
+  }
+    
+  .experimental-description {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    padding: 0 var(--spacing-xs);
+  }
+    
+  .experimental-badge {
+    font-size: 0.7rem;
+    padding: 1px 6px;
+    border-radius: 8px;
+  }
+    
   .experimental-tag {
-      top: 5px;
-      right: 5px;
-      font-size: 0.6rem;
-      padding: 2px 6px;
+    top: 5px;
+    right: 5px;
+    font-size: 0.6rem;
+    padding: 2px 6px;
   }
-  
+    
   .experimental-banner {
-      flex-direction: column;
-      gap: var(--spacing-xs);
-      margin-bottom: var(--spacing-md);
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
   }
 }
