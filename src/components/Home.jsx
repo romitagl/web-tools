@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FileText, Network, Code, FileCode, QrCode, Wifi, Smartphone, Globe } from 'lucide-react';
+import { FileText, Network, Code, FileCode, QrCode, Wifi, Smartphone, Globe, Video } from 'lucide-react';
 
 function Home() {
   return (
@@ -23,7 +23,7 @@ function Home() {
         <div className="hero-content">
           <h2 className="hero-title">Powerful Tools for Everyone</h2>
           <p className="hero-description">
-            From PDF merging to QR code generation,
+            Whether you need to create QR codes, merge PDFs, or speed up videos, our supporting your development tasks,
             our free tools make your digital life easier without compromising privacy.
           </p>
         </div>
@@ -71,6 +71,27 @@ function Home() {
             </div>
             <Link to="/pdf-merger" className="primary-button">
               Merge Files Now
+            </Link>
+          </div>
+          
+          <div className="featured-card">
+            <div className="featured-icon">
+              <Video size={50} color="#4ac0ff" />
+            </div>
+            <h2>Video Speed Controller</h2>
+            <p>
+              <strong>Create stunning slow-motion or fast-forward effects!</strong> Transform your videos by
+              adjusting playback speed. Perfect for dramatic sports footage, accelerating tutorials,
+              or creating time-lapse effects from regular videos.
+            </p>
+            <div className="features-list">
+              <span className="feature-badge">Slow Motion</span>
+              <span className="feature-badge">Time-Lapse</span>
+              <span className="feature-badge">No Upload</span>
+              <span className="feature-badge">Browser Processing</span>
+            </div>
+            <Link to="/video-speed-controller" className="primary-button">
+              Transform Your Videos
             </Link>
           </div>
         </div>
@@ -143,6 +164,17 @@ function Home() {
 
           <div className="tool-card">
             <div className="tool-icon">
+              <Video size={40} color="lightblue" />
+            </div>
+            <h2>Video Speed Controller</h2>
+            <p>Modify video playback speed to create slow-motion or time-lapse effects. Perfect for creating dramatic effects or speeding up tutorials.</p>
+            <Link to="/video-speed-controller" className="tool-link">
+              Adjust Video Speed
+            </Link>
+          </div>
+
+          <div className="tool-card">
+            <div className="tool-icon">
               <Network size={40} color="lightblue" />
             </div>
             <h2>CIDR Calculator</h2>
@@ -173,6 +205,7 @@ function Home() {
               Encode/Decode
             </Link>
           </div>
+
         </div>
       </section>
 

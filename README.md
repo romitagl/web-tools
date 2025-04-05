@@ -22,6 +22,12 @@ Welcome to **Web Tools**, your go-to client-side web application for a variety o
 - **Customization options**: Adjust colors, size, and other properties of your QR codes
 - **Perfect for hospitality**: Create QR codes for guest Wi-Fi access, contact info, and check-in instructions
 
+### Media Tools
+
+- **Video Speed Controller**: Adjust video playback speed to create slow-motion or time-lapse effects
+- **No video uploads**: Process videos directly in your browser for complete privacy
+- **Preview capability**: See the results before downloading
+
 ### Network Tools
 
 - **CIDR Subnet Calculator**: Calculate network addresses, broadcast addresses, and IP ranges
@@ -60,6 +66,7 @@ Check out the live deployment of the application here:
 
 - **PDF & Image Merger**: Combine multiple PDFs and images into a single document
 - **QR Code Generator & Scanner**: Create and scan QR codes for various purposes
+- **Video Speed Controller**: Create slow-motion or time-lapse videos by adjusting playback speed
 - **CIDR Subnet Calculator**: Network planning and IP address management
 - **Code Formatter**: Beautify and format code in multiple languages
 - **Base64 Encoder/Decoder**: Encode and decode text or binary data

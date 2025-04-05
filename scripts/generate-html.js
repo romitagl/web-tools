@@ -13,7 +13,8 @@ const routes = [
   '/qr-code-tool',
   '/cidr-calculator',
   '/code-formatter',
-  '/base64-encoder-decoder'
+  '/base64-encoder-decoder',
+  '/video-speed-controller'
 ];
 
 // Function to create static HTML files

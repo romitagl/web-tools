@@ -6,6 +6,7 @@ import CidrCalculator from './components/CidrCalculator';
 import CodeFormatter from './components/CodeFormatter';
 import Base64Tool from './components/Base64Tool';
 import WebsiteScraper from './components/WebsiteScraper';
+import VideoSpeedController from './components/VideoSpeedController';
 import './css/main.css'; // Updated CSS import
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route path="/code-formatter" element={<CodeFormatter />} />
             <Route path="/base64-encoder-decoder" element={<Base64Tool />} />
             <Route path="/website-scraper" element={<WebsiteScraper />} />
+            <Route path="/video-speed-controller" element={<VideoSpeedController />} />
           </Routes>
         </div>
       </div>
