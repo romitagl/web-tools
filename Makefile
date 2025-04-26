@@ -58,7 +58,9 @@ docker-run:
 		-v $(PWD):/app \
 		-w /app \
 		-e ROLLUP_SKIP_NATIVE=1 \
-		$(PROJECT_NAME) npm run dev
+		-e npm_config_platform=linux \
+		-e npm_config_arch=x64 \
+		$(PROJECT_NAME) sh -c "npm run dev"
 
 # Update the node dependencies in Docker container
 .PHONY: docker-npm-update
