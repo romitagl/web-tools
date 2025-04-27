@@ -39,7 +39,7 @@ function VideoSpeedController() {
     return () => {
       if (videoUrl) URL.revokeObjectURL(videoUrl);
       if (processedVideoUrl) URL.revokeObjectURL(processedVideoUrl);
-      
+
       // Clean up any GIF worker if it exists
       if (gifWorkerRef.current) {
         gifWorkerRef.current.terminate();
@@ -55,19 +55,19 @@ function VideoSpeedController() {
       const script = document.createElement('script');
       script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js';
       script.async = true;
-      
+
       script.onload = () => {
         console.log('GIF.js library loaded successfully');
         // No need to modify defaults - we'll pass all options directly when creating the GIF
       };
-      
+
       script.onerror = () => {
         console.error('Failed to load GIF.js library');
         setError('Failed to load GIF processing library. Please try a different output format.');
       };
-      
+
       document.body.appendChild(script);
-      
+
       return () => {
         // Clean up script on unmount if it's still loading
         document.body.removeChild(script);
@@ -78,7 +78,7 @@ function VideoSpeedController() {
   // Function to find a supported MIME type for video recording
   const getSupportedMimeType = (format = 'webm') => {
     let possibleTypes = [];
-    
+
     // Select possible MIME types based on the requested format
     if (format === 'webm') {
       possibleTypes = [
@@ -98,17 +98,17 @@ function VideoSpeedController() {
         'video/webm'
       ];
     }
-    
+
     // Fallback types for all formats
     possibleTypes.push('video/webm', 'video/mp4');
-    
+
     for (const type of possibleTypes) {
       if (MediaRecorder.isTypeSupported(type)) {
         console.log(`Using MIME type: ${type}`);
         return type;
       }
     }
-    
+
     // Fallback to default if no specific types are supported
     console.log('No specific MIME types supported, using browser default');
     return '';
@@ -117,13 +117,13 @@ function VideoSpeedController() {
   // Format bytes to human-readable format
   const formatBytes = (bytes, decimals = 2) => {
     if (bytes === 0) return '0 Bytes';
-    
+
     const k = 1024;
     const dm = decimals < 0 ? 0 : decimals;
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    
+
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
+
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   };
 
@@ -190,13 +190,13 @@ function VideoSpeedController() {
           height: video.videoHeight
         });
         setDuration(video.duration);
-        
+
         // Set a reasonable GIF width based on original video dimensions
         // but don't go larger than 800px to maintain performance
         const scaledWidth = Math.min(800, video.videoWidth);
         setGifWidth(scaledWidth);
       };
-      
+
       // Handle video load error
       video.onerror = (e) => {
         console.error('Video load error:', e);
@@ -244,7 +244,7 @@ function VideoSpeedController() {
         if (typeof window.GIF !== 'function') {
           throw new Error("GIF.js library not properly loaded. Using fallback method.");
         }
-        
+
         // Determine quality settings based on user selection
         let gifQualitySettings = {
           workers: 2, // Use fewer workers to avoid memory issues
@@ -253,7 +253,7 @@ function VideoSpeedController() {
           width,
           height
         };
-        
+
         if (gifQuality === 'low') {
           gifQualitySettings.quality = 20;
           gifQualitySettings.workers = 1;
@@ -261,14 +261,14 @@ function VideoSpeedController() {
           gifQualitySettings.quality = 5;
           gifQualitySettings.workers = 3;
         }
-        
+
         // Create a new GIF
         const gif = new window.GIF(gifQualitySettings);
-        
+
         // Add frames to the GIF
         let framesAdded = 0;
         const totalFrames = frames.length;
-        
+
         frames.forEach(frame => {
           try {
             gif.addFrame(frame, { delay: frameDelay });
@@ -280,25 +280,25 @@ function VideoSpeedController() {
             console.warn(`Warning: Could not add frame ${framesAdded}`, frameError);
           }
         });
-        
+
         // Add progress handler
         gif.on('progress', progress => {
           console.log(`GIF encoding progress: ${Math.round(progress * 100)}%`);
           // Update progress display (scale from 70-99% to show GIF encoding after frame capture)
           setProcessingProgress(70 + Math.round(progress * 29));
         });
-        
+
         // Set a timeout to detect if processing gets stuck
         const timeoutId = setTimeout(() => {
           reject(new Error("GIF processing timed out. Using fallback method."));
         }, 30000); // 30 seconds timeout
-        
+
         // Handle completion
         gif.on('finished', blob => {
           clearTimeout(timeoutId); // Clear the timeout
           resolve(blob);
         });
-        
+
         // Start rendering
         gif.render();
       } catch (error) {
@@ -307,6 +307,7 @@ function VideoSpeedController() {
     });
   };
 
+  // Process video with selected speed
   // Process video with selected speed
   const processVideo = async () => {
     const video = videoRef.current;
@@ -320,21 +321,24 @@ function VideoSpeedController() {
     setIsProcessing(true);
     setProcessingProgress(0);
     processingCancelledRef.current = false;
-    
+
     // Clear previous frames reference
     gifFramesRef.current = [];
 
     try {
-      // Check if MediaRecorder is supported
+      // Check for MediaRecorder support with better fallback messaging
       if (!window.MediaRecorder) {
-        throw new Error('Your browser does not support MediaRecorder. Please try a different browser like Chrome or Firefox.');
+        throw new Error('Your browser does not support MediaRecorder. Please try Chrome, Firefox, or Edge.');
       }
-      
+
       // Check if canvas.captureStream is supported
       const testCanvas = document.createElement('canvas');
       if (!testCanvas.captureStream) {
         throw new Error('Your browser does not support canvas.captureStream. Please try a different browser like Chrome or Firefox.');
       }
+
+      // Check memory before starting processing
+      const isMemoryLimited = navigator.deviceMemory && navigator.deviceMemory < 4;
 
       // Pause the original video if playing
       video.pause();
@@ -344,29 +348,46 @@ function VideoSpeedController() {
       const canvas = document.createElement('canvas');
       canvasRef.current = canvas;
       const ctx = canvas.getContext('2d');
-      
+
       // Calculate dimensions
       let targetWidth, targetHeight;
-      
+
       if (outputFormat === 'gif') {
         // For GIF, use the user-defined width and calculate height to maintain aspect ratio
         targetWidth = gifWidth;
         targetHeight = Math.round(targetWidth * (video.videoHeight / video.videoWidth));
+
+        // For low-memory devices, automatically reduce quality
+        if (isMemoryLimited) {
+          // Automatically reduce quality for low-memory devices
+          setGifQuality('low');
+          setGifWidth(Math.min(400, gifWidth)); // Reduce width to max 400px
+          targetWidth = Math.min(400, gifWidth);
+          targetHeight = Math.round(targetWidth * (video.videoHeight / video.videoWidth));
+
+          setSuccess('Low memory detected. Quality and size reduced for better performance.');
+        }
+
+        // Add size limits based on video length to prevent crashes
+        const videoLength = video.duration;
+        if (videoLength > 30 && gifQuality === 'high') {
+          setSuccess('Note: Long videos with high quality may cause performance issues. Consider using video format instead.');
+        }
       } else {
         // For video formats, use original dimensions
         targetWidth = video.videoWidth;
         targetHeight = video.videoHeight;
       }
-      
+
       // Set canvas dimensions 
       canvas.width = targetWidth;
       canvas.height = targetHeight;
 
       // Set quality based on user selection for video formats
-      let videoQualitySettings = { 
+      let videoQualitySettings = {
         videoBitsPerSecond: 5000000 // 5Mbps for high quality
       };
-      
+
       if (videoQuality === 'medium') {
         videoQualitySettings.videoBitsPerSecond = 2500000; // 2.5Mbps
       } else if (videoQuality === 'low') {
@@ -376,43 +397,43 @@ function VideoSpeedController() {
       // For GIF, we'll handle processing differently
       if (outputFormat === 'gif') {
         setSuccess('Preparing to generate GIF...');
-        
+
         // Set initial time
         const startTime = 0;
         const totalDuration = video.duration;
         video.currentTime = startTime;
-        
+
         // Calculate frame delays based on playback speed
         const frameDelay = Math.round(100 / playbackSpeed); // in ms (e.g., 100ms for 1x speed)
-        
+
         // Determine frame capture rate based on playback speed and quality
         // More frames = smoother animation but larger file size
         let frameSkip = 1; // By default, capture every frame
-        
+
         if (gifQuality === 'low') {
           frameSkip = 3; // Capture every 3rd frame
         } else if (gifQuality === 'medium') {
           frameSkip = 2; // Capture every 2nd frame
         }
-        
+
         // For very slow motion, we need more frames
         if (playbackSpeed < 0.5) {
           frameSkip = Math.max(1, Math.floor(frameSkip / 2));
         }
-        
+
         // Track the frames we've captured
         let frameCount = 0;
         let framesProcessed = 0;
-        
+
         // Process frame by frame
         const processGifFrame = async () => {
           if (processingCancelledRef.current) {
             return;
           }
-          
+
           // Draw current video frame to canvas
           ctx.drawImage(video, 0, 0, targetWidth, targetHeight);
-          
+
           // Only capture the frame if it's a frame we want (based on frameSkip)
           if (frameCount % frameSkip === 0) {
             // Capture this frame
@@ -423,23 +444,23 @@ function VideoSpeedController() {
             frameCanvas.height = targetHeight;
             const frameCtx = frameCanvas.getContext('2d');
             frameCtx.drawImage(canvas, 0, 0);
-            
+
             // Add this frame to our collection
             gifFramesRef.current.push(frameCanvas);
             framesProcessed++;
           }
-          
+
           frameCount++;
-          
+
           // Calculate next frame time based on playback speed
           // We use a small increment to ensure smooth frame capture
-          const frameDuration = 1/30; // Aim for 30fps capture
+          const frameDuration = 1 / 30; // Aim for 30fps capture
           const nextTime = video.currentTime + (frameDuration * playbackSpeed);
-          
+
           // Update progress (use 60% of the progress bar for frame capture)
           const progress = (video.currentTime / totalDuration) * 60;
-          setProcessingProgress(Math.min(60, progress)); 
-          
+          setProcessingProgress(Math.min(60, progress));
+
           // Check if we've reached the end
           if (nextTime >= totalDuration) {
             // We've captured all frames, now create the GIF
@@ -448,12 +469,12 @@ function VideoSpeedController() {
               // First try with GIF.js
               try {
                 const gifBlob = await createGifFromFrames(
-                  gifFramesRef.current, 
-                  targetWidth, 
-                  targetHeight, 
+                  gifFramesRef.current,
+                  targetWidth,
+                  targetHeight,
                   frameDelay
                 );
-                
+
                 const gifUrl = URL.createObjectURL(gifBlob);
                 setProcessedVideoUrl(gifUrl);
                 setSuccess(`GIF created successfully! ${gifFramesRef.current.length} frames at ${targetWidth}x${targetHeight}`);
@@ -463,25 +484,25 @@ function VideoSpeedController() {
                 console.error('Error creating GIF with GIF.js:', gifError);
                 // Fall back to our manual GIF creation approach
                 setSuccess('Using alternative GIF creation method...');
-                
+
                 // Create an animated canvas as fallback
                 const animatedCanvas = document.createElement('canvas');
                 animatedCanvas.width = targetWidth;
                 animatedCanvas.height = targetHeight;
                 const animCtx = animatedCanvas.getContext('2d');
-                
+
                 // Simulate GIF with a video by using MediaRecorder on a canvas stream
                 const stream = animatedCanvas.captureStream();
                 const alternateRecorder = new MediaRecorder(stream, {
                   mimeType: getSupportedMimeType('webm'),
                   videoBitsPerSecond: 2000000 // 2Mbps is good for animated content
                 });
-                
+
                 const animChunks = [];
                 alternateRecorder.ondataavailable = e => {
                   if (e.data.size > 0) animChunks.push(e.data);
                 };
-                
+
                 alternateRecorder.onstop = () => {
                   const fallbackBlob = new Blob(animChunks, { type: 'video/webm' });
                   const fallbackUrl = URL.createObjectURL(fallbackBlob);
@@ -490,9 +511,9 @@ function VideoSpeedController() {
                   setProcessingProgress(100);
                   setIsProcessing(false);
                 };
-                
+
                 alternateRecorder.start();
-                
+
                 // Now animate through the frames
                 let frameIndex = 0;
                 const renderFrame = () => {
@@ -500,20 +521,20 @@ function VideoSpeedController() {
                     alternateRecorder.stop();
                     return;
                   }
-                  
+
                   const frame = gifFramesRef.current[frameIndex];
                   animCtx.clearRect(0, 0, targetWidth, targetHeight);
                   animCtx.drawImage(frame, 0, 0);
                   frameIndex++;
-                  
+
                   // Update progress during animation
                   const animProgress = 60 + (frameIndex / gifFramesRef.current.length) * 39;
                   setProcessingProgress(Math.min(99, animProgress));
-                  
+
                   // Schedule next frame
                   setTimeout(renderFrame, frameDelay);
                 };
-                
+
                 // Start the animation
                 renderFrame();
               }
@@ -524,40 +545,40 @@ function VideoSpeedController() {
             }
             return;
           }
-          
+
           // Set next frame time
           video.currentTime = nextTime;
         };
-        
+
         // Handle seeking completion for GIF frames
         video.onseeked = processGifFrame;
-        
+
         // Start GIF processing
         processGifFrame();
-        
+
       } else {
         // For video formats, use MediaRecorder
 
         // Create a media stream from the canvas
         const stream = canvas.captureStream();
-        
+
         // Create media recorder
         const mimeType = getSupportedMimeType(outputFormat);
         mediaRecorderRef.current = new MediaRecorder(stream, {
           mimeType: mimeType,
           ...videoQualitySettings
         });
-        
+
         // Clear chunks array
         chunksRef.current = [];
-        
+
         // Handle data available event
         mediaRecorderRef.current.ondataavailable = (e) => {
           if (e.data.size > 0) {
             chunksRef.current.push(e.data);
           }
         };
-        
+
         // Handle recording stop event
         mediaRecorderRef.current.onstop = async () => {
           try {
@@ -566,14 +587,14 @@ function VideoSpeedController() {
             if (outputFormat === 'mp4') {
               blobMimeType = 'video/mp4';
             }
-            
+
             const blob = new Blob(chunksRef.current, { type: blobMimeType });
             const url = URL.createObjectURL(blob);
             setProcessedVideoUrl(url);
             setSuccess('Video processing complete!');
             setProcessingProgress(100);
             setIsProcessing(false);
-            
+
             // Ensure the processed video loads properly
             if (processedVideoRef.current) {
               processedVideoRef.current.load();
@@ -584,53 +605,65 @@ function VideoSpeedController() {
             setIsProcessing(false);
           }
         };
-        
+
         // Start recording
         mediaRecorderRef.current.start(100);
-        
+
         // Set initial time and track progress
         const startTime = 0;
         const totalDuration = video.duration;
         video.currentTime = startTime;
-        
+
         // Process frame by frame
         const processFrame = () => {
           if (!mediaRecorderRef.current || mediaRecorderRef.current.state === 'inactive' || processingCancelledRef.current) {
             return;
           }
-          
+
           // Draw current video frame to canvas
           ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-          
+
           // Calculate next frame time based on playback speed
           const frameRate = 30; // Frames per second
           const frameDuration = 1 / frameRate;
           const nextTime = video.currentTime + (frameDuration * playbackSpeed);
-          
+
           // Update progress
           const progress = (video.currentTime / totalDuration) * 100;
           setProcessingProgress(Math.min(99, progress)); // Cap at 99% until we're completely done
-          
+
           // Check if we've reached the end
           if (nextTime >= totalDuration) {
             mediaRecorderRef.current.stop();
             return;
           }
-          
+
           // Set next frame time
           video.currentTime = nextTime;
         };
-        
+
         // Handle seeking completion
         video.onseeked = processFrame;
-        
+
         // Start processing
         processFrame();
       }
-      
+
     } catch (err) {
+      // Improved error messaging
+      let errorMsg = err.message;
+
+      // Provide helpful suggestions based on error type
+      if (err.name === 'NotAllowedError') {
+        errorMsg = 'Camera or microphone access denied. Please check your browser permissions.';
+      } else if (err.name === 'NotReadableError') {
+        errorMsg = 'Could not access your camera or microphone. It may be in use by another application.';
+      } else if (err.message.includes('out of memory')) {
+        errorMsg = 'Browser ran out of memory. Try reducing the quality settings or using a shorter video.';
+      }
+
       console.error('Error processing video:', err);
-      setError(`Processing error: ${err.message}`);
+      setError(`Processing error: ${errorMsg}`);
       setIsProcessing(false);
       // Clean up
       if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
@@ -642,14 +675,14 @@ function VideoSpeedController() {
   // Cancel processing
   const cancelProcessing = () => {
     processingCancelledRef.current = true;
-    
+
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
       mediaRecorderRef.current.stop();
     }
-    
+
     // Clear GIF frames to free memory
     gifFramesRef.current = [];
-    
+
     setIsProcessing(false);
     setError('Processing canceled');
   };
@@ -658,14 +691,14 @@ function VideoSpeedController() {
   const resetAll = () => {
     // Stop any ongoing processing
     processingCancelledRef.current = true;
-    
+
     // Revoke existing URLs to free up memory
     if (videoUrl) URL.revokeObjectURL(videoUrl);
     if (processedVideoUrl) URL.revokeObjectURL(processedVideoUrl);
-    
+
     // Clear GIF frames to free memory
     gifFramesRef.current = [];
-    
+
     // Reset all state variables
     setVideoFile(null);
     setVideoUrl('');
@@ -679,16 +712,16 @@ function VideoSpeedController() {
     setSuccess('');
     setVideoInfo(null);
     setProcessingProgress(0);
-    
+
     // Pause any playing videos
     if (videoRef.current) {
       videoRef.current.pause();
     }
-    
+
     if (processedVideoRef.current) {
       processedVideoRef.current.pause();
     }
-    
+
     // Reset the file input by changing the key to force re-render
     setFileKey(Date.now());
   };
@@ -696,28 +729,28 @@ function VideoSpeedController() {
   // Download processed video
   const downloadVideo = () => {
     if (!processedVideoUrl) return;
-    
+
     const a = document.createElement('a');
     a.href = processedVideoUrl;
-    
+
     // Create a filename based on original name and speed
-    const speedText = playbackSpeed < 1 ? 
-      `slow-${playbackSpeed}x` : 
+    const speedText = playbackSpeed < 1 ?
+      `slow-${playbackSpeed}x` :
       `fast-${playbackSpeed}x`;
-      
+
     const originalName = videoFile.name.split('.').slice(0, -1).join('.');
-    
+
     // Determine extension - for GIF format, we're actually producing WebM
     let extension = 'webm'; // Default extension
-    
+
     // Only use MP4 if that was specifically selected
     if (outputFormat === 'mp4') {
       extension = 'mp4';
     }
-    
+
     // If user selected GIF, add a note in the filename
     const formatNote = outputFormat === 'gif' ? '-animation' : '';
-    
+
     a.download = `${originalName}-${speedText}${formatNote}.${extension}`;
     document.body.appendChild(a);
     a.click();
@@ -751,7 +784,7 @@ function VideoSpeedController() {
                 <Upload size={18} />
                 <span>Choose Video File</span>
               </label>
-              <input 
+              <input
                 id={`video-upload-${fileKey}`}
                 ref={fileInputRef}
                 type="file"
@@ -799,17 +832,17 @@ function VideoSpeedController() {
             <div className="video-preview">
               <h3>Original Video Preview</h3>
               <div className="video-container">
-                <video 
+                <video
                   ref={videoRef}
                   src={videoUrl}
                   onTimeUpdate={handleTimeUpdate}
                   onEnded={() => setIsPlaying(false)}
                   muted
                 />
-                
+
                 <div className="video-controls">
-                  <button 
-                    className="play-pause-button" 
+                  <button
+                    className="play-pause-button"
                     onClick={togglePlayPause}
                   >
                     {isPlaying ? <StopCircle size={20} /> : <PlayCircle size={20} />}
@@ -827,44 +860,44 @@ function VideoSpeedController() {
           {videoUrl && !isProcessing && !processedVideoUrl && (
             <div className="speed-control-section">
               <h3>Playback Speed Control</h3>
-              
+
               {/* OUTPUT FORMAT SELECTION - Moved outside advanced options */}
               <div className="format-control">
                 <label>Output Format:</label>
                 <div className="format-options">
                   <label className="radio-label">
-                    <input 
-                      type="radio" 
-                      name="format" 
-                      value="webm" 
-                      checked={outputFormat === 'webm'} 
-                      onChange={() => setOutputFormat('webm')} 
+                    <input
+                      type="radio"
+                      name="format"
+                      value="webm"
+                      checked={outputFormat === 'webm'}
+                      onChange={() => setOutputFormat('webm')}
                     />
                     <span>WebM (best quality, most compatible)</span>
                   </label>
                   <label className="radio-label">
-                    <input 
-                      type="radio" 
-                      name="format" 
-                      value="mp4" 
-                      checked={outputFormat === 'mp4'} 
-                      onChange={() => setOutputFormat('mp4')} 
+                    <input
+                      type="radio"
+                      name="format"
+                      value="mp4"
+                      checked={outputFormat === 'mp4'}
+                      onChange={() => setOutputFormat('mp4')}
                     />
                     <span>MP4 (widely supported)</span>
                   </label>
                   <label className="radio-label">
-                    <input 
-                      type="radio" 
-                      name="format" 
-                      value="gif" 
-                      checked={outputFormat === 'gif'} 
-                      onChange={() => setOutputFormat('gif')} 
+                    <input
+                      type="radio"
+                      name="format"
+                      value="gif"
+                      checked={outputFormat === 'gif'}
+                      onChange={() => setOutputFormat('gif')}
                     />
                     <span>GIF (animated image format)</span>
                   </label>
                 </div>
               </div>
-              
+
               <div className="speed-slider-container">
                 <div className="speed-slider-labels">
                   <span>Slow Motion</span>
@@ -889,51 +922,51 @@ function VideoSpeedController() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="preset-speeds">
-                <button 
-                  onClick={() => setPlaybackSpeed(0.25)} 
+                <button
+                  onClick={() => setPlaybackSpeed(0.25)}
                   className={`preset-button ${playbackSpeed === 0.25 ? 'active' : ''}`}
                 >
                   0.25x
                 </button>
-                <button 
-                  onClick={() => setPlaybackSpeed(0.5)} 
+                <button
+                  onClick={() => setPlaybackSpeed(0.5)}
                   className={`preset-button ${playbackSpeed === 0.5 ? 'active' : ''}`}
                 >
                   0.5x
                 </button>
-                <button 
-                  onClick={() => setPlaybackSpeed(1)} 
+                <button
+                  onClick={() => setPlaybackSpeed(1)}
                   className={`preset-button ${playbackSpeed === 1 ? 'active' : ''}`}
                 >
                   1x
                 </button>
-                <button 
-                  onClick={() => setPlaybackSpeed(1.5)} 
+                <button
+                  onClick={() => setPlaybackSpeed(1.5)}
                   className={`preset-button ${playbackSpeed === 1.5 ? 'active' : ''}`}
                 >
                   1.5x
                 </button>
-                <button 
-                  onClick={() => setPlaybackSpeed(2)} 
+                <button
+                  onClick={() => setPlaybackSpeed(2)}
                   className={`preset-button ${playbackSpeed === 2 ? 'active' : ''}`}
                 >
                   2x
                 </button>
-                <button 
-                  onClick={() => setPlaybackSpeed(4)} 
+                <button
+                  onClick={() => setPlaybackSpeed(4)}
                   className={`preset-button ${playbackSpeed === 4 ? 'active' : ''}`}
                 >
                   4x
                 </button>
               </div>
-              
+
               <div className="advanced-options-toggle" onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}>
                 <Settings size={16} />
                 <span>{showAdvancedOptions ? 'Hide Advanced Options' : 'Show Advanced Options'}</span>
               </div>
-              
+
               {showAdvancedOptions && (
                 <div className="advanced-options">
                   {outputFormat === 'gif' ? (
@@ -943,38 +976,38 @@ function VideoSpeedController() {
                         <label>GIF Quality:</label>
                         <div className="quality-options">
                           <label className="radio-label">
-                            <input 
-                              type="radio" 
-                              name="gif-quality" 
-                              value="low" 
-                              checked={gifQuality === 'low'} 
-                              onChange={() => setGifQuality('low')} 
+                            <input
+                              type="radio"
+                              name="gif-quality"
+                              value="low"
+                              checked={gifQuality === 'low'}
+                              onChange={() => setGifQuality('low')}
                             />
                             <span>Low (smaller file, faster)</span>
                           </label>
                           <label className="radio-label">
-                            <input 
-                              type="radio" 
-                              name="gif-quality" 
-                              value="medium" 
-                              checked={gifQuality === 'medium'} 
-                              onChange={() => setGifQuality('medium')} 
+                            <input
+                              type="radio"
+                              name="gif-quality"
+                              value="medium"
+                              checked={gifQuality === 'medium'}
+                              onChange={() => setGifQuality('medium')}
                             />
                             <span>Medium (balanced)</span>
                           </label>
                           <label className="radio-label">
-                            <input 
-                              type="radio" 
-                              name="gif-quality" 
-                              value="high" 
-                              checked={gifQuality === 'high'} 
-                              onChange={() => setGifQuality('high')} 
+                            <input
+                              type="radio"
+                              name="gif-quality"
+                              value="high"
+                              checked={gifQuality === 'high'}
+                              onChange={() => setGifQuality('high')}
                             />
                             <span>High (better quality, larger file)</span>
                           </label>
                         </div>
                       </div>
-                      
+
                       <div className="gif-size-control">
                         <label>GIF Width: {gifWidth}px</label>
                         <input
@@ -991,11 +1024,11 @@ function VideoSpeedController() {
                           <span>Smaller width = smaller file size. Height will adjust proportionally.</span>
                         </div>
                       </div>
-                      
+
                       <div className="gif-warning">
                         <AlertCircle size={16} />
                         <span>
-                          Note: Creating GIFs can be memory-intensive. For high-quality results with longer videos, 
+                          Note: Creating GIFs can be memory-intensive. For high-quality results with longer videos,
                           consider using a video format instead.
                         </span>
                       </div>
@@ -1007,32 +1040,32 @@ function VideoSpeedController() {
                         <label>Output Quality:</label>
                         <div className="quality-options">
                           <label className="radio-label">
-                            <input 
-                              type="radio" 
-                              name="quality" 
-                              value="low" 
-                              checked={videoQuality === 'low'} 
-                              onChange={() => setVideoQuality('low')} 
+                            <input
+                              type="radio"
+                              name="quality"
+                              value="low"
+                              checked={videoQuality === 'low'}
+                              onChange={() => setVideoQuality('low')}
                             />
                             <span>Low (faster processing)</span>
                           </label>
                           <label className="radio-label">
-                            <input 
-                              type="radio" 
-                              name="quality" 
-                              value="medium" 
-                              checked={videoQuality === 'medium'} 
-                              onChange={() => setVideoQuality('medium')} 
+                            <input
+                              type="radio"
+                              name="quality"
+                              value="medium"
+                              checked={videoQuality === 'medium'}
+                              onChange={() => setVideoQuality('medium')}
                             />
                             <span>Medium</span>
                           </label>
                           <label className="radio-label">
-                            <input 
-                              type="radio" 
-                              name="quality" 
-                              value="high" 
-                              checked={videoQuality === 'high'} 
-                              onChange={() => setVideoQuality('high')} 
+                            <input
+                              type="radio"
+                              name="quality"
+                              value="high"
+                              checked={videoQuality === 'high'}
+                              onChange={() => setVideoQuality('high')}
                             />
                             <span>High (larger file size)</span>
                           </label>
@@ -1042,17 +1075,17 @@ function VideoSpeedController() {
                   )}
                 </div>
               )}
-              
+
               <div className="process-controls">
-                <button 
-                  onClick={processVideo} 
+                <button
+                  onClick={processVideo}
                   className="process-button"
                   disabled={isProcessing}
                 >
                   <PlayCircle size={18} />
                   <span>Process {outputFormat === 'gif' ? 'GIF' : 'Video'} with {playbackSpeed}x Speed</span>
                 </button>
-                
+
                 <button onClick={resetAll} className="reset-button">
                   <RefreshCw size={18} />
                   <span>Reset</span>
@@ -1060,7 +1093,7 @@ function VideoSpeedController() {
               </div>
             </div>
           )}
-          
+
           {/* Processing indicator */}
           {isProcessing && (
             <div className="processing-section">
@@ -1078,8 +1111,8 @@ function VideoSpeedController() {
               <p className="processing-note">
                 <Info size={16} />
                 <span>
-                  {outputFormat === 'gif' 
-                    ? "Creating GIFs requires significant processing. This may take several minutes depending on video length and quality settings." 
+                  {outputFormat === 'gif'
+                    ? "Creating GIFs requires significant processing. This may take several minutes depending on video length and quality settings."
                     : "Depending on the video size and your device's performance, this might take a while. Please don't close this page."}
                 </span>
               </p>
@@ -1090,10 +1123,10 @@ function VideoSpeedController() {
           {processedVideoUrl && (
             <div className="processed-video-section">
               <h3>Processed {outputFormat === 'gif' ? 'Animation' : 'Video'} ({playbackSpeed}x Speed)</h3>
-              
+
               {/* Always use video tag since we're now always producing WebM */}
               <div className="video-container">
-                <video 
+                <video
                   ref={processedVideoRef}
                   src={processedVideoUrl}
                   controls
@@ -1102,13 +1135,13 @@ function VideoSpeedController() {
                   key={processedVideoUrl} // Add key to force re-render
                 />
               </div>
-              
+
               <div className="download-controls">
                 <button onClick={downloadVideo} className="download-button">
                   <Download size={18} />
                   <span>Download Processed {outputFormat === 'gif' ? 'Animation' : 'Video'}</span>
                 </button>
-                
+
                 <button onClick={resetAll} className="reset-button">
                   <RefreshCw size={18} />
                   <span>Process Another {outputFormat === 'gif' ? 'Animation' : 'Video'}</span>
@@ -1119,8 +1152,8 @@ function VideoSpeedController() {
                 <div className="info-message">
                   <Info size={16} />
                   <span>
-                    Due to browser limitations, your animation has been created as a WebM video instead of a GIF. 
-                    This format still preserves all speed adjustments and plays perfectly in browsers, and can be 
+                    Due to browser limitations, your animation has been created as a WebM video instead of a GIF.
+                    This format still preserves all speed adjustments and plays perfectly in browsers, and can be
                     converted to GIF using desktop tools if needed.
                   </span>
                 </div>
@@ -1135,7 +1168,7 @@ function VideoSpeedController() {
               <span>{error}</span>
             </div>
           )}
-          
+
           {success && (
             <div className="success-message">
               <Check size={16} />
@@ -1154,7 +1187,7 @@ function VideoSpeedController() {
             <li>Click "Process Video" to create your speed-adjusted video</li>
             <li>Preview the result and download your new video file</li>
           </ol>
-          
+
           <div className="tips">
             <h4>Tips</h4>
             <ul>
@@ -1165,7 +1198,7 @@ function VideoSpeedController() {
               <li>When creating GIFs, using smaller dimensions and lower quality settings will result in smaller file sizes</li>
             </ul>
           </div>
-          
+
           <div className="technical-notes">
             <h4>Technical Notes</h4>
             <ul>

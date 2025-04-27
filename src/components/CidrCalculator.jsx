@@ -85,17 +85,23 @@ function CidrCalculator() {
 
     // Validate IP address format
     if (!isValidIp(ipAddress)) {
-      setError('Invalid IP address format. Please enter a valid IPv4 address.');
+      setError('Invalid IP address format. Please enter a valid IPv4 address (e.g., 192.168.1.1).');
       setCalculating(false);
       return;
     }
 
     // Validate CIDR notation
-    if (!isValidCidr(cidrNotation)) {
+    const cidrNum = parseInt(cidrNotation, 10);
+    if (isNaN(cidrNum) || cidrNum < 0 || cidrNum > 32) {
       setError('Invalid CIDR prefix. Must be a number between 0 and 32.');
       setCalculating(false);
       return;
     }
+
+    // Special case handling for /31 and /32 networks
+    const specialCaseMessage = cidrNum === 31 ?
+      "Note: /31 networks are used for point-to-point links (RFC 3021) with 2 usable IPs." :
+      (cidrNum === 32 ? "Note: /32 is a host route with a single usable IP address." : "");
 
     // Convert IP to binary
     const ipBinary = ipToBinary(ipAddress);
@@ -159,6 +165,10 @@ function CidrCalculator() {
       binarySubnetMask: subnetMaskBinary.match(/.{1,8}/g).join('.'),
       binaryIp: ipBinary.match(/.{1,8}/g).join('.')
     };
+
+    if (specialCaseMessage) {
+      calculationResult.specialNote = specialCaseMessage;
+    }
 
     // Simulate a little processing time
     setTimeout(() => {
@@ -826,7 +836,7 @@ Subnet ${index + 1}:
           </>
         )}
       </div>
-      </Layout>
+    </Layout>
   );
 }
 

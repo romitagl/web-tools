@@ -139,32 +139,49 @@ function PdfMerger() {
     setMergeSuccess(false);
   };
 
-  const mergePDFs = async () => {
-    setIsMerging(true);
-    setMergeSuccess(false);
+const mergePDFs = async () => {
+  setIsMerging(true);
+  setMergeSuccess(false);
 
-    try {
-      const pdfDoc = await PDFDocument.create();
+  try {
+    const pdfDoc = await PDFDocument.create();
 
-      // Sort files by name
-      const sortedFiles = pdfFiles.sort((a, b) => a.name.localeCompare(b.name));
+    // Improved file sorting - case-insensitive sort and handling numeric parts properly
+    const sortedFiles = pdfFiles.sort((a, b) => {
+      // Natural sort algorithm for filenames (so file10.pdf comes after file2.pdf)
+      return a.name.localeCompare(b.name, undefined, {
+        numeric: true,
+        sensitivity: 'base'
+      });
+    });
 
-      for (const file of sortedFiles) {
+    for (const file of sortedFiles) {
+      try {
         const fileBytes = await file.arrayBuffer();
         const tempDoc = await PDFDocument.load(fileBytes);
         const copiedPages = await pdfDoc.copyPages(tempDoc, tempDoc.getPageIndices());
         copiedPages.forEach((page) => pdfDoc.addPage(page));
+      } catch (fileError) {
+        console.error(`Error processing file ${file.name}:`, fileError);
+        // Continue with other files instead of completely failing
+        continue;
       }
-
-      downloadPDF(await pdfDoc.save(), 'merged-pdfs.pdf');
-      setMergeSuccess(true);
-    } catch (error) {
-      console.error("Error merging PDFs:", error);
-      alert("An error occurred while merging PDF files. Please try again.");
-    } finally {
-      setIsMerging(false);
     }
-  };
+
+    // Check if we were able to add any pages
+    if (pdfDoc.getPageCount() === 0) {
+      throw new Error("No valid PDF pages could be processed. Please check your files.");
+    }
+
+    downloadPDF(await pdfDoc.save(), 'merged-pdfs.pdf');
+    setMergeSuccess(true);
+  } catch (error) {
+    console.error("Error merging PDFs:", error);
+    alert("An error occurred while merging PDF files: " + error.message);
+  } finally {
+    setIsMerging(false);
+  }
+};
 
   const mergeImages = async () => {
     setIsMerging(true);

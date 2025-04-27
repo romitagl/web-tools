@@ -1,6 +1,7 @@
 /* Import base styles */
 @import 'base.css';
 @import 'layout.css';
+@import 'loading.css';
 
 /* Import component styles */
 @import 'components/header.css';

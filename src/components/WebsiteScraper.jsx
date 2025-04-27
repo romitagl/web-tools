@@ -741,6 +741,7 @@ function WebsiteScraper() {
   };
 
   // Main scraping function
+  // Main scraping function
   const scrapeWebsite = async () => {
     // Validate URL
     if (!url) {
@@ -811,6 +812,14 @@ function WebsiteScraper() {
         otherFiles: 0
       };
 
+      // Add resource limits to prevent crashing
+      const MAX_RESOURCES = resourceLimit || 500;  // Default to 500 if not set
+      let resourceCount = 0;
+
+      // Add a tracking mechanism for large resources
+      let totalBytesProcessed = 0;
+      const MAX_TOTAL_BYTES = 100 * 1024 * 1024; // 100MB limit
+
       // Flag to track if the main HTML page was processed
       let mainPageProcessed = false;
       let mainPageHtml = null;
@@ -818,8 +827,14 @@ function WebsiteScraper() {
       // Process URLs until queue is empty or depth limit is reached
       while (urlsToProcess.length > 0 && !stopScrapingRef.current) {
         // Stop if we've reached the resource limit
-        if (processedUrls.size >= resourceLimit) {
-          addLog(`Reached resource limit of ${resourceLimit} files. Stopping.`, 'warning');
+        if (resourceCount >= MAX_RESOURCES) {
+          addLog(`Reached resource limit of ${MAX_RESOURCES} files. Stopping.`, 'warning');
+          break;
+        }
+
+        // Stop if we've processed too many bytes
+        if (totalBytesProcessed > MAX_TOTAL_BYTES) {
+          addLog(`Reached processing limit of ${formatBytes(MAX_TOTAL_BYTES)}. Stopping to prevent browser crash.`, 'warning');
           break;
         }
 
@@ -862,6 +877,10 @@ function WebsiteScraper() {
           if (contentType.includes('text/html')) {
             // Handle HTML
             const htmlText = await response.text();
+
+            // Track resources and bytes
+            resourceCount++;
+            totalBytesProcessed += htmlText.length;
 
             // Store the main page HTML separately
             if (isMainPage) {
@@ -954,6 +973,10 @@ function WebsiteScraper() {
             // Handle CSS
             const css = await response.text();
 
+            // Track resources and bytes
+            resourceCount++;
+            totalBytesProcessed += css.length;
+
             // Determine the filename
             const localPath = getLocalFilePath(currentUrl, url, 'css');
 
@@ -986,6 +1009,10 @@ function WebsiteScraper() {
             // Handle JavaScript
             const js = await response.text();
 
+            // Track resources and bytes
+            resourceCount++;
+            totalBytesProcessed += js.length;
+
             // Determine the filename
             const localPath = getLocalFilePath(currentUrl, url, 'js');
 
@@ -1003,6 +1030,10 @@ function WebsiteScraper() {
           } else {
             // Handle other files
             const blob = await response.blob();
+
+            // Track resources and bytes
+            resourceCount++;
+            totalBytesProcessed += blob.size;
 
             // Determine the filename
             const localPath = 'other/' + getFilenameFromUrl(currentUrl);
@@ -1024,6 +1055,12 @@ function WebsiteScraper() {
           const totalToProcess = processedUrls.size + urlsToProcess.length + imagesToProcess.size;
           setDownloadProgress(processedUrls.size / totalToProcess * 100);
           setScrapingStats(stats);
+
+          // Check if memory usage is getting high and warn user
+          if (performance && performance.memory && performance.memory.usedJSHeapSize >
+            performance.memory.jsHeapSizeLimit * 0.7) {
+            addLog('Warning: High memory usage detected. Consider reducing resource limit or processing smaller websites.', 'warning');
+          }
         } catch (err) {
           console.error(`Error processing ${currentUrl}:`, err);
           addLog(`Error processing ${currentUrl}: ${err.message}`, 'error');
@@ -1231,7 +1268,7 @@ Created with Website Scraper Tool
       setSuccessMessage("Website scraped successfully! Click Download to save the ZIP file.");
     } catch (err) {
       console.error("Scraping error:", err);
-      setError(`Error scraping website: ${err.message}`);
+      setError(`Error scraping website: ${err.message}. Try reducing the crawl depth or resource limit for complex websites.`);
       addLog(`Scraping error: ${err.message}`, 'error');
     } finally {
       setIsScrapingInProgress(false);

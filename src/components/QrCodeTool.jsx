@@ -238,17 +238,28 @@ function QrCodeTool() {
   // Stop the scanner
   const stopScanner = () => {
     console.log("Stopping scanner");
-    if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
-      html5QrCodeRef.current.stop()
-        .then(() => {
-          console.log('QR Code scanning stopped');
-        })
-        .catch(err => {
-          console.error('Error stopping QR Code scanner:', err);
-        });
+    if (html5QrCodeRef.current) {
+      if (html5QrCodeRef.current.isScanning) {
+        html5QrCodeRef.current.stop()
+          .then(() => {
+            console.log('QR Code scanning stopped');
+            setIsScanning(false);
+            setScanWithCamera(false);
+          })
+          .catch(err => {
+            console.error('Error stopping QR Code scanner:', err);
+            // Force state update even if there's an error
+            setIsScanning(false);
+            setScanWithCamera(false);
+          });
+      } else {
+        setIsScanning(false);
+        setScanWithCamera(false);
+      }
+    } else {
+      setIsScanning(false);
+      setScanWithCamera(false);
     }
-    setIsScanning(false);
-    setScanWithCamera(false);
   };
 
   // Handle file upload for QR code scanning
@@ -327,7 +338,13 @@ function QrCodeTool() {
   useEffect(() => {
     return () => {
       if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
-        html5QrCodeRef.current.stop().catch(err => console.error(err));
+        html5QrCodeRef.current.stop()
+          .then(() => {
+            console.log('QR Code scanner successfully stopped on component unmount');
+          })
+          .catch(err => {
+            console.error('Error stopping QR Code scanner:', err);
+          });
       }
     };
   }, []);

@@ -65,8 +65,13 @@
     content="Merge PDFs & create QR codes for Airbnb, hotels & vacation rentals. 100% free with no data uploads required!" />
   <meta name="twitter:image" content="https://web-tools.romitagl.com/og-image.jpg" />
 
+  <!-- Preload assets -->
+  <link rel="preload" href="/assets/react-vendor.js" as="script" crossorigin="anonymous">
+  <link rel="preload" href="/assets/main.css" as="style">
+  <link rel="preload" href="/images/webtools-logo.svg" as="image" type="image/svg+xml">
+
   <!-- Canonical URL -->
-  <link rel="canonical" href="https://web-tools.romitagl.com/" />
+  <link rel="canonical" href="https://web-tools.romitagl.com%REQUEST_PATH%" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/images/webtools-logo.svg" />
@@ -195,6 +200,18 @@
         }
       ]
     }
+    </script>
+    <script>
+      // Set correct canonical URL based on current path
+      (function() {
+        const canonicalTag = document.querySelector('link[rel="canonical"]');
+        if (canonicalTag) {
+          const path = window.location.pathname;
+          // Replace the placeholder with the actual path
+          const canonicalUrl = canonicalTag.href.replace('%REQUEST_PATH%', path);
+          canonicalTag.href = canonicalUrl;
+        }
+      })();
     </script>
 </head>
 
