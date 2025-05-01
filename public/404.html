@@ -2,16 +2,23 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redirecting...</title>
   <script>
-    // Save the URL path that caused the 404, including hash
-    sessionStorage.setItem('redirectPath', window.location.pathname + window.location.search + window.location.hash);
+    // Save the URL path that caused the 404, including hash and query parameters
+    const fullPath = window.location.pathname + 
+                    (window.location.search || '') + 
+                    (window.location.hash || '');
+    sessionStorage.setItem('redirectPath', fullPath);
+    
+    // Log the saved path for debugging
+    console.log('Page not found, saving path:', fullPath);
     
     // Redirect to the home page
     window.location.href = '/';
   </script>
 </head>
 <body>
-  <p>Redirecting...</p>
+  <p>Redirecting to home page...</p>
 </body>
 </html>

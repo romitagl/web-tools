@@ -202,14 +202,18 @@
     }
     </script>
     <script>
-      // Set correct canonical URL based on current path
+      // Ensure correct canonical URL for all pages
       (function() {
         const canonicalTag = document.querySelector('link[rel="canonical"]');
         if (canonicalTag) {
           const path = window.location.pathname;
-          // Replace the placeholder with the actual path
-          const canonicalUrl = canonicalTag.href.replace('%REQUEST_PATH%', path);
-          canonicalTag.href = canonicalUrl;
+          // Only update if needed
+          if (canonicalTag.href.includes('%REQUEST_PATH%')) {
+            // Handle special case for homepage
+            const pagePath = path === '/' ? '' : path;
+            const canonicalUrl = canonicalTag.href.replace('%REQUEST_PATH%', pagePath);
+            canonicalTag.href = canonicalUrl;
+          }
         }
       })();
     </script>
