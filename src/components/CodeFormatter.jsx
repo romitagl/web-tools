@@ -4,18 +4,7 @@ import { Link } from 'react-router-dom';
 import { Code, Info, ArrowLeft, Copy, Check, RefreshCw, FileText, Download, Upload } from 'lucide-react';
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
-import 'prismjs/components/prism-markup';
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-jsx';
-import 'prismjs/components/prism-typescript';
-import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-python';
-import 'prismjs/components/prism-sql';
-import 'prismjs/components/prism-yaml';
-import 'prismjs/components/prism-markdown';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
-import 'prismjs/plugins/line-numbers/prism-line-numbers';
 
 function CodeFormatter() {
   const [code, setCode] = useState('');
@@ -25,6 +14,7 @@ function CodeFormatter() {
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
   const [selectedTab, setSelectedTab] = useState('input'); // 'input' or 'output'
+  const [isPrismReady, setIsPrismReady] = useState(false);
 
   // Language options
   const languageOptions = [
@@ -40,12 +30,51 @@ function CodeFormatter() {
     { value: 'sql', label: 'SQL' }
   ];
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const initializePrism = async () => {
+      try {
+        globalThis.Prism = Prism;
+
+        await Promise.all([
+          import('prismjs/components/prism-markup'),
+          import('prismjs/components/prism-css'),
+          import('prismjs/components/prism-javascript'),
+          import('prismjs/components/prism-jsx'),
+          import('prismjs/components/prism-typescript'),
+          import('prismjs/components/prism-json'),
+          import('prismjs/components/prism-python'),
+          import('prismjs/components/prism-sql'),
+          import('prismjs/components/prism-yaml'),
+          import('prismjs/components/prism-markdown'),
+          import('prismjs/plugins/line-numbers/prism-line-numbers'),
+        ]);
+
+        if (isMounted) {
+          setIsPrismReady(true);
+        }
+      } catch (err) {
+        console.error('Failed to initialize Prism:', err);
+        if (isMounted) {
+          setError('Syntax highlighting failed to initialize. Formatting still works, but highlighted output may be unavailable.');
+        }
+      }
+    };
+
+    initializePrism();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   // Initialize Prism syntax highlighting
   useEffect(() => {
-    if (formattedCode) {
+    if (formattedCode && isPrismReady) {
       Prism.highlightAll();
     }
-  }, [formattedCode, selectedTab]);
+  }, [formattedCode, selectedTab, isPrismReady]);
 
   // Basic formatting for different languages
   const simpleFormat = (input, lang) => {
