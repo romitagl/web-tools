@@ -1,6 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Canonical from './components/Canonical';
+import Seo from './components/Seo';
 import './css/main.css';
 
 // Only import Home eagerly for better landing page performance
@@ -29,7 +29,7 @@ function App() {
     <Router>
       <div className="app dark">
         <div className="container" id="root">
-        <Canonical /> {/* Add this line */}
+        <Seo />
           <Routes>
             {/* Home is not lazy loaded for better initial performance */}
             <Route path="/" element={<Home />} />

@@ -2,6 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { getSeoData, siteUrl, defaultOgImage } from '../src/seoData.js';
 
 // Get the directory name properly in ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -15,8 +16,38 @@ const routes = [
   '/cidr-calculator',
   '/code-formatter',
   '/base64-encoder-decoder',
+  '/website-scraper',
   '/video-speed-controller'
 ];
+
+function escapeHtml(text) {
+  return text
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+function applySeo(indexHTML, route) {
+  const seo = getSeoData(route);
+  const canonicalUrl = `${siteUrl}${route}`;
+  const schemaJson = JSON.stringify(seo.schema);
+
+  return indexHTML
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(seo.title)}</title>`)
+    .replace(/<meta name="description"[\s\S]*?content="[^"]*"[\s\S]*?\/>/, `<meta name="description" content="${escapeHtml(seo.description)}" />`)
+    .replace(/<meta name="keywords"[\s\S]*?content="[^"]*"[\s\S]*?\/>/, `<meta name="keywords" content="${escapeHtml(seo.keywords)}" />`)
+    .replace(/<meta property="og:url"[\s\S]*?content="[^"]*"[\s\S]*?\/>/, `<meta property="og:url" content="${canonicalUrl}" />`)
+    .replace(/<meta property="og:title"[\s\S]*?content="[^"]*"[\s\S]*?\/>/, `<meta property="og:title" content="${escapeHtml(seo.title)}" />`)
+    .replace(/<meta property="og:description"[\s\S]*?content="[^"]*"[\s\S]*?\/>/, `<meta property="og:description" content="${escapeHtml(seo.description)}" />`)
+    .replace(/<meta property="og:image"[\s\S]*?content="[^"]*"[\s\S]*?\/>/, `<meta property="og:image" content="${defaultOgImage}" />`)
+    .replace(/<meta name="twitter:url"[\s\S]*?content="[^"]*"[\s\S]*?\/>/, `<meta name="twitter:url" content="${canonicalUrl}" />`)
+    .replace(/<meta name="twitter:title"[\s\S]*?content="[^"]*"[\s\S]*?\/>/, `<meta name="twitter:title" content="${escapeHtml(seo.title)}" />`)
+    .replace(/<meta name="twitter:description"[\s\S]*?content="[^"]*"[\s\S]*?\/>/, `<meta name="twitter:description" content="${escapeHtml(seo.description)}" />`)
+    .replace(/<meta name="twitter:image"[\s\S]*?content="[^"]*"[\s\S]*?\/>/, `<meta name="twitter:image" content="${defaultOgImage}" />`)
+    .replace(/<link rel="canonical" href="[^"]*" \/>/, `<link rel="canonical" href="${canonicalUrl}" />`)
+    .replace(/<script id="route-schema" type="application\/ld\+json">[\s\S]*?<\/script>/, `<script id="route-schema" type="application/ld+json">${schemaJson}</script>`);
+}
 
 // Function to create static HTML files
 async function generateStaticHTML() {
@@ -42,8 +73,8 @@ async function generateStaticHTML() {
         fs.mkdirSync(dirPath, { recursive: true });
       }
       
-      // Copy the index.html to the route directory
-      fs.writeFileSync(path.resolve(dirPath, 'index.html'), indexHTML);
+      // Copy the index.html to the route directory with route-specific SEO
+      fs.writeFileSync(path.resolve(dirPath, 'index.html'), applySeo(indexHTML, route));
       console.log(`Created: dist${route}/index.html`);
     }
     
