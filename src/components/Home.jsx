@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FileText, Network, Code, FileCode, QrCode, Wifi, Smartphone, Globe, Video } from 'lucide-react';
+import { FileDown, FileText, Network, Code, FileCode, QrCode, Wifi, Smartphone, Globe, Video } from 'lucide-react';
 
 function Home() {
   return (
@@ -23,7 +23,7 @@ function Home() {
         <div className="hero-content">
           <h2 className="hero-title">Powerful Tools for Everyone</h2>
           <p className="hero-description">
-            Whether you need to create QR codes, merge PDFs, or speed up videos, our supporting your development tasks,
+            Whether you need to create QR codes, merge or compress PDFs, or speed up videos, our supporting your development tasks,
             our free tools make your digital life easier without compromising privacy.
           </p>
         </div>
@@ -71,6 +71,27 @@ function Home() {
             </div>
             <Link to="/pdf-merger" className="primary-button">
               Merge Files Now
+            </Link>
+          </div>
+
+          <div className="featured-card">
+            <div className="featured-icon">
+              <FileDown size={50} color="#4ac0ff" />
+            </div>
+            <h2>PDF Compressor</h2>
+            <p>
+              <strong>Make large PDFs easier to share!</strong> Compress scanned and image-heavy PDFs
+              directly in your browser with no uploads. Choose between balanced, maximum, or higher
+              quality presets depending on your needs.
+            </p>
+            <div className="features-list">
+              <span className="feature-badge">Reduce Size</span>
+              <span className="feature-badge">Scanned PDFs</span>
+              <span className="feature-badge">Grayscale Option</span>
+              <span className="feature-badge">100% Private</span>
+            </div>
+            <Link to="/pdf-compressor" className="primary-button">
+              Compress PDF Now
             </Link>
           </div>
           
@@ -159,6 +180,17 @@ function Home() {
             <p>Combine multiple PDFs and images into a single document. Great for creating comprehensive documentation and presentations.</p>
             <Link to="/pdf-merger" className="tool-link">
               Merge Files Now
+            </Link>
+          </div>
+
+          <div className="tool-card">
+            <div className="tool-icon">
+              <FileDown size={40} color="lightblue" />
+            </div>
+            <h2>PDF Compressor</h2>
+            <p>Reduce PDF size directly in your browser. Ideal for scanned documents and image-heavy PDFs that need easier sharing.</p>
+            <Link to="/pdf-compressor" className="tool-link">
+              Compress PDF
             </Link>
           </div>
 

@@ -17,6 +17,7 @@ export default defineConfig({
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'pdf-lib': ['pdf-lib'],
+          'pdf-renderer': ['pdfjs-dist'],
           'qrcode-vendor': ['qrcode', 'html5-qrcode'],
           'utils': ['file-saver', 'jszip'],
           'ui': ['lucide-react', 'prismjs']

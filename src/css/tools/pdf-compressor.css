@@ -1,0 +1,91 @@
+/* PDF Compressor Tool Styles */
+
+.compress-section {
+  margin: var(--spacing-xl) 0;
+}
+
+.compressor-options {
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.compressor-options-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.compressor-options-header h3 {
+  margin: 0;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.profile-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: border-color var(--transition-normal), background-color var(--transition-normal), transform var(--transition-normal);
+}
+
+.profile-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.profile-card.active {
+  border-color: var(--primary-color);
+  background-color: rgba(74, 192, 255, 0.08);
+}
+
+.profile-card strong {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+}
+
+.profile-card p {
+  margin: 0 0 var(--spacing-xs);
+  color: var(--text-light);
+}
+
+.profile-card span {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.compress-checkbox {
+  margin-bottom: var(--spacing-lg);
+}
+
+.compression-summary {
+  display: grid;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  color: var(--text-light);
+}
+
+.compression-result.warning {
+  color: #ffd166;
+  background-color: rgba(255, 209, 102, 0.12);
+}
+
+.compression-result.warning svg {
+  color: #ffd166;
+}
+
+@media (max-width: 900px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}

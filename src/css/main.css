@@ -18,6 +18,7 @@
 
 /* Import tool-specific styles */
 @import 'tools/pdf-merger.css';
+@import 'tools/pdf-compressor.css';
 @import 'tools/code-formatter.css';
 @import 'tools/cidr-calculator.css';
 @import 'tools/qr-code.css';

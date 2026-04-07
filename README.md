@@ -11,6 +11,7 @@ Welcome to **Web Tools**, your go-to client-side web application for a variety o
 ### PDF & Image Tools
 
 - **Client-side PDF merging**: Combine multiple PDFs into a single document with no backend processing
+- **Client-side PDF compression**: Shrink scanned and image-heavy PDFs without uploading them anywhere
 - **Image to PDF conversion**: Convert and include images in your PDF documents
 - **No file uploads**: Your files stay on your device, ensuring maximum privacy
 - **Simple drag & drop interface**: Easy file management and reordering
@@ -65,6 +66,7 @@ Check out the live deployment of the application here:
 ## 📋 Tools Available
 
 - **PDF & Image Merger**: Combine multiple PDFs and images into a single document
+- **PDF Compressor**: Reduce PDF size locally in your browser
 - **QR Code Generator & Scanner**: Create and scan QR codes for various purposes
 - **Video Speed Controller**: Create slow-motion or time-lapse videos by adjusting playback speed
 - **CIDR Subnet Calculator**: Network planning and IP address management
@@ -132,7 +134,7 @@ make docker-run-node-cmd
 ## 🧰 Technology Stack
 
 - **Frontend**: React, TailwindCSS, Vite
-- **PDF Processing**: pdf-lib
+- **PDF Processing**: pdf-lib, pdfjs-dist
 - **QR Code**: qrcode.js, jsQR
 - **UI Components**: Lucide React icons
 - **Code Formatting**: Prism.js

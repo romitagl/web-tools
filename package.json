@@ -7,7 +7,7 @@
   "engines": {
     "node": ">=2.0.0"
   },
-  "packageManager": "npm@11.3.0",
+  "packageManager": "npm@11.12.1",
   "scripts": {
     "dev": "vite dev --host --open=false",
     "build": "vite build --config vite.config.js",
@@ -19,25 +19,26 @@
     "file-saver": "^2.0.5",
     "html5-qrcode": "^2.3.8",
     "jszip": "^3.10.1",
-    "lucide-react": "^0.503.0",
+    "lucide-react": "^1.7.0",
     "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^5.6.205",
     "prismjs": "^1.30.0",
     "qrcode": "^1.5.4",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-router-dom": "^7.12.0"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.14.0"
   },
   "devDependencies": {
-    "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
-    "@vitejs/plugin-react": "^4.4.1",
-    "autoprefixer": "^10.4.21",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "autoprefixer": "^10.4.27",
     "eslint": "^9.25.1",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.20",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.1.4",
-    "vite": "^6.4.2"
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.2",
+    "vite": "^8.0.7"
   }
 }
