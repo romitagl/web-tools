@@ -43,7 +43,7 @@ export default defineConfig({
             return 'utils';
           }
 
-          if (id.includes('/lucide-react/') || id.includes('/prismjs/')) {
+          if (id.includes('/lucide-react/')) {
             return 'ui';
           }
 
