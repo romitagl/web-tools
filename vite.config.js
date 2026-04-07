@@ -14,13 +14,40 @@ export default defineConfig({
     // Improved chunk strategy for better caching and loading
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'pdf-lib': ['pdf-lib'],
-          'pdf-renderer': ['pdfjs-dist'],
-          'qrcode-vendor': ['qrcode', 'html5-qrcode'],
-          'utils': ['file-saver', 'jszip'],
-          'ui': ['lucide-react', 'prismjs']
+        manualChunks(id) {
+          if (!id.includes('node_modules')) {
+            return undefined;
+          }
+
+          if (
+            id.includes('/react/') ||
+            id.includes('/react-dom/') ||
+            id.includes('/react-router-dom/')
+          ) {
+            return 'react-vendor';
+          }
+
+          if (id.includes('/pdf-lib/')) {
+            return 'pdf-lib';
+          }
+
+          if (id.includes('/pdfjs-dist/')) {
+            return 'pdf-renderer';
+          }
+
+          if (id.includes('/qrcode/') || id.includes('/html5-qrcode/')) {
+            return 'qrcode-vendor';
+          }
+
+          if (id.includes('/file-saver/') || id.includes('/jszip/')) {
+            return 'utils';
+          }
+
+          if (id.includes('/lucide-react/') || id.includes('/prismjs/')) {
+            return 'ui';
+          }
+
+          return 'vendor';
         },
         assetFileNames: 'assets/[name]-[hash][extname]',
         entryFileNames: 'assets/[name]-[hash].js',
