@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { getSeoData, siteUrl, defaultOgImage } from '../src/seoData.js';
+import { buildPublicUrl, getSeoData, defaultOgImage } from '../src/seoData.js';
 
 // Get the directory name properly in ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -30,7 +30,7 @@ function escapeHtml(text) {
 
 function applySeo(indexHTML, route) {
   const seo = getSeoData(route);
-  const canonicalUrl = `${siteUrl}${route}`;
+  const canonicalUrl = buildPublicUrl(route);
   const schemaJson = JSON.stringify(seo.schema);
 
   return indexHTML

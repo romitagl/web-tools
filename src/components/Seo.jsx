@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { defaultOgImage, getSeoData, siteUrl } from '../seoData';
+import { buildPublicUrl, defaultOgImage, getSeoData } from '../seoData';
 
 function setMetaAttribute(selector, attribute, value) {
   let element = document.querySelector(selector);
@@ -23,7 +23,7 @@ function Seo() {
   useEffect(() => {
     const pathname = location.pathname || '/';
     const seo = getSeoData(pathname);
-    const canonicalUrl = `${siteUrl}${pathname}`;
+    const canonicalUrl = buildPublicUrl(pathname);
 
     document.title = seo.title;
 

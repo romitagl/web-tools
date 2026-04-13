@@ -35,42 +35,42 @@ function App() {
             <Route path="/" element={<Home />} />
             
             {/* All other routes use lazy loading */}
-            <Route path="/pdf-merger" element={
+            <Route path="/pdf-merger/*" element={
               <Suspense fallback={<LoadingFallback />}>
                 <PdfMerger />
               </Suspense>
             } />
-            <Route path="/pdf-compressor" element={
+            <Route path="/pdf-compressor/*" element={
               <Suspense fallback={<LoadingFallback />}>
                 <PdfCompressor />
               </Suspense>
             } />
-            <Route path="/qr-code-tool" element={
+            <Route path="/qr-code-tool/*" element={
               <Suspense fallback={<LoadingFallback />}>
                 <QrCodeTool />
               </Suspense>
             } />
-            <Route path="/cidr-calculator" element={
+            <Route path="/cidr-calculator/*" element={
               <Suspense fallback={<LoadingFallback />}>
                 <CidrCalculator />
               </Suspense>
             } />
-            <Route path="/code-formatter" element={
+            <Route path="/code-formatter/*" element={
               <Suspense fallback={<LoadingFallback />}>
                 <CodeFormatter />
               </Suspense>
             } />
-            <Route path="/base64-encoder-decoder" element={
+            <Route path="/base64-encoder-decoder/*" element={
               <Suspense fallback={<LoadingFallback />}>
                 <Base64Tool />
               </Suspense>
             } />
-            <Route path="/website-scraper" element={
+            <Route path="/website-scraper/*" element={
               <Suspense fallback={<LoadingFallback />}>
                 <WebsiteScraper />
               </Suspense>
             } />
-            <Route path="/video-speed-controller" element={
+            <Route path="/video-speed-controller/*" element={
               <Suspense fallback={<LoadingFallback />}>
                 <VideoSpeedController />
               </Suspense>

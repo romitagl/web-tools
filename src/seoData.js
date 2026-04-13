@@ -1,6 +1,20 @@
 const SITE_URL = 'https://web-tools.romitagl.com';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 
+export function normalizeSeoPath(pathname = '/') {
+  if (!pathname || pathname === '/') {
+    return '/';
+  }
+
+  const cleanPath = pathname.split('?')[0].split('#')[0];
+  return cleanPath.endsWith('/') ? cleanPath.slice(0, -1) : cleanPath;
+}
+
+export function buildPublicUrl(pathname = '/') {
+  const normalizedPath = normalizeSeoPath(pathname);
+  return normalizedPath === '/' ? `${SITE_URL}/` : `${SITE_URL}${normalizedPath}/`;
+}
+
 export const seoData = {
   '/': {
     title: 'Free Web Tools: PDF Merger, PDF Compressor, QR Code Generator & More',
@@ -36,7 +50,7 @@ export const seoData = {
       operatingSystem: 'Web browser',
       description:
         'Combine multiple PDFs and images into a single document directly in your browser.',
-      url: `${SITE_URL}/pdf-merger`,
+      url: buildPublicUrl('/pdf-merger'),
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -58,7 +72,7 @@ export const seoData = {
       operatingSystem: 'Web browser',
       description:
         'Reduce the size of scanned and image-heavy PDF files directly in your browser for easier sharing.',
-      url: `${SITE_URL}/pdf-compressor`,
+      url: buildPublicUrl('/pdf-compressor'),
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -80,7 +94,7 @@ export const seoData = {
       operatingSystem: 'Web browser',
       description:
         'Create scannable QR codes for WiFi, URLs, text, and contact information in your browser.',
-      url: `${SITE_URL}/qr-code-tool`,
+      url: buildPublicUrl('/qr-code-tool'),
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -102,7 +116,7 @@ export const seoData = {
       operatingSystem: 'Web browser',
       description:
         'Calculate network addresses, broadcast addresses, and IP ranges for subnet planning and troubleshooting.',
-      url: `${SITE_URL}/cidr-calculator`,
+      url: buildPublicUrl('/cidr-calculator'),
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -124,7 +138,7 @@ export const seoData = {
       operatingSystem: 'Web browser',
       description:
         'Format and beautify code with support for HTML, CSS, JavaScript, JSON, YAML, Markdown, and more.',
-      url: `${SITE_URL}/code-formatter`,
+      url: buildPublicUrl('/code-formatter'),
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -146,7 +160,7 @@ export const seoData = {
       operatingSystem: 'Web browser',
       description:
         'Convert text or binary data to and from Base64 directly in your browser.',
-      url: `${SITE_URL}/base64-encoder-decoder`,
+      url: buildPublicUrl('/base64-encoder-decoder'),
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -168,7 +182,7 @@ export const seoData = {
       operatingSystem: 'Web browser',
       description:
         'Archive websites locally by saving HTML, CSS, JavaScript, and images into a downloadable ZIP file.',
-      url: `${SITE_URL}/website-scraper`,
+      url: buildPublicUrl('/website-scraper'),
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -190,7 +204,7 @@ export const seoData = {
       operatingSystem: 'Web browser',
       description:
         'Modify video playback speed to create slow-motion or time-lapse effects directly in your browser.',
-      url: `${SITE_URL}/video-speed-controller`,
+      url: buildPublicUrl('/video-speed-controller'),
       offers: {
         '@type': 'Offer',
         price: '0',
@@ -201,7 +215,7 @@ export const seoData = {
 };
 
 export function getSeoData(pathname) {
-  return seoData[pathname] || seoData['/'];
+  return seoData[normalizeSeoPath(pathname)] || seoData['/'];
 }
 
 export const defaultOgImage = DEFAULT_OG_IMAGE;

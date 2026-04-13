@@ -5,8 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redirecting...</title>
   <script>
+    function normalizePathname(pathname) {
+      if (!pathname || pathname === '/') {
+        return '/';
+      }
+
+      return pathname.endsWith('/') ? pathname : `${pathname}/`;
+    }
+
     // Save the URL path that caused the 404, including hash and query parameters
-    const fullPath = window.location.pathname + 
+    const fullPath = normalizePathname(window.location.pathname) + 
                     (window.location.search || '') + 
                     (window.location.hash || '');
     sessionStorage.setItem('redirectPath', fullPath);
