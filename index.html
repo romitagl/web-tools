@@ -106,7 +106,7 @@
           "applicationCategory": "UtilityApplication",
           "operatingSystem": "Web browser",
           "description": "Combine multiple PDFs and images into a single document. Perfect for creating comprehensive documentation and presentations.",
-          "url": "https://web-tools.romitagl.com/pdf-merger",
+          "url": "https://web-tools.romitagl.com/pdf-merger/",
           "offers": {
             "@type": "Offer",
             "price": "0",
@@ -119,7 +119,7 @@
           "applicationCategory": "UtilityApplication",
           "operatingSystem": "Web browser",
           "description": "Reduce the size of scanned and image-heavy PDF files directly in your browser for easier sharing while keeping your files private.",
-          "url": "https://web-tools.romitagl.com/pdf-compressor",
+          "url": "https://web-tools.romitagl.com/pdf-compressor/",
           "offers": {
             "@type": "Offer",
             "price": "0",
@@ -132,7 +132,7 @@
           "applicationCategory": "UtilityApplication",
           "operatingSystem": "Web browser",
           "description": "Create scannable QR codes for WiFi, contact info, URLs, and text. Perfect for Airbnb hosts, hotels, and vacation rentals.",
-          "url": "https://web-tools.romitagl.com/qr-code-tool",
+          "url": "https://web-tools.romitagl.com/qr-code-tool/",
           "offers": {
             "@type": "Offer",
             "price": "0",
@@ -145,7 +145,7 @@
           "applicationCategory": "UtilityApplication",
           "operatingSystem": "Web browser",
           "description": "Modify video playback speed to create slow-motion or time-lapse effects. Perfect for creating dramatic effects or speeding up tutorials.",
-          "url": "https://web-tools.romitagl.com/video-speed-controller",
+          "url": "https://web-tools.romitagl.com/video-speed-controller/",
           "offers": {
             "@type": "Offer",
             "price": "0",
@@ -164,7 +164,7 @@
           "applicationCategory": "DeveloperApplication",
           "operatingSystem": "Web browser",
           "description": "Calculate network addresses, broadcast addresses, and IP ranges for network planning and troubleshooting.",
-          "url": "https://web-tools.romitagl.com/cidr-calculator",
+          "url": "https://web-tools.romitagl.com/cidr-calculator/",
           "offers": {
             "@type": "Offer",
             "price": "0",
@@ -177,7 +177,7 @@
           "applicationCategory": "DeveloperApplication",
           "operatingSystem": "Web browser",
           "description": "Format and beautify your code with support for HTML, CSS, JavaScript, and other popular languages.",
-          "url": "https://web-tools.romitagl.com/code-formatter",
+          "url": "https://web-tools.romitagl.com/code-formatter/",
           "offers": {
             "@type": "Offer",
             "price": "0",
@@ -190,7 +190,7 @@
           "applicationCategory": "DeveloperApplication",
           "operatingSystem": "Web browser",
           "description": "Convert text or binary data to and from Base64 encoding for web applications and data transfer.",
-          "url": "https://web-tools.romitagl.com/base64-encoder-decoder",
+          "url": "https://web-tools.romitagl.com/base64-encoder-decoder/",
           "offers": {
             "@type": "Offer",
             "price": "0",
@@ -203,7 +203,7 @@
           "applicationCategory": "DeveloperApplication",
           "operatingSystem": "Web browser",
           "description": "Archive websites locally by saving HTML, CSS, JavaScript, and images into a downloadable ZIP file.",
-          "url": "https://web-tools.romitagl.com/website-scraper",
+          "url": "https://web-tools.romitagl.com/website-scraper/",
           "offers": {
             "@type": "Offer",
             "price": "0",
@@ -223,14 +223,14 @@
           // Only update if needed
           if (canonicalTag.href.includes('%REQUEST_PATH%')) {
             // Handle special case for homepage
-            const pagePath = path === '/' ? '' : path;
-            const canonicalUrl = canonicalTag.href.replace('%REQUEST_PATH%', pagePath);
+            const normalizedPath = path === '/' ? '' : (path.endsWith('/') ? path : `${path}/`);
+            const canonicalUrl = canonicalTag.href.replace('%REQUEST_PATH%', normalizedPath);
             canonicalTag.href = canonicalUrl;
           }
         }
       })();
     </script>
-  <script type="module" crossorigin src="/assets/index-zaXjnhkq.js"></script>
+  <script type="module" crossorigin src="/assets/index-BUfuhOko.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/jsx-runtime-oW_HHTsh.js">
   <link rel="modulepreload" crossorigin href="/assets/code-B3O3UsTZ.js">
   <link rel="modulepreload" crossorigin href="/assets/file-down-HmNWCUiQ.js">
