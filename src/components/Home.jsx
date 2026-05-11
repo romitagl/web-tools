@@ -48,7 +48,7 @@ function Home() {
               <span className="feature-badge">House Rules</span>
               <span className="feature-badge">Local Guides</span>
             </div>
-            <Link to="/qr-code-tool" className="primary-button">
+            <Link to="/qr-code-tool/" className="primary-button">
               Create Free QR Codes Now
             </Link>
           </div>
@@ -69,7 +69,7 @@ function Home() {
               <span className="feature-badge">Fast Processing</span>
               <span className="feature-badge">100% Private</span>
             </div>
-            <Link to="/pdf-merger" className="primary-button">
+            <Link to="/pdf-merger/" className="primary-button">
               Merge Files Now
             </Link>
           </div>
@@ -90,7 +90,7 @@ function Home() {
               <span className="feature-badge">Grayscale Option</span>
               <span className="feature-badge">100% Private</span>
             </div>
-            <Link to="/pdf-compressor" className="primary-button">
+            <Link to="/pdf-compressor/" className="primary-button">
               Compress PDF Now
             </Link>
           </div>
@@ -111,7 +111,7 @@ function Home() {
               <span className="feature-badge">No Upload</span>
               <span className="feature-badge">Browser Processing</span>
             </div>
-            <Link to="/video-speed-controller" className="primary-button">
+            <Link to="/video-speed-controller/" className="primary-button">
               Transform Your Videos
             </Link>
           </div>
@@ -167,7 +167,7 @@ function Home() {
             </div>
             <h2>QR Code Generator</h2>
             <p>Create scannable QR codes for WiFi, contact info, URLs, and text. Perfect for Airbnb hosts, hotels, and vacation rentals.</p>
-            <Link to="/qr-code-tool" className="tool-link">
+            <Link to="/qr-code-tool/" className="tool-link">
               Create QR Codes Now
             </Link>
           </div>
@@ -178,7 +178,7 @@ function Home() {
             </div>
             <h2>PDF Merger</h2>
             <p>Combine multiple PDFs and images into a single document. Great for creating comprehensive documentation and presentations.</p>
-            <Link to="/pdf-merger" className="tool-link">
+            <Link to="/pdf-merger/" className="tool-link">
               Merge Files Now
             </Link>
           </div>
@@ -189,7 +189,7 @@ function Home() {
             </div>
             <h2>PDF Compressor</h2>
             <p>Reduce PDF size directly in your browser. Ideal for scanned documents and image-heavy PDFs that need easier sharing.</p>
-            <Link to="/pdf-compressor" className="tool-link">
+            <Link to="/pdf-compressor/" className="tool-link">
               Compress PDF
             </Link>
           </div>
@@ -200,7 +200,7 @@ function Home() {
             </div>
             <h2>Video Speed Controller</h2>
             <p>Modify video playback speed to create slow-motion or time-lapse effects. Perfect for creating dramatic effects or speeding up tutorials.</p>
-            <Link to="/video-speed-controller" className="tool-link">
+            <Link to="/video-speed-controller/" className="tool-link">
               Adjust Video Speed
             </Link>
           </div>
@@ -211,7 +211,7 @@ function Home() {
             </div>
             <h2>CIDR Calculator</h2>
             <p>Calculate network addresses, broadcast addresses, and IP ranges for network planning and troubleshooting.</p>
-            <Link to="/cidr-calculator" className="tool-link">
+            <Link to="/cidr-calculator/" className="tool-link">
               Open Calculator
             </Link>
           </div>
@@ -222,7 +222,7 @@ function Home() {
             </div>
             <h2>Code Formatter</h2>
             <p>Format and beautify your code with support for HTML, CSS, JavaScript, and other popular languages.</p>
-            <Link to="/code-formatter" className="tool-link">
+            <Link to="/code-formatter/" className="tool-link">
               Format Code
             </Link>
           </div>
@@ -233,7 +233,7 @@ function Home() {
             </div>
             <h2>Base64 Encoder/Decoder</h2>
             <p>Convert text or binary data to and from Base64 encoding for web applications and data transfer.</p>
-            <Link to="/base64-encoder-decoder" className="tool-link">
+            <Link to="/base64-encoder-decoder/" className="tool-link">
               Encode/Decode
             </Link>
           </div>
@@ -259,7 +259,7 @@ function Home() {
             <div className="experimental-tag">Experimental</div>
             <h2>Website Scraper</h2>
             <p>Archive websites locally by saving HTML, CSS, JavaScript, and images into a downloadable ZIP file. Currently in beta testing.</p>
-            <Link to="/website-scraper" className="tool-link">
+            <Link to="/website-scraper/" className="tool-link">
               Scrape Website
             </Link>
           </div>
