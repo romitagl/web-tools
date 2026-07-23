@@ -29,11 +29,6 @@ export const seoData = {
       name: 'Web Tools by romitagl.com',
       description:
         'Free, private web tools including PDF merging, PDF compression, QR code generation, code formatting, and more.',
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: `${SITE_URL}/?search={search_term_string}`,
-        'query-input': 'required name=search_term_string',
-      },
     },
   },
   '/pdf-merger': {
