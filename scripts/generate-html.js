@@ -20,12 +20,39 @@ const routes = [
   '/video-speed-controller'
 ];
 
+const allRoutes = ['/', ...routes];
+
 function escapeHtml(text) {
   return text
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;');
+}
+
+function buildStaticShell(route) {
+  const seo = getSeoData(route);
+  const routeLinks = allRoutes
+    .filter((linkedRoute) => linkedRoute !== route)
+    .map((linkedRoute) => {
+      const linkedSeo = getSeoData(linkedRoute);
+      return `<li><a href="${normalizeRouteHref(linkedRoute)}">${escapeHtml(linkedSeo.title)}</a></li>`;
+    })
+    .join('');
+
+  return [
+    '<main class="seo-fallback">',
+    `<h1>${escapeHtml(seo.title)}</h1>`,
+    `<p>${escapeHtml(seo.description)}</p>`,
+    '<h2>Explore more free browser tools</h2>',
+    `<ul>${routeLinks}</ul>`,
+    '<p>All tools run locally in your browser for privacy. JavaScript is required to use the interactive features.</p>',
+    '</main>',
+  ].join('');
+}
+
+function normalizeRouteHref(route) {
+  return route === '/' ? '/' : `${route}/`;
 }
 
 function applySeo(indexHTML, route) {
@@ -46,7 +73,8 @@ function applySeo(indexHTML, route) {
     .replace(/<meta name="twitter:description"[\s\S]*?content="[^"]*"[\s\S]*?\/>/, `<meta name="twitter:description" content="${escapeHtml(seo.description)}" />`)
     .replace(/<meta name="twitter:image"[\s\S]*?content="[^"]*"[\s\S]*?\/>/, `<meta name="twitter:image" content="${defaultOgImage}" />`)
     .replace(/<link rel="canonical" href="[^"]*" \/>/, `<link rel="canonical" href="${canonicalUrl}" />`)
-    .replace(/<script id="route-schema" type="application\/ld\+json">[\s\S]*?<\/script>/, `<script id="route-schema" type="application/ld+json">${schemaJson}</script>`);
+    .replace(/<script id="route-schema" type="application\/ld\+json">[\s\S]*?<\/script>/, `<script id="route-schema" type="application/ld+json">${schemaJson}</script>`)
+    .replace(/<div id="root">[\s\S]*?<\/div>/, `<div id="root">${buildStaticShell(route)}</div>`);
 }
 
 function validateSeo(html, route) {
@@ -74,7 +102,9 @@ async function generateStaticHTML() {
     }
     
     const indexHTML = fs.readFileSync(indexPath, 'utf8');
-    validateSeo(indexHTML, '/');
+    const homepageHTML = applySeo(indexHTML, '/');
+    validateSeo(homepageHTML, '/');
+    fs.writeFileSync(indexPath, homepageHTML);
     
     // Create directories and copy index.html for each route
     for (const route of routes) {

@@ -1,5 +1,5 @@
 const SITE_URL = 'https://web-tools.romitagl.com';
-const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 export function normalizeSeoPath(pathname = '/') {
   if (!pathname || pathname === '/') {
