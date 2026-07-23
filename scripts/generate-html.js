@@ -49,6 +49,18 @@ function applySeo(indexHTML, route) {
     .replace(/<script id="route-schema" type="application\/ld\+json">[\s\S]*?<\/script>/, `<script id="route-schema" type="application/ld+json">${schemaJson}</script>`);
 }
 
+function validateSeo(html, route) {
+  const canonicalUrl = buildPublicUrl(route);
+
+  if (!html.includes(`<link rel="canonical" href="${canonicalUrl}" />`)) {
+    throw new Error(`Missing canonical URL for ${route}: ${canonicalUrl}`);
+  }
+
+  if (html.includes('%REQUEST_PATH%')) {
+    throw new Error(`Unresolved request path placeholder for ${route}`);
+  }
+}
+
 // Function to create static HTML files
 async function generateStaticHTML() {
   console.log('Generating static HTML files for routes...');
@@ -62,6 +74,7 @@ async function generateStaticHTML() {
     }
     
     const indexHTML = fs.readFileSync(indexPath, 'utf8');
+    validateSeo(indexHTML, '/');
     
     // Create directories and copy index.html for each route
     for (const route of routes) {
@@ -74,7 +87,9 @@ async function generateStaticHTML() {
       }
       
       // Copy the index.html to the route directory with route-specific SEO
-      fs.writeFileSync(path.resolve(dirPath, 'index.html'), applySeo(indexHTML, route));
+      const routeHTML = applySeo(indexHTML, route);
+      validateSeo(routeHTML, route);
+      fs.writeFileSync(path.resolve(dirPath, 'index.html'), routeHTML);
       console.log(`Created: dist${route}/index.html`);
     }
     

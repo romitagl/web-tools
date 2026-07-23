@@ -70,7 +70,7 @@
   <link rel="preload" href="/images/webtools-logo.svg" as="image" type="image/svg+xml">
 
   <!-- Canonical URL -->
-  <link rel="canonical" href="https://web-tools.romitagl.com%REQUEST_PATH%" />
+  <link rel="canonical" href="https://web-tools.romitagl.com/" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/images/webtools-logo.svg" />
@@ -214,22 +214,6 @@
     }
     </script>
   <script id="route-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","url":"https://web-tools.romitagl.com/","name":"Web Tools by romitagl.com","description":"Free, private web tools including PDF merging, PDF compression, QR code generation, code formatting, and more.","potentialAction":{"@type":"SearchAction","target":"https://web-tools.romitagl.com/?search={search_term_string}","query-input":"required name=search_term_string"}}</script>
-    <script>
-      // Ensure correct canonical URL for all pages
-      (function() {
-        const canonicalTag = document.querySelector('link[rel="canonical"]');
-        if (canonicalTag) {
-          const path = window.location.pathname;
-          // Only update if needed
-          if (canonicalTag.href.includes('%REQUEST_PATH%')) {
-            // Handle special case for homepage
-            const normalizedPath = path === '/' ? '' : (path.endsWith('/') ? path : `${path}/`);
-            const canonicalUrl = canonicalTag.href.replace('%REQUEST_PATH%', normalizedPath);
-            canonicalTag.href = canonicalUrl;
-          }
-        }
-      })();
-    </script>
 </head>
 
 <body>
