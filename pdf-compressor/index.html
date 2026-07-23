@@ -214,22 +214,6 @@
     }
     </script>
   <script id="route-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"PDF Compressor","applicationCategory":"UtilityApplication","operatingSystem":"Web browser","description":"Reduce the size of scanned and image-heavy PDF files directly in your browser for easier sharing.","url":"https://web-tools.romitagl.com/pdf-compressor/","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}}</script>
-    <script>
-      // Ensure correct canonical URL for all pages
-      (function() {
-        const canonicalTag = document.querySelector('link[rel="canonical"]');
-        if (canonicalTag) {
-          const path = window.location.pathname;
-          // Only update if needed
-          if (canonicalTag.href.includes('%REQUEST_PATH%')) {
-            // Handle special case for homepage
-            const normalizedPath = path === '/' ? '' : (path.endsWith('/') ? path : `${path}/`);
-            const canonicalUrl = canonicalTag.href.replace('%REQUEST_PATH%', normalizedPath);
-            canonicalTag.href = canonicalUrl;
-          }
-        }
-      })();
-    </script>
   <script type="module" crossorigin src="/assets/index-DCfyvDuI.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-Ivw4zVEB.css">
 </head>
