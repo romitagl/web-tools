@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    (function () {
+      // Check if we have a saved redirect path
+      const redirectPath = sessionStorage.getItem('redirectPath');
+      if (redirectPath) {
+        // Clear the redirect path from sessionStorage
+        sessionStorage.removeItem('redirectPath');
+
+        // Push the saved path to the history
+        window.history.pushState(null, null, redirectPath);
+      }
+    })();
+  </script>
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://web-tools.romitagl.com/",
+        "name": "Web Tools by romitagl.com",
+        "description": "100% free, private web tools for merging and compressing PDFs, generating QR codes, Video Speed Controller, subnet calculation, and more - all without uploading your data."
+      }
+  </script>
+
+  <!-- Primary Meta Tags -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Animated GIF Maker Online Free, Private, No Upload</title>
+  <meta name="description" content="Create animated GIFs from images sorted by filename or video clips. Adjust timing, size, and looping, then preview and download in your browser. No uploads." />
+  <meta name="keywords" content="animated gif maker, images to gif, video to gif, free gif creator, private gif maker, browser gif maker, no upload gif maker" />
+  <meta name="author" content="romitagl.com" />
+
+  <!-- Add meta tag for robots -->
+  <meta name="robots" content="index, follow" />
+
+  <!-- Add meta tag for Google-specific directives (optional) -->
+  <meta name="googlebot" content="index, follow" />
+
+  <!-- Add meta tag for Bing-specific directives (optional) -->
+  <meta name="msvalidate.01" content="75531E0D2C3A9316F3B6E45C4BE7F32B" />
+
+  <!-- Ensure proper base tag is set -->
+  <base href="/" />
+
+  <!-- Open Graph / Facebook Meta Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://web-tools.romitagl.com/gif-maker/" />
+  <meta property="og:title" content="Animated GIF Maker Online Free, Private, No Upload" />
+  <meta property="og:description" content="Create animated GIFs from images sorted by filename or video clips. Adjust timing, size, and looping, then preview and download in your browser. No uploads." />
+  <meta property="og:image" content="https://web-tools.romitagl.com/og-image.png" />
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://web-tools.romitagl.com/gif-maker/" />
+  <meta name="twitter:title" content="Animated GIF Maker Online Free, Private, No Upload" />
+  <meta name="twitter:description" content="Create animated GIFs from images sorted by filename or video clips. Adjust timing, size, and looping, then preview and download in your browser. No uploads." />
+  <meta name="twitter:image" content="https://web-tools.romitagl.com/og-image.png" />
+
+  <!-- Preload assets -->
+  <link rel="preload" href="/images/webtools-logo.svg" as="image" type="image/svg+xml">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://web-tools.romitagl.com/gif-maker/" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/images/webtools-logo.svg" />
+
+  <!-- Consider adding dynamic meta tags for each route -->
+  <!-- This requires server-side rendering or build-time generation -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://romitagl.com/",
+      "name": "Essential Web Tools & Resources - romitagl.com",
+      "description": "Free, private web tools including PDF merging, PDF compression, QR code generation, video speed control, subnet calculation, code formatting & more. All processing happens client-side for maximum privacy.",
+      "author": {
+        "@type": "Person",
+        "name": "romitagl"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "applicationCategory": "WebApplication",
+      "hasPart": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "PDF & Image Merger",
+          "applicationCategory": "UtilityApplication",
+          "operatingSystem": "Web browser",
+          "description": "Combine multiple PDFs and images into a single document. Perfect for creating comprehensive documentation and presentations.",
+          "url": "https://web-tools.romitagl.com/pdf-merger/",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "PDF Compressor",
+          "applicationCategory": "UtilityApplication",
+          "operatingSystem": "Web browser",
+          "description": "Reduce the size of scanned and image-heavy PDF files directly in your browser for easier sharing while keeping your files private.",
+          "url": "https://web-tools.romitagl.com/pdf-compressor/",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "QR Code Generator",
+          "applicationCategory": "UtilityApplication",
+          "operatingSystem": "Web browser",
+          "description": "Create scannable QR codes for WiFi, contact info, URLs, and text. Perfect for Airbnb hosts, hotels, and vacation rentals.",
+          "url": "https://web-tools.romitagl.com/qr-code-tool/",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Video Speed Controller",
+          "applicationCategory": "UtilityApplication",
+          "operatingSystem": "Web browser",
+          "description": "Modify video playback speed to create slow-motion or time-lapse effects. Perfect for creating dramatic effects or speeding up tutorials.",
+          "url": "https://web-tools.romitagl.com/video-speed-controller/",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          },
+          "featureList": [
+            "Slow motion effects (0.25x - 0.5x speed)",
+            "Fast motion & time-lapse (1.5x - 4x speed)",
+            "Multiple output formats (WebM, MP4, GIF)",
+            "Complete browser-based processing"
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "CIDR Calculator",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Web browser",
+          "description": "Calculate network addresses, broadcast addresses, and IP ranges for network planning and troubleshooting.",
+          "url": "https://web-tools.romitagl.com/cidr-calculator/",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Code Formatter",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Web browser",
+          "description": "Format and beautify your code with support for HTML, CSS, JavaScript, and other popular languages.",
+          "url": "https://web-tools.romitagl.com/code-formatter/",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Base64 Encoder/Decoder",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Web browser",
+          "description": "Convert text or binary data to and from Base64 encoding for web applications and data transfer.",
+          "url": "https://web-tools.romitagl.com/base64-encoder-decoder/",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Website Scraper",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Web browser",
+          "description": "Archive websites locally by saving HTML, CSS, JavaScript, and images into a downloadable ZIP file.",
+          "url": "https://web-tools.romitagl.com/website-scraper/",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          }
+        }
+      ]
+    }
+    </script>
+  <script id="route-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Animated GIF Maker","applicationCategory":"MultimediaApplication","operatingSystem":"Web browser","description":"Turn images or video clips into animated GIFs locally in your browser, with timing, size, and looping controls.","url":"https://web-tools.romitagl.com/gif-maker/","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}}</script>
+  <script type="module" crossorigin src="/assets/index-CuGvaNsi.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-d5Tc6xj8.css">
+</head>
+
+<body>
+  <div id="root"><main class="seo-fallback"><h1>Animated GIF Maker Online Free, Private, No Upload</h1><p>Create animated GIFs from images sorted by filename or video clips. Adjust timing, size, and looping, then preview and download in your browser. No uploads.</p><h2>Explore more free browser tools</h2><ul><li><a href="/">Free Web Tools: PDF Merger, PDF Compressor, QR Code Generator &amp; More</a></li><li><a href="/pdf-merger/">Merge PDFs and Images Online Free, Private, No Upload</a></li><li><a href="/pdf-compressor/">Compress PDF Online Free, Private, No Upload</a></li><li><a href="/qr-code-tool/">QR Code Generator for WiFi, URLs and Contact Info</a></li><li><a href="/cidr-calculator/">CIDR Calculator Online for Subnetting and IP Ranges</a></li><li><a href="/code-formatter/">Code Formatter Online for HTML, CSS, JavaScript and JSON</a></li><li><a href="/base64-encoder-decoder/">Base64 Encoder and Decoder Online</a></li><li><a href="/website-scraper/">Website Scraper and Offline Archive Tool</a></li><li><a href="/video-speed-controller/">Video Speed Controller Online for Slow Motion and Time-Lapse</a></li></ul><p>All tools run locally in your browser for privacy. JavaScript is required to use the interactive features.</p></main></div>
+  <!-- Cloudflare Web Analytics -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "56bbcffb75794a2093c1dc8ab13dd3be"}'></script>
+  <!-- End Cloudflare Web Analytics -->
+</body>
+
+</html>
