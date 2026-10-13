@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { DEFAULT_SETTINGS, getFrameRect, getOutputSize, validateSettings } from '../../src/tools/gif-maker/settings.js';
 import { isSupportedImage, sortImages } from '../../src/tools/gif-maker/files.js';
-import { getVideoPlan } from '../../src/tools/gif-maker/videoSettings.js';
+import { DEFAULT_VIDEO_CLIP, getVideoFrameDelay, getVideoPlan } from '../../src/tools/gif-maker/videoSettings.js';
 
 test('filename sorting includes later batches without changing the original list', () => {
   const images = ['c.png', 'a.png', 'b.png'].map((name) => ({ file: { name } }));
@@ -49,8 +49,30 @@ test('video clips reject invalid ranges, unknown durations, and excessive frame 
   for (const clip of [
     { start: '', end: 1, fps: 10 }, { start: 0, end: '', fps: 10 },
     { start: -1, end: 1, fps: 10 }, { start: 1, end: 1, fps: 10 },
-    { start: 0, end: 3, fps: 10 }, { start: 0, end: 1, fps: 30 },
+    { start: 0, end: 3, fps: 10 },
   ]) assert.throws(() => getVideoPlan(2, clip));
   assert.throws(() => getVideoPlan(Infinity, { start: 0, end: 1, fps: 10 }), /duration/);
   assert.throws(() => getVideoPlan(100, { start: 0, end: 100, fps: 10 }), /shorter clip/);
+});
+
+test('video frame rates default to 10 and support every whole number from 1 to 50', () => {
+  assert.equal(DEFAULT_VIDEO_CLIP.fps, 10);
+  for (let fps = 1; fps <= 50; fps++) {
+    const plan = getVideoPlan(2, { start: 0, end: 1, fps: String(fps) });
+    assert.equal(plan.fps, fps);
+    assert.equal(plan.frameCount, fps);
+    const delays = Array.from({ length: fps }, (_, index) => getVideoFrameDelay(plan, index));
+    assert.ok(delays.every((delay) => delay >= 20 && delay % 10 === 0));
+    assert.equal(delays.reduce((sum, delay) => sum + delay, 0), 1000);
+  }
+  for (const fps of ['', 0, -1, 1.5, 51, Infinity, NaN, 'abc']) {
+    assert.throws(() => getVideoPlan(2, { start: 0, end: 1, fps }), /Frame rate/);
+  }
+});
+
+test('video delays preserve partial clips and the minimum GIF delay', () => {
+  const plan = getVideoPlan(2, { start: 0.4, end: 1.6, fps: 3 });
+  assert.deepEqual(Array.from({ length: plan.frameCount }, (_, index) => getVideoFrameDelay(plan, index)), [330, 340, 330, 200]);
+  const short = getVideoPlan(2, { start: 1, end: 1.01, fps: 1 });
+  assert.equal(getVideoFrameDelay(short, 0), 20);
 });

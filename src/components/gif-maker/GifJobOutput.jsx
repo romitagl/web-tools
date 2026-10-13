@@ -23,7 +23,8 @@ function GifJobOutput({ maker, disabled }) {
           <h3>GIF Preview</h3>
           <img className="gif-preview" src={maker.result.url} alt="Generated GIF preview" />
           <p>{maker.result.width} × {maker.result.height} pixels · {maker.result.frames} frame(s) ·{' '}
-            {maker.result.delay} ms per frame · {formatFileSize(maker.result.blob.size)} ·{' '}
+            {maker.result.fps ? `${maker.result.fps} frames per second` : `${maker.result.delay} ms per frame`} ·{' '}
+            {formatFileSize(maker.result.blob.size)} ·{' '}
             {maker.result.loop ? 'Continuous loop' : 'Plays once'}</p>
           <a className="btn btn-primary" href={maker.result.url} download="animation.gif">
             <Download size={18} /> Download GIF

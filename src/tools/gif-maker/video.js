@@ -1,5 +1,5 @@
 import { encodeFrames } from './encoder';
-import { getVideoPlan } from './videoSettings';
+import { getVideoFrameDelay, getVideoPlan } from './videoSettings';
 
 export const VIDEO_ACCEPT = 'video/*,.mp4,.webm,.mov,.m4v,.ogv';
 
@@ -85,7 +85,7 @@ async function* videoFrames(file, plan, signal) {
       await seekVideo(video, time, signal);
       yield {
         image: video, width: video.videoWidth, height: video.videoHeight,
-        delay: Math.max(20, Math.round(Math.min(1 / plan.fps, plan.end - time) * 100) * 10),
+        delay: getVideoFrameDelay(plan, index),
       };
     }
   } finally {
@@ -93,9 +93,10 @@ async function* videoFrames(file, plan, signal) {
   }
 }
 
-export function createVideoGif(file, duration, settings, clip, callbacks = {}) {
+export async function createVideoGif(file, duration, settings, clip, callbacks = {}) {
   const plan = getVideoPlan(duration, clip);
-  return encodeFrames(videoFrames(file, plan, callbacks.signal), plan.frameCount, {
-    ...settings, delay: plan.delay,
+  const output = await encodeFrames(videoFrames(file, plan, callbacks.signal), plan.frameCount, {
+    ...settings, delay: Math.round(plan.delay / 10) * 10,
   }, callbacks);
+  return { ...output, fps: plan.fps };
 }

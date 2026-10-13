@@ -3,7 +3,7 @@ import GifSettings from './GifSettings';
 import GifJobOutput from './GifJobOutput';
 import useVideoGifMaker from '../../tools/gif-maker/useVideoGifMaker';
 import { VIDEO_ACCEPT } from '../../tools/gif-maker/video';
-import { getVideoPlan, VIDEO_FRAME_RATES, MAX_VIDEO_FRAMES } from '../../tools/gif-maker/videoSettings';
+import { getVideoPlan, MIN_VIDEO_FPS, MAX_VIDEO_FPS, MAX_VIDEO_FRAMES } from '../../tools/gif-maker/videoSettings';
 import { formatFileSize } from '../../tools/gif-maker/files';
 
 function VideoToGif() {
@@ -46,11 +46,11 @@ function VideoToGif() {
                 step="0.01" value={maker.clip.end} onChange={(event) => maker.updateClip({ end: event.target.value })} />
             </div>
             <div className="input-group">
-              <label htmlFor="gif-video-fps">Frame rate</label>
-              <select id="gif-video-fps" className="select-input" value={maker.clip.fps}
-                onChange={(event) => maker.updateClip({ fps: Number(event.target.value) })}>
-                {VIDEO_FRAME_RATES.map((fps) => <option key={fps} value={fps}>{fps} frames per second</option>)}
-              </select>
+              <label htmlFor="gif-video-fps">Frame rate (frames per second)</label>
+              <input id="gif-video-fps" type="number" className="text-input" min={MIN_VIDEO_FPS} max={MAX_VIDEO_FPS}
+                step="1" value={maker.clip.fps} onChange={(event) => maker.updateClip({ fps: event.target.value })}
+                aria-describedby="gif-video-fps-hint" />
+              <small id="gif-video-fps-hint">{MIN_VIDEO_FPS}–{MAX_VIDEO_FPS} frames per second. Default: 10.</small>
             </div>
           </div>
           <p className="gif-note">{plan ? `${(plan.end - plan.start).toFixed(2)} second clip · ${plan.frameCount} frames. ` : ''}

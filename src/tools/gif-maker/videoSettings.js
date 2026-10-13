@@ -1,4 +1,5 @@
-export const VIDEO_FRAME_RATES = [5, 10, 20, 25];
+export const MIN_VIDEO_FPS = 1;
+export const MAX_VIDEO_FPS = 50;
 export const MAX_VIDEO_FRAMES = 600;
 export const DEFAULT_VIDEO_CLIP = { start: 0, end: '', fps: 10 };
 
@@ -13,10 +14,20 @@ export function getVideoPlan(duration, clip) {
     || start < 0 || end <= start || end > duration + 0.000001) {
     throw new Error('Choose a start and end time within the video, with the end after the start.');
   }
-  if (!VIDEO_FRAME_RATES.includes(fps)) throw new Error('Choose a supported frame rate.');
+  if (!Number.isInteger(fps) || fps < MIN_VIDEO_FPS || fps > MAX_VIDEO_FPS) {
+    throw new Error(`Frame rate must be a whole number between ${MIN_VIDEO_FPS} and ${MAX_VIDEO_FPS} frames per second.`);
+  }
   const frameCount = Math.ceil((end - start) * fps - 0.0000001);
   if (frameCount > MAX_VIDEO_FRAMES) {
     throw new Error(`Choose a shorter clip or a lower frame rate (maximum ${MAX_VIDEO_FRAMES} frames).`);
   }
   return { start, end, fps, frameCount, delay: 1000 / fps };
+}
+
+export function getVideoFrameDelay(plan, index) {
+  // GIF stores centiseconds. Round cumulative boundaries so rates like 3 or
+  // 24 FPS preserve clip timing rather than accumulating rounding per frame.
+  const start = Math.round(index / plan.fps * 100);
+  const end = Math.round(Math.min((index + 1) / plan.fps, plan.end - plan.start) * 100);
+  return Math.max(20, (end - start) * 10);
 }

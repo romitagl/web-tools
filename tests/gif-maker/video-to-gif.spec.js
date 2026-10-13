@@ -29,7 +29,7 @@ for (const extension of ['mp4', 'webm']) {
     await chooseVideo(page, extension);
     await page.getByLabel('Start time').fill('0.4');
     await page.getByLabel('End time').fill('1.2');
-    await page.getByLabel('Frame rate').selectOption('10');
+    await page.getByLabel('Frame rate').fill('10');
     await page.getByLabel('Maximum output dimension').selectOption('320');
     await page.getByLabel('Loop continuously').uncheck();
     const requests = [];
@@ -71,7 +71,7 @@ test('video drop works; invalid ranges and corrupt files are recoverable', async
   await expect(page.getByRole('alert')).toContainText('end after the start');
   await page.getByLabel('Start time').fill('0');
   await page.getByLabel('End time').fill('0.25');
-  await page.getByLabel('Frame rate').selectOption('10');
+  await page.getByLabel('Frame rate').fill('10');
   const gif = await generatedGif(page);
   expect(gif.numFrames()).toBe(3);
   expect(gif.frameInfo(2).delay).toBe(5);
@@ -142,4 +142,33 @@ test('video mode remains usable on mobile', async ({ page }) => {
   expect((await generatedGif(page)).numFrames()).toBe(4);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: test.info().outputPath('video-mobile.png'), fullPage: true });
+});
+
+for (const [fps, expectedDelays] of [[1, [100, 20]], [3, [33, 34, 33, 20]]]) {
+  test(`numeric frame-rate picker encodes ${fps} FPS with correct playback timing`, async ({ page }) => {
+    await chooseVideo(page);
+    const input = page.getByRole('spinbutton', { name: 'Frame rate' });
+    await expect(input).toHaveValue('10');
+    await expect(input).toHaveAttribute('min', '1');
+    await input.fill(String(fps));
+    await page.getByLabel('End time').fill('1.2');
+    const gif = await generatedGif(page);
+    expect(gif.numFrames()).toBe(expectedDelays.length);
+    expect(Array.from({ length: gif.numFrames() }, (_, frame) => gif.frameInfo(frame).delay)).toEqual(expectedDelays);
+    expect(pixel(gif, 0, 100, 100)[0]).toBeGreaterThan(240);
+    expect(pixel(gif, gif.numFrames() - 1, 100, 100)[2]).toBeGreaterThan(240);
+    await expect(page.locator('.gif-result')).toContainText(`${fps} frames per second`);
+  });
+}
+
+test('numeric frame-rate picker rejects empty or out-of-range values and recovers', async ({ page }) => {
+  await chooseVideo(page);
+  for (const value of ['', '0', '51', '1.5']) {
+    await page.getByLabel('Frame rate').fill(value);
+    await page.getByRole('button', { name: 'Create GIF', exact: true }).click();
+    await expect(page.getByRole('alert')).toContainText('Frame rate must be a whole number between 1 and 50');
+    await expect(page.getByRole('heading', { name: 'GIF Preview' })).toHaveCount(0);
+  }
+  await page.getByLabel('Frame rate').fill('1');
+  expect((await generatedGif(page)).numFrames()).toBe(2);
 });
