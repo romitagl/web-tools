@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FileDown, FileText, Network, Code, FileCode, QrCode, Wifi, Smartphone, Globe, Video } from 'lucide-react';
+import { FileDown, FileText, Network, Code, FileCode, QrCode, Wifi, Smartphone, Globe, Video, Film } from 'lucide-react';
 
 function Home() {
   return (
@@ -32,6 +32,25 @@ function Home() {
       <section className="featured-tools">
         <h3 className="featured-title">Most Popular Tools</h3>
         <div className="featured-grid">
+          <div className="featured-card">
+            <div className="featured-icon">
+              <Film size={50} color="#4ac0ff" />
+            </div>
+            <h2>Animated GIF Maker</h2>
+            <p>
+              <strong>Turn images or video clips into animated GIFs!</strong> Combine images in filename
+              order or select a video segment. Adjust timing, size, and looping, then preview and
+              download directly in your browser.
+            </p>
+            <div className="features-list">
+              <span className="feature-badge">Images to GIF</span>
+              <span className="feature-badge">Video to GIF</span>
+              <span className="feature-badge">Preview &amp; Download</span>
+              <span className="feature-badge">100% Private</span>
+            </div>
+            <Link to="/gif-maker/" className="primary-button">Make a GIF</Link>
+          </div>
+
           <div className="featured-card">
             <div className="featured-icon">
               <QrCode size={50} color="#4ac0ff" />
@@ -161,6 +180,17 @@ function Home() {
       <section id="tools" className="tools-section">
         <h3 className="tools-category-title">All Available Tools</h3>
         <div className="tools-grid">
+          <div className="tool-card">
+            <div className="tool-icon">
+              <Film size={40} color="lightblue" />
+            </div>
+            <h2>Animated GIF Maker</h2>
+            <p>Turn images in filename order or a video clip into an animated GIF. Adjust timing, size, and looping, then preview and download locally.</p>
+            <Link to="/gif-maker/" className="tool-link">
+              Create GIF
+            </Link>
+          </div>
+
           <div className="tool-card">
             <div className="tool-icon">
               <QrCode size={40} color="lightblue" />

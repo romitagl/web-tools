@@ -13,10 +13,13 @@
     "build": "vite build --config vite.config.js",
     "postbuild": "node scripts/generate-html.js",
     "preview": "vite preview",
-    "lint": "eslint src --ext js,jsx"
+    "lint": "eslint src --ext js,jsx",
+    "test": "node --test tests/gif-maker/settings.test.js",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "file-saver": "^2.0.5",
+    "gifenc": "^1.0.3",
     "html5-qrcode": "^2.3.8",
     "jszip": "^3.10.1",
     "lucide-react": "^1.7.0",
@@ -29,6 +32,7 @@
     "react-router-dom": "^7.18.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
@@ -37,6 +41,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
+    "omggif": "^1.0.10",
     "postcss": "^8.5.24",
     "tailwindcss": "^4.2.2",
     "vite": "^8.0.16"

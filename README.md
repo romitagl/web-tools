@@ -25,6 +25,8 @@ Welcome to **Web Tools**, your go-to client-side web application for a variety o
 
 ### Media Tools
 
+- **Animated GIF Maker**: Select or drop PNG, JPEG, WebP, and BMP images in filename order, or turn a video clip into a GIF locally
+- **Video to GIF**: Choose a video segment and frame rate using native browser decoding, with no uploads or audio in the GIF
 - **Video Speed Controller**: Adjust video playback speed to create slow-motion or time-lapse effects
 - **No video uploads**: Process videos directly in your browser for complete privacy
 - **Preview capability**: See the results before downloading
@@ -67,6 +69,7 @@ Check out the live deployment of the application here:
 
 - **PDF & Image Merger**: Combine multiple PDFs and images into a single document
 - **PDF Compressor**: Reduce PDF size locally in your browser
+- **Animated GIF Maker**: Turn images or video clips into GIFs without uploading them
 - **QR Code Generator & Scanner**: Create and scan QR codes for various purposes
 - **Video Speed Controller**: Create slow-motion or time-lapse videos by adjusting playback speed
 - **CIDR Subnet Calculator**: Network planning and IP address management
@@ -135,6 +138,7 @@ make docker-run-node-cmd
 
 - **Frontend**: React, TailwindCSS, Vite
 - **PDF Processing**: pdf-lib, pdfjs-dist
+- **GIF Encoding**: gifenc, bundled locally and run in a Web Worker
 - **QR Code**: qrcode.js, jsQR
 - **UI Components**: Lucide React icons
 - **Code Formatting**: Prism.js
@@ -147,6 +151,7 @@ make docker-run-node-cmd
 web-tools/
 ├── src/
 │   ├── components/     # UI components
+│   ├── tools/
 │   ├── css/            # Modular CSS files
 │   ├── assets/         # Static assets
 │   └── App.jsx         # Main application component

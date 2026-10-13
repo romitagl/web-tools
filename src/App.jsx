@@ -9,6 +9,7 @@ import Home from './components/Home';
 // Lazy load all other components
 const PdfMerger = lazy(() => import('./components/PdfMerger'));
 const PdfCompressor = lazy(() => import('./components/PdfCompressor'));
+const GifMaker = lazy(() => import('./components/GifMaker'));
 const QrCodeTool = lazy(() => import('./components/QrCodeTool'));
 const CidrCalculator = lazy(() => import('./components/CidrCalculator'));
 const CodeFormatter = lazy(() => import('./components/CodeFormatter'));
@@ -43,6 +44,11 @@ function App() {
             <Route path="/pdf-compressor/*" element={
               <Suspense fallback={<LoadingFallback />}>
                 <PdfCompressor />
+              </Suspense>
+            } />
+            <Route path="/gif-maker/*" element={
+              <Suspense fallback={<LoadingFallback />}>
+                <GifMaker />
               </Suspense>
             } />
             <Route path="/qr-code-tool/*" element={

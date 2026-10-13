@@ -75,6 +75,23 @@ export const seoData = {
       },
     },
   },
+  '/gif-maker': {
+    title: 'Animated GIF Maker Online Free, Private, No Upload',
+    description:
+      'Create animated GIFs from images sorted by filename or video clips. Adjust timing, size, and looping, then preview and download in your browser. No uploads.',
+    keywords:
+      'animated gif maker, images to gif, video to gif, free gif creator, private gif maker, browser gif maker, no upload gif maker',
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'Animated GIF Maker',
+      applicationCategory: 'MultimediaApplication',
+      operatingSystem: 'Web browser',
+      description: 'Turn images or video clips into animated GIFs locally in your browser, with timing, size, and looping controls.',
+      url: buildPublicUrl('/gif-maker'),
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    },
+  },
   '/qr-code-tool': {
     title: 'QR Code Generator for WiFi, URLs and Contact Info',
     description:

@@ -12,6 +12,7 @@ const __dirname = path.dirname(__filename);
 const routes = [
   '/pdf-merger',
   '/pdf-compressor',
+  '/gif-maker',
   '/qr-code-tool',
   '/cidr-calculator',
   '/code-formatter',
