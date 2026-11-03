@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Seo from './components/Seo';
+import SiteNavigation from './components/SiteNavigation';
 import './css/main.css';
 
 // Only import Home eagerly for better landing page performance
@@ -29,8 +30,9 @@ function App() {
   return (
     <Router>
       <div className="app dark">
-        <div className="container" id="root">
+        <div className="container">
         <Seo />
+          <SiteNavigation />
           <Routes>
             {/* Home is not lazy loaded for better initial performance */}
             <Route path="/" element={<Home />} />

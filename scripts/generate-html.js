@@ -4,22 +4,14 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { buildPublicUrl, getSeoData, defaultOgImage } from '../src/seoData.js';
 
+import { tools, toolPath } from '../src/toolCatalog.js';
+
 // Get the directory name properly in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Define the routes
-const routes = [
-  '/pdf-merger',
-  '/pdf-compressor',
-  '/gif-maker',
-  '/qr-code-tool',
-  '/cidr-calculator',
-  '/code-formatter',
-  '/base64-encoder-decoder',
-  '/website-scraper',
-  '/video-speed-controller'
-];
+const routes = tools.map((tool) => toolPath(tool).slice(0, -1));
 
 const allRoutes = ['/', ...routes];
 
@@ -36,8 +28,7 @@ function buildStaticShell(route) {
   const routeLinks = allRoutes
     .filter((linkedRoute) => linkedRoute !== route)
     .map((linkedRoute) => {
-      const linkedSeo = getSeoData(linkedRoute);
-      return `<li><a href="${normalizeRouteHref(linkedRoute)}">${escapeHtml(linkedSeo.title)}</a></li>`;
+      return `<li><a href="${normalizeRouteHref(linkedRoute)}">${escapeHtml(tools.find((tool) => `/${tool.id}` === linkedRoute)?.name || 'All tools')}</a></li>`;
     })
     .join('');
 
@@ -47,7 +38,7 @@ function buildStaticShell(route) {
     `<p>${escapeHtml(seo.description)}</p>`,
     '<h2>Explore more free browser tools</h2>',
     `<ul>${routeLinks}</ul>`,
-    '<p>All tools run locally in your browser for privacy. JavaScript is required to use the interactive features.</p>',
+    '<p>File tools process locally in your browser. Website Scraper makes network requests and may use third-party proxies. JavaScript is required to use the interactive features.</p>',
     '</main>',
   ].join('');
 }
