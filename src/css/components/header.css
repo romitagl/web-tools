@@ -34,7 +34,7 @@
   }
   
   .logo:hover {
-    filter: drop-shadow(0 0 2em rgba(100, 108, 255, 0.6));
+    filter: drop-shadow(0 0 2em rgba(var(--primary-color-rgb), 0.6));
   }
   
   .logo.react:hover {
@@ -72,7 +72,7 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-    background-color: rgba(100, 108, 255, 0.1);
+    background-color: rgba(var(--primary-color-rgb), 0.1);
     border-radius: var(--radius-md);
     padding: var(--spacing-md);
     margin: var(--spacing-lg) 0;

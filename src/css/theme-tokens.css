@@ -1,0 +1,20 @@
+/* Generated from www/css/theme-tokens.css by www/scripts/sync-theme.mjs. */
+:root {
+  color-scheme: dark;
+  --site-bg: #101217;
+  --site-surface: #191c23;
+  --site-raised: #222831;
+  --site-text: #f3f5fa;
+  --site-muted: #a8afbd;
+  --site-line: #303540;
+  --site-accent: #c5f277;
+  --site-accent-hover: #d9ffaa;
+  --site-on-accent: #172010;
+  --site-teal: #79d5cb;
+  --site-teal-surface: #182b2b;
+  --site-amber: #f6b78a;
+  --site-amber-surface: #2c221d;
+  --site-green-surface: #202b1c;
+  --site-font: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --site-sidebar-width: 250px;
+}

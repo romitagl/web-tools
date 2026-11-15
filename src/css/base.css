@@ -2,18 +2,18 @@
 
 :root {
   /* Color palette */
-  --primary-color: #646cff;
-  --primary-hover: #747bff;
-  --primary-color-rgb: 100, 108, 255;
-  --accent-color: #4ac0ff;
-  --accent-hover: #60caff;
-  --accent-color-rgb: 74, 192, 255;
-  --bg-dark: #242424;
-  --card-bg: #1a1a1a;
-  --text-light: rgba(255, 255, 255, 0.87);
-  --text-muted: #888;
-  --text-secondary: #a3e0ff;
-  --border-color: #333;
+  --primary-color: var(--site-accent);
+  --primary-hover: var(--site-accent-hover);
+  --primary-color-rgb: 197, 242, 119;
+  --accent-color: var(--site-teal);
+  --accent-hover: #a6ebe3;
+  --accent-color-rgb: 121, 213, 203;
+  --bg-dark: var(--site-bg);
+  --card-bg: var(--site-surface);
+  --text-light: var(--site-text);
+  --text-muted: var(--site-muted);
+  --text-secondary: var(--site-teal);
+  --border-color: var(--site-line);
   --success-color: #4CAF50;
   --error-color: #ff6b6b;
   --warning-color: #ffcf33;
@@ -52,10 +52,10 @@
   }
   
   body {
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: var(--site-font);
     line-height: 1.5;
     font-weight: 400;
-    color-scheme: light dark;
+    color-scheme: dark;
     color: var(--text-light);
     background-color: var(--bg-dark);
     font-synthesis: none;

@@ -1,3 +1,4 @@
+@import 'theme-tokens.css';
 /* Import base styles */
 @import 'base.css';
 @import 'layout.css';
@@ -26,3 +27,7 @@
 @import 'tools/base64.css';
 @import 'tools/website-scraper.css';
 @import 'tools/video-speed-controller.css';
+
+/* Shared shell and feature theme adapters load after feature geometry. */
+@import 'site-shell.css';
+@import 'theme-adapters.css';

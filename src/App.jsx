@@ -30,6 +30,7 @@ function App() {
   return (
     <Router>
       <div className="app dark">
+        <a className="tools-skip" href="#main-content">Skip to content</a>
         <div className="container">
         <Seo />
           <SiteNavigation />

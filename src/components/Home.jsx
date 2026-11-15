@@ -14,7 +14,7 @@ export default function Home() {
   );
   return (
     <>
-      <main className="home-catalog">
+      <main className="home-catalog" id="main-content" tabIndex={-1}>
         <section className="catalog-hero" aria-labelledby="home-title">
           <div>
             <p className="catalog-eyebrow">YOUR EVERYDAY BROWSER TOOLKIT</p>

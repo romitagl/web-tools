@@ -86,12 +86,12 @@
     padding: var(--spacing-sm);
     margin: var(--spacing-sm) 0;
     border-radius: var(--radius-md);
-    background-color: rgba(100, 108, 255, 0.1);
+    background-color: rgba(var(--primary-color-rgb), 0.1);
     transition: all var(--transition-normal);
   }
   
   .advanced-toggle:hover {
-    background-color: rgba(100, 108, 255, 0.15);
+    background-color: rgba(var(--primary-color-rgb), 0.15);
   }
   
   /* Subnet Creator Styles */
@@ -111,7 +111,7 @@
     gap: var(--spacing-sm);
     padding: var(--spacing-sm) var(--spacing-md);
     margin: var(--spacing-md) 0 var(--spacing-xl);
-    background-color: rgba(100, 108, 255, 0.08);
+    background-color: rgba(var(--primary-color-rgb), 0.08);
     border-radius: var(--radius-md);
     border-left: 3px solid var(--primary-color);
     color: var(--text-muted);

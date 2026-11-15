@@ -26,7 +26,7 @@
   
   .tab-button:hover:not(:disabled) {
     color: var(--text-light);
-    background-color: rgba(74, 192, 255, 0.1);
+    background-color: rgba(var(--accent-color-rgb), 0.1);
   }
   
   .tab-button.active {
@@ -83,12 +83,12 @@
   }
   
   .type-button:hover {
-    background-color: rgba(100, 108, 255, 0.1);
+    background-color: rgba(var(--primary-color-rgb), 0.1);
     border-color: var(--primary-color);
   }
   
   .type-button.active {
-    background-color: rgba(100, 108, 255, 0.15);
+    background-color: rgba(var(--primary-color-rgb), 0.15);
     border-color: var(--primary-color);
     color: var(--primary-color);
   }
@@ -109,7 +109,7 @@
     
     .tab-button.active {
       border-color: var(--primary-color);
-      background-color: rgba(100, 108, 255, 0.1);
+      background-color: rgba(var(--primary-color-rgb), 0.1);
       border-bottom: 1px solid var(--primary-color);
     }
     

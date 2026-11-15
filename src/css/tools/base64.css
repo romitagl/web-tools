@@ -54,12 +54,12 @@
 }
 
 .mode-button.active {
-  background-color: rgba(100, 108, 255, 0.15);
+  background-color: rgba(var(--primary-color-rgb), 0.15);
   color: var(--primary-color);
 }
 
 .mode-button:hover:not(.active) {
-  background-color: rgba(100, 108, 255, 0.05);
+  background-color: rgba(var(--primary-color-rgb), 0.05);
   color: var(--text-light);
 }
 
@@ -108,7 +108,7 @@
 .text-output:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.2);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
 }
 
 .text-output {
@@ -137,7 +137,7 @@
 }
 
 .swap-button:hover:not(:disabled) {
-  background-color: rgba(100, 108, 255, 0.1);
+  background-color: rgba(var(--primary-color-rgb), 0.1);
   border-color: var(--primary-color);
   transform: translateY(-2px);
 }
@@ -164,7 +164,7 @@
 }
 
 .action-button:hover:not(:disabled) {
-  background-color: rgba(100, 108, 255, 0.1);
+  background-color: rgba(var(--primary-color-rgb), 0.1);
   border-color: var(--primary-color);
 }
 
@@ -181,13 +181,13 @@
 }
 
 .download-button {
-  background-color: rgba(100, 108, 255, 0.1);
+  background-color: rgba(var(--primary-color-rgb), 0.1);
   border-color: var(--primary-color);
   color: var(--primary-color);
 }
 
 .download-button:hover:not(:disabled) {
-  background-color: rgba(100, 108, 255, 0.2);
+  background-color: rgba(var(--primary-color-rgb), 0.2);
 }
 
 .file-upload-button {
@@ -196,7 +196,7 @@
   justify-content: center;
   gap: var(--spacing-sm);
   background-color: var(--primary-color);
-  color: white;
+  color: var(--site-on-accent);
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -208,7 +208,7 @@
 .file-upload-button:hover {
   background-color: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(100, 108, 255, 0.3);
+  box-shadow: 0 5px 15px rgba(var(--primary-color-rgb), 0.3);
 }
 
 .hidden-file-input {
@@ -327,7 +327,7 @@
 }
 
 .note {
-  background-color: rgba(100, 108, 255, 0.1);
+  background-color: rgba(var(--primary-color-rgb), 0.1);
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
   border-left: 3px solid var(--primary-color);

@@ -46,7 +46,7 @@
 
 .profile-card.active {
   border-color: var(--primary-color);
-  background-color: rgba(74, 192, 255, 0.08);
+  background-color: rgba(var(--accent-color-rgb), 0.08);
 }
 
 .profile-card strong {

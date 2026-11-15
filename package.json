@@ -14,7 +14,7 @@
     "postbuild": "node scripts/generate-html.js",
     "preview": "vite preview",
     "lint": "eslint src --ext js,jsx",
-    "test": "node --test tests/gif-maker/settings.test.js",
+    "test": "node --test tests/gif-maker/settings.test.js tests/theme/*.test.js",
     "test:e2e": "playwright test"
   },
   "dependencies": {
@@ -41,6 +41,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
+    "jsdom": "29.1.1",
     "omggif": "^1.0.10",
     "postcss": "^8.5.24",
     "tailwindcss": "^4.2.2",

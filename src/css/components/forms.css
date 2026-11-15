@@ -42,7 +42,7 @@
   .select-input:focus {
     outline: none;
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(74, 192, 255, 0.2);
+    box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.2);
   }
   
   .text-input::placeholder, .textarea-input::placeholder {
@@ -164,12 +164,12 @@
   
   .drop-zone:hover {
     border-color: var(--primary-color);
-    background-color: rgba(100, 108, 255, 0.05);
+    background-color: rgba(var(--primary-color-rgb), 0.05);
   }
   
   .drop-zone.active {
     border-color: var(--primary-color);
-    background-color: rgba(100, 108, 255, 0.1);
+    background-color: rgba(var(--primary-color-rgb), 0.1);
   }
   
   .drop-zone-content {
